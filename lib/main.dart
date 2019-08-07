@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/dataSource.dart';
+
+import 'alert.dart';
+import 'camera.dart';
+import 'pickerDialog.dart';
 
 void main() => runApp(MyApp());
 
@@ -46,6 +51,10 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
+  var dropdownValue = 'One';
+  final items = List<String>.generate(10000, (i) => "Item $i");
+  double _volume;
+
   void _incrementCounter() {
     setState(() {
       // This call to setState tells the Flutter framework that something has
@@ -55,6 +64,14 @@ class _MyHomePageState extends State<MyHomePage> {
       // called again, and so nothing would appear to happen.
       _counter++;
     });
+
+    Navigator.push(
+        context,
+        new MaterialPageRoute(
+            builder: (context) =>
+            new CameraPage(
+              title: '摄像头',
+            )));
   }
 
   @override
@@ -71,41 +88,70 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
-          ],
+      body: Column(children: <Widget>[
+        ListTile(
+            leading: FlutterLogo(),
+            title: Text('车型'),
+            onTap: () {
+              return showDialog<void>(
+                  context: context,
+                  barrierDismissible: false, // user must tap button!
+                  builder: (BuildContext context) {
+                    return Picker();
+                  });
+            }),
+        ListTile(
+          leading: FlutterLogo(),
+          title: Text('信号源'),
+          onTap: () {
+            Navigator.push(
+                context,
+                new MaterialPageRoute(
+                    builder: (context) => new DataSourcePage()));
+          },
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+        ListTile(
+          leading: FlutterLogo(),
+          title: Text('摄像头'),
+          onTap: () {
+            Navigator.push(
+                context,
+                new MaterialPageRoute(
+                    builder: (context) =>
+                    new CameraPage(
+                      title: '摄像头',
+                    )));
+          },
+        ),
+        ListTile(
+          leading: FlutterLogo(),
+          title: Text('报警'),
+          onTap: () {
+            Navigator.push(context,
+                new MaterialPageRoute(builder: (context) => new AlertPage()));
+          },
+        ),
+        ListTile(
+          leading: FlutterLogo(),
+          title: Text('协议'),
+        ),
+        ListTile(
+          leading: FlutterLogo(),
+          title: Text('音量'),
+        ),
+//        Slider(
+//            value: _volume,
+//            onChanged: (double newValue) {
+//              setState(() {
+//                _volume = newValue;
+//              });
+//            }),
+
+        ListTile(
+          leading: FlutterLogo(),
+          title: Text('假速度'),
+        ),
+      ]),
     );
   }
 }
