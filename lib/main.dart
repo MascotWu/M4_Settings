@@ -68,10 +68,9 @@ class _MyHomePageState extends State<MyHomePage> {
     Navigator.push(
         context,
         new MaterialPageRoute(
-            builder: (context) =>
-            new CameraPage(
-              title: '摄像头',
-            )));
+            builder: (context) => new CameraPage(
+                  title: '摄像头',
+                )));
   }
 
   @override
@@ -97,7 +96,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   context: context,
                   barrierDismissible: false, // user must tap button!
                   builder: (BuildContext context) {
-                    return Picker();
+                    return Picker(
+                        title: '请选择车型', options: ["丰田", "长安", "北京现代"]);
                   });
             }),
         ListTile(
@@ -117,10 +117,9 @@ class _MyHomePageState extends State<MyHomePage> {
             Navigator.push(
                 context,
                 new MaterialPageRoute(
-                    builder: (context) =>
-                    new CameraPage(
-                      title: '摄像头',
-                    )));
+                    builder: (context) => new CameraPage(
+                          title: '摄像头',
+                        )));
           },
         ),
         ListTile(
@@ -146,7 +145,6 @@ class _MyHomePageState extends State<MyHomePage> {
 //                _volume = newValue;
 //              });
 //            }),
-
         ListTile(
           leading: FlutterLogo(),
           title: Text('假速度'),

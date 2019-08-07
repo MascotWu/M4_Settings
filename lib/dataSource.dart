@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/pickerDialog.dart';
 
 class DataSourcePage extends StatefulWidget {
   @override
@@ -18,7 +19,15 @@ class DataSourceState extends State<DataSourcePage> {
           children: <Widget>[
             ListTile(
               title: Text("速度"),
-              onTap: () {},
+              onTap: () {
+                showDialog<void>(
+                    context: context,
+                    barrierDismissible: false, // user must tap button!
+                    builder: (BuildContext context) {
+                      return Picker(
+                          title: '请选择速度', options: ["30km/h", "50km/h", "北京现代"]);
+                    });
+              },
             ),
             ListTile(
               title: Text("波特率"),

@@ -75,16 +75,6 @@ class _CameraPageState extends State<CameraPage> {
             child: TextField(
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
-                labelText: '车宽',
-              ),
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.all(8.0),
-            alignment: Alignment.center,
-            child: TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
                 labelText: '摄像头高度',
               ),
             ),
