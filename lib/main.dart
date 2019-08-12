@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/dataSource.dart';
+import 'package:flutter_app/protocol.dart';
 
+import 'MainViewModel.dart';
 import 'alert.dart';
 import 'camera.dart';
 import 'pickerDialog.dart';
@@ -33,15 +35,6 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
@@ -49,43 +42,26 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  var dropdownValue = 'One';
-  final items = List<String>.generate(10000, (i) => "Item $i");
   double _volume;
+  double _speed = 0;
+  var _textOfConnectButton = "";
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-
-    Navigator.push(
-        context,
-        new MaterialPageRoute(
-            builder: (context) => new CameraPage(
-                  title: '摄像头',
-                )));
-  }
+  var vm = new MainViewModel();
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+    vm.establishConnection();
+    vm.isConnectedWithDevice().listen(onConnectionStatusChanged);
+
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
+        actions: <Widget>[
+          FlatButton(
+            child: Text(_textOfConnectButton),
+            onPressed: () {},
+          )
+        ],
       ),
       body: Column(children: <Widget>[
         ListTile(
@@ -96,8 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   context: context,
                   barrierDismissible: false, // user must tap button!
                   builder: (BuildContext context) {
-                    return Picker(
-                        title: '请选择车型', options: ["丰田", "长安", "北京现代"]);
+                    return Picker(title: '请选择车型', options: cars);
                   });
             }),
         ListTile(
@@ -133,23 +108,155 @@ class _MyHomePageState extends State<MyHomePage> {
         ListTile(
           leading: FlutterLogo(),
           title: Text('协议'),
+          onTap: () {
+            Navigator.push(
+                context,
+                new MaterialPageRoute(
+                    builder: (context) => new ProtocolPage()));
+          },
         ),
         ListTile(
           leading: FlutterLogo(),
           title: Text('音量'),
+          onTap: () {
+            return showDialog<void>(
+                context: context,
+                builder: (BuildContext context) {
+                  return SimpleDialog(
+                    children: <Widget>[
+                      Slider(
+                        value: 0.3,
+                        onChanged: (volume) {},
+                      )
+                    ],
+                  );
+                });
+          },
         ),
-//        Slider(
-//            value: _volume,
-//            onChanged: (double newValue) {
-//              setState(() {
-//                _volume = newValue;
-//              });
-//            }),
         ListTile(
           leading: FlutterLogo(),
           title: Text('假速度'),
+          onTap: () {
+            return showDialog<void>(
+                context: context,
+                builder: (BuildContext context) {
+                  return SimpleDialog(
+                    children: <Widget>[
+                      Slider(
+                        value: 0.618,
+                        onChanged: (speed) {
+                          setState(() {
+                            _speed = speed;
+                          });
+                        },
+                      )
+                    ],
+                  );
+                });
+          },
         ),
       ]),
     );
   }
+
+  void onConnectionStatusChanged(bool isConnected) {
+    _textOfConnectButton = isConnected ? '已连接' : '连接';
+  }
+
+  List<String> cars = [
+    '讴歌',
+    '亚历山大∙丹尼斯',
+    '阿尔法·罗密欧',
+    '奥迪',
+    '北京汽车',
+    '宾利',
+    '英国汽车公司',
+    '宝马',
+    '别克',
+    '比亚迪',
+    '集瑞联合',
+    '凯迪拉克',
+    '长安',
+    '奇瑞',
+    '雪佛兰',
+    '克莱斯勒',
+    '雪铁龙',
+    '达西亚',
+    '大宇',
+    '达夫',
+    '大发',
+    '道奇',
+    '东风',
+    '中国第一汽车集团公司',
+    '法拉利',
+    '菲亚特',
+    '福特',
+    '福田戴姆勒',
+    '福莱纳',
+    '广汽',
+    '吉列格',
+    '吉姆西',
+    '金旅',
+    '长城',
+    '哈弗',
+    '金龙-海格',
+    '日野',
+    '霍顿',
+    '本田',
+    '现代',
+    '现代卡车',
+    '英菲尼迪',
+    '国际',
+    '五十铃',
+    '依维柯',
+    '捷豹',
+    '吉普',
+    '肯沃斯',
+    '起亚',
+    '金龙联合汽车',
+    '蓝旗亚',
+    '路虎',
+    '雷克萨斯',
+    '林肯',
+    '曼恩',
+    '马自达',
+    '梅赛德斯-奔驰',
+    '梅赛德斯-奔驰(卡车/巴士)',
+    '名爵',
+    '迷你',
+    '三菱',
+    '日产',
+    '日产卡车',
+    '欧宝',
+    '彼得比尔特',
+    '标致',
+    '庞蒂克',
+    '保时捷',
+    '普雷沃斯特',
+    '宝腾',
+    '雷诺',
+    '荣威',
+    '萨博',
+    '斯堪尼亚',
+    '赛恩',
+    '西亚特',
+    '上汽通用五菱',
+    '陕西',
+    '斯柯达',
+    '索拉瑞斯',
+    '双龙',
+    '斯巴鲁',
+    '铃木',
+    '塔塔',
+    '特斯拉',
+    '丰田',
+    '范胡尔',
+    '大众',
+    '沃尔沃',
+    '沃尔沃 巴士/卡车',
+    '西星',
+    '温尼巴格',
+    '青年汽车',
+    '宇通',
+  ];
 }

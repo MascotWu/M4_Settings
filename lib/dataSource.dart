@@ -25,13 +25,20 @@ class DataSourceState extends State<DataSourcePage> {
                     barrierDismissible: false, // user must tap button!
                     builder: (BuildContext context) {
                       return Picker(
-                          title: '请选择速度', options: ["30km/h", "50km/h", "北京现代"]);
+                          title: '请选择信号源', options: ["CAN信号", "模拟信号", "GPS信号"]);
                     });
               },
             ),
             ListTile(
               title: Text("波特率"),
-              onTap: () {},
+              onTap: () {
+                showDialog<void>(
+                    context: context,
+                    barrierDismissible: false, // user must tap button!
+                    builder: (BuildContext context) {
+                      return Picker(title: '请选择波特率', options: ["500k", "250k"]);
+                    });
+              },
             ),
           ],
         ));
