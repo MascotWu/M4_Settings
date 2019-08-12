@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/data_source.dart';
 import 'package:flutter_app/protocol.dart';
+import 'package:flutter_app/slider_dialog.dart';
 
-import 'view_model.dart';
 import 'alert.dart';
 import 'camera.dart';
 import 'picker_dialog.dart';
+import 'view_model.dart';
 
 void main() => runApp(MyApp());
 
@@ -122,17 +123,9 @@ class _MyHomePageState extends State<MyHomePage> {
             return showDialog<void>(
                 context: context,
                 builder: (BuildContext context) {
-                  return SimpleDialog(
-                    children: <Widget>[
-                      Slider(
-                        value: _volume,
-                        onChanged: (volume) {
-                          setState(() {
-                            _volume = volume;
-                          });
-                        },
-                      )
-                    ],
+                  return SliderDialog(
+                    value: 9,
+                    max: 10,
                   );
                 });
           },
@@ -141,22 +134,16 @@ class _MyHomePageState extends State<MyHomePage> {
           leading: FlutterLogo(),
           title: Text('假速度'),
           onTap: () {
-            return showDialog<void>(
+            return showDialog<double>(
                 context: context,
                 builder: (BuildContext context) {
-                  return SimpleDialog(
-                    children: <Widget>[
-                      Slider(
-                        value: _speed,
-                        onChanged: (speed) {
-                          setState(() {
-                            _speed = speed;
-                          });
-                        },
-                      )
-                    ],
+                  return SliderDialog(
+                    value: 3,
+                    max: 10,
                   );
-                });
+                }).then((speed) {
+              print({'speed:': speed});
+            });
           },
         ),
       ]),
