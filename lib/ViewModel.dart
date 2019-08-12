@@ -3,16 +3,55 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:flutter_app/version.dart';
 import 'package:rxdart/rxdart.dart';
 
-class MainViewModel {
-  var _connectionStatus = new BehaviorSubject<bool>();
+import 'convert.dart';
 
-  MainViewModel() {
+class ViewModel {
+  var _connectionStatus = new BehaviorSubject<bool>();
+  var _cameraConfiguration = new BehaviorSubject<Map<String, dynamic>>();
+
+  ViewModel() {
     ServerSocket.bind(InternetAddress.anyIPv4, 16346)
         .then(onDataReceived, onError: onError)
-        .catchError(onError2);
+        .catchError(onError);
+  }
+
+  static ViewModel vm = new ViewModel();
+
+  static get() {
+    return vm;
+  }
+
+  getCameraConfig() {
+    return _cameraConfiguration;
+  }
+
+  setCameraConfiguration(configurations) {
+    macrosConfigTextFile.addAll(configurations);
+
+    var message = Uint8List(4);
+    var bytedata = ByteData.view(message.buffer);
+
+    var command =
+        '{"type":"write_file","data":{"path":"/sdcard/run/macros_config.txt","data":"' +
+            base64Encode(utf8.encode(gflagEncode(macrosConfigTextFile))) +
+            '"}}';
+
+    bytedata.setUint32(0, command.length);
+
+    sock.add(message);
+    sock.add(utf8.encode(command));
+
+//    command =
+//        '{"type":"write_file","data":{"path":"/sdcard/run/detect.flag","data":"' +
+//            base64Encode(utf8.encode(gflagEncode(config))) +
+//            '"}}';
+//
+//    bytedata.setUint32(0, command.length);
+//
+//    sock.add(message);
+//    sock.add(utf8.encode(command));
   }
 
   Observable<bool> isConnectedWithDevice() {
@@ -57,7 +96,7 @@ class MainViewModel {
 
   FutureOr onDataReceived(ServerSocket value) {
     print("开始监听");
-    value.listen(onData8, onError: onError3);
+    value.listen(onData8, onError: onError);
   }
 
   var sock;
@@ -67,38 +106,16 @@ class MainViewModel {
     socket.listen(onData9);
 
     var message = Uint8List(4);
-    var bytedata = ByteData.view(message.buffer);
-
-//    bytedata.setUint8(0, 0x00);
-//    bytedata.setUint8(1, 0x00);
-//    bytedata.setUint8(2, 0x00);
-//    bytedata.setUint8(3, 40);
-//
-//    socket.add(message);
-//    socket.add(utf8.encode('{"type": "get_c4_version", "data": null}'));
-
-    //---
-    bytedata.setUint8(0, 0x00);
-    bytedata.setUint8(1, 0x00);
-    bytedata.setUint8(2, 0x00);
-    bytedata.setUint8(3, 59);
+    var byteData = ByteData.view(message.buffer);
+    var command =
+        '{"type": "read_file", "data": "/sdcard/run/macros_config.txt"}';
+    byteData.setUint32(0, command.length);
 
     socket.add(message);
-    socket.add(utf8
-        .encode('{"type": "read_file", "data": "/sdcard/run/can_input.json"}'));
+    socket.add(utf8.encode(command));
   }
 
-  Observable<String> getVersion() {
-    // send
-    sock.add();
-    // receive
-    FutureOr<String> Function() computation;
-    Future<String> fu = new Future(computation);
-
-    return Observable.fromFuture(fu);
-  }
-
-  var config;
+  Map<String, dynamic> macrosConfigTextFile;
 
   var length = 0;
   var total;
@@ -114,22 +131,27 @@ class MainViewModel {
 
       buffer.addAll(event);
       state = 'amend';
-      total = total - (event.length - 4);
+      total -= event.length - 4;
     }
     if (state == 'amend') {
-      total -= event.length;
       if (total == 0) {
         state = 'first';
 
         var jsonDecode2 =
-            jsonDecode(String.fromCharCodes(event.getRange(4, event.length)));
+            jsonDecode(String.fromCharCodes(buffer.getRange(4, buffer.length)));
 
-        var response = Response.fromJson(jsonDecode2);
-
-        if (response.type == 'read_file_ok')
-          config = jsonDecode(String.fromCharCodes(
-              base64Decode(Response.fromJson(jsonDecode2).result)));
+        if (jsonDecode2['type'] == 'read_file_ok') {
+          macrosConfigTextFile = gflagDecode(String.fromCharCodes(
+              base64Decode(jsonDecode2['result']['data'])));
+          _cameraConfiguration.add(macrosConfigTextFile);
+        }
+        if (jsonDecode2['type'] == 'write_file_ok') {
+          print('write file ok');
+        }
+      } else {
+        total -= event.length;
       }
+      buffer.clear();
     }
   }
 
@@ -139,14 +161,4 @@ class MainViewModel {
     print(e);
     _connectionStatus.add(false);
   }
-
-  onError2(e) {
-    print("ffasd");
-  }
-
-  onError3(e) {
-    print(e);
-  }
-
-  void handleData(List<int> data, EventSink<Uint8List> sink) {}
 }

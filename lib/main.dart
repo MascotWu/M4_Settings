@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/dataSource.dart';
 import 'package:flutter_app/protocol.dart';
 
-import 'MainViewModel.dart';
+import 'ViewModel.dart';
 import 'alert.dart';
 import 'camera.dart';
 import 'pickerDialog.dart';
@@ -46,7 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
   double _speed = 0;
   var _textOfConnectButton = "";
 
-  var vm = new MainViewModel();
+  var vm = ViewModel.get();
 
   @override
   Widget build(BuildContext context) {
@@ -125,8 +125,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   return SimpleDialog(
                     children: <Widget>[
                       Slider(
-                        value: 0.3,
-                        onChanged: (volume) {},
+                        value: _volume,
+                        onChanged: (volume) {
+                          setState(() {
+                            _volume = volume;
+                          });
+                        },
                       )
                     ],
                   );
@@ -143,7 +147,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   return SimpleDialog(
                     children: <Widget>[
                       Slider(
-                        value: 0.618,
+                        value: _speed,
                         onChanged: (speed) {
                           setState(() {
                             _speed = speed;

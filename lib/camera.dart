@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'ViewModel.dart';
+
 class CameraPage extends StatefulWidget {
   CameraPage({Key key, this.title}) : super(key: key);
 
@@ -18,45 +20,64 @@ class CameraPage extends StatefulWidget {
   _CameraPageState createState() => _CameraPageState();
 }
 
-class _CameraPageState extends State<CameraPage> {
-  int _counter = 0;
+class Coordinate {
+  var carWidth;
+  var cameraLeftDist;
+  var cameraRightDist;
+}
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+class _CameraPageState extends State<CameraPage> {
+  var vm;
+
+  _CameraPageState() {
+    vm = ViewModel.get();
+
+    vm.getCameraConfig();
+  }
+
+  void _setConfig() {
+    Coordinate coords = new Coordinate();
+    coords.carWidth = double.parse(carWidthController.text);
+    coords.cameraRightDist = double.parse(cameraRightDistController.text);
+    coords.cameraLeftDist = double.parse(cameraLeftDistController.text);
+
+    var glassWidth = coords.cameraLeftDist + coords.cameraRightDist;
+    var glassMargin = (coords.carWidth - glassWidth) * 0.5;
+    var leftDist = coords.cameraLeftDist + glassMargin;
+    var rightDist = coords.cameraRightDist + glassMargin;
+
+    vm.setCameraConfiguration({
+      "camera_height": cameraHeightController.text,
+      "left_dist_to_camera": leftDist.toString(),
+      "right_dist_to_camera": rightDist.toString(),
+      "front_dist_to_camera": cameraFrontDistController.text
     });
   }
 
-  void _settings() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  // Create a text controller and use it to retrieve the current value
+  // of the TextField.
+  final carWidthController = TextEditingController(text: '2.2');
+  final cameraHeightController = TextEditingController(text: '1.5');
+  final cameraRightDistController = TextEditingController(text: '0.8');
+  final cameraLeftDistController = TextEditingController(text: '0.8');
+  final cameraFrontDistController = TextEditingController(text: '0.1');
+  final frontWheelFrontDistController = TextEditingController(text: '1.5');
+
+  @override
+  void dispose() {
+    carWidthController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
+
       body: Column(
         children: <Widget>[
           Container(
@@ -67,6 +88,7 @@ class _CameraPageState extends State<CameraPage> {
                 border: OutlineInputBorder(),
                 labelText: '车宽',
               ),
+              controller: carWidthController,
             ),
           ),
           Container(
@@ -77,6 +99,7 @@ class _CameraPageState extends State<CameraPage> {
                 border: OutlineInputBorder(),
                 labelText: '摄像头高度',
               ),
+              controller: cameraHeightController,
             ),
           ),
           Container(
@@ -87,6 +110,7 @@ class _CameraPageState extends State<CameraPage> {
                 border: OutlineInputBorder(),
                 labelText: '摄像头离玻璃右边缘',
               ),
+              controller: cameraRightDistController,
             ),
           ),
           Container(
@@ -97,6 +121,7 @@ class _CameraPageState extends State<CameraPage> {
                 border: OutlineInputBorder(),
                 labelText: '摄像头离玻璃左边缘',
               ),
+              controller: cameraLeftDistController,
             ),
           ),
           Container(
@@ -107,6 +132,7 @@ class _CameraPageState extends State<CameraPage> {
                 border: OutlineInputBorder(),
                 labelText: '摄像头离车头',
               ),
+              controller: cameraFrontDistController,
             ),
           ),
           Container(
@@ -117,14 +143,15 @@ class _CameraPageState extends State<CameraPage> {
                 border: OutlineInputBorder(),
                 labelText: '车前轮轴到车头',
               ),
+              controller: frontWheelFrontDistController,
             ),
           ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: _setConfig,
         tooltip: 'Increment',
-        child: Icon(Icons.add),
+        child: Icon(Icons.done),
       ), // This trailing comma makes auto-formatting nicer for build methods.
       resizeToAvoidBottomPadding: false,
     );
