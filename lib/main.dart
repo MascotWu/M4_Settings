@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/dataSource.dart';
+import 'package:flutter_app/data_source.dart';
 import 'package:flutter_app/protocol.dart';
 
-import 'ViewModel.dart';
+import 'view_model.dart';
 import 'alert.dart';
 import 'camera.dart';
-import 'pickerDialog.dart';
+import 'picker_dialog.dart';
 
 void main() => runApp(MyApp());
 

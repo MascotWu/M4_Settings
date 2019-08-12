@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'ViewModel.dart';
+import 'view_model.dart';
 
 class CameraPage extends StatefulWidget {
   CameraPage({Key key, this.title}) : super(key: key);
@@ -27,7 +27,7 @@ class Coordinate {
 }
 
 class _CameraPageState extends State<CameraPage> {
-  var vm;
+  ViewModel vm;
 
   _CameraPageState() {
     vm = ViewModel.get();
@@ -46,12 +46,14 @@ class _CameraPageState extends State<CameraPage> {
     var leftDist = coords.cameraLeftDist + glassMargin;
     var rightDist = coords.cameraRightDist + glassMargin;
 
-    vm.setCameraConfiguration({
+    var configurations = {
       "camera_height": cameraHeightController.text,
       "left_dist_to_camera": leftDist.toString(),
       "right_dist_to_camera": rightDist.toString(),
       "front_dist_to_camera": cameraFrontDistController.text
-    });
+    };
+    vm.update(vm.detectFlagFile, configurations);
+    vm.update(vm.macroConfigFile, configurations);
   }
 
   // Create a text controller and use it to retrieve the current value

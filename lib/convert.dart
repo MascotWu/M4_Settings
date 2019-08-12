@@ -14,7 +14,8 @@ gflagDecode(String gflags) {
 
 gflagEncode(Map<String, dynamic> map) {
   var gflagString = '';
-  for (var key in map.keys) gflagString += '--' + key + '=' + map[key] + '\n';
+  for (var key in map.keys)
+    gflagString += '--' + key + '=' + map[key] + '\n';
 
   return gflagString;
 }

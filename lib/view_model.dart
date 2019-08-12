@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:flutter_app/configurations.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'convert.dart';
@@ -27,31 +28,24 @@ class ViewModel {
     return _cameraConfiguration;
   }
 
-  setCameraConfiguration(configurations) {
-    macrosConfigTextFile.addAll(configurations);
+  update(Configuration file, configurations) {
+    file.config.addAll(configurations);
 
     var message = Uint8List(4);
     var bytedata = ByteData.view(message.buffer);
 
-    var command =
-        '{"type":"write_file","data":{"path":"/sdcard/run/macros_config.txt","data":"' +
-            base64Encode(utf8.encode(gflagEncode(macrosConfigTextFile))) +
-            '"}}';
+    var command = jsonEncode({
+      "type": "write_file",
+      "data": {
+        "path": file.getPath(),
+        "data": base64Encode(utf8.encode(gflagEncode(file.config)))
+      }
+    });
 
     bytedata.setUint32(0, command.length);
 
     sock.add(message);
     sock.add(utf8.encode(command));
-
-//    command =
-//        '{"type":"write_file","data":{"path":"/sdcard/run/detect.flag","data":"' +
-//            base64Encode(utf8.encode(gflagEncode(config))) +
-//            '"}}';
-//
-//    bytedata.setUint32(0, command.length);
-//
-//    sock.add(message);
-//    sock.add(utf8.encode(command));
   }
 
   Observable<bool> isConnectedWithDevice() {
@@ -108,14 +102,19 @@ class ViewModel {
     var message = Uint8List(4);
     var byteData = ByteData.view(message.buffer);
     var command =
-        '{"type": "read_file", "data": "/sdcard/run/macros_config.txt"}';
+        jsonEncode({"type": "read_file", "data": macroConfigFile.getPath()});
     byteData.setUint32(0, command.length);
-
+    socket.add(message);
+    socket.add(utf8.encode(command));
+    command =
+        jsonEncode({"type": "read_file", "data": detectFlagFile.getPath()});
+    byteData.setUint32(0, command.length);
     socket.add(message);
     socket.add(utf8.encode(command));
   }
 
-  Map<String, dynamic> macrosConfigTextFile;
+  MacrosConfigTextFile macroConfigFile = new MacrosConfigTextFile();
+  DetectFlagFile detectFlagFile = new DetectFlagFile();
 
   var length = 0;
   var total;
@@ -137,15 +136,21 @@ class ViewModel {
       if (total == 0) {
         state = 'first';
 
-        var jsonDecode2 =
+        var socketMessage =
             jsonDecode(String.fromCharCodes(buffer.getRange(4, buffer.length)));
 
-        if (jsonDecode2['type'] == 'read_file_ok') {
-          macrosConfigTextFile = gflagDecode(String.fromCharCodes(
-              base64Decode(jsonDecode2['result']['data'])));
-          _cameraConfiguration.add(macrosConfigTextFile);
+        if (socketMessage['type'] == 'read_file_ok') {
+          if (socketMessage['result']['path'] == macroConfigFile.getPath()) {
+            macroConfigFile.config = gflagDecode(String.fromCharCodes(
+                base64Decode(socketMessage['result']['data'])));
+            _cameraConfiguration.add(macroConfigFile.config);
+          } else if (socketMessage['result']['path'] ==
+              detectFlagFile.getPath()) {
+            detectFlagFile.config = gflagDecode(String.fromCharCodes(
+                base64Decode(socketMessage['result']['data'])));
+          }
         }
-        if (jsonDecode2['type'] == 'write_file_ok') {
+        if (socketMessage['type'] == 'write_file_ok') {
           print('write file ok');
         }
       } else {
