@@ -5,6 +5,7 @@ import 'package:flutter_app/slider_dialog.dart';
 
 import 'alert.dart';
 import 'camera.dart';
+import 'camera_settings.dart';
 import 'picker_dialog.dart';
 import 'view_model.dart';
 
@@ -93,7 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Navigator.push(
                 context,
                 new MaterialPageRoute(
-                    builder: (context) => new CameraPage(
+                    builder: (context) => new CameraSettingsPage(
                           title: '摄像头',
                         )));
           },
@@ -154,6 +155,16 @@ class _MyHomePageState extends State<MyHomePage> {
                 vm.addOrUpdateSpeed(speed);
               }
             });
+          },
+        ),
+        ListTile(
+          leading: FlutterLogo(),
+          title: Text('拍照'),
+          onTap: () {
+            Navigator.push(
+                context,
+                new MaterialPageRoute(
+                    builder: (context) => new CameraPage(title: '拍照')));
           },
         ),
       ]),

@@ -41,7 +41,7 @@ class ViewModel {
   }
 
   addOrUpdateBaudRate(String baudRate) {
-    if (  canInputJsonFile.config.containsKey('main')) {
+    if (canInputJsonFile.config.containsKey('main')) {
       canInputJsonFile.config['main']['baudrate'] = baudRate;
       push(canInputJsonFile);
     }
@@ -53,6 +53,43 @@ class ViewModel {
       canInputJsonFile.config['main'].remove('fake_speed');
       push(canInputJsonFile);
     }
+  }
+
+  var _adasPicture = new BehaviorSubject<Uint8List>();
+  var _dmsPicture = new BehaviorSubject<Uint8List>();
+
+  BehaviorSubject takePictureOfAdas() {
+    var length = Uint8List(4);
+    var byteData = ByteData.view(length.buffer);
+
+    var command = jsonEncode({
+      "type": "get_camera_image",
+      "data": {"camera": 'adas'}
+    });
+
+    byteData.setUint32(0, command.length);
+
+    sock.add(length);
+    sock.add(utf8.encode(command));
+
+    return _adasPicture;
+  }
+
+  BehaviorSubject takePictureOfDms() {
+    var length = Uint8List(4);
+    var byteData = ByteData.view(length.buffer);
+
+    var command = jsonEncode({
+      "type": "get_camera_image",
+      "data": {"camera": 'driver'}
+    });
+
+    byteData.setUint32(0, command.length);
+
+    sock.add(length);
+    sock.add(utf8.encode(command));
+
+    return _dmsPicture;
   }
 
   delete(ConfigurationFile file, String key) {
@@ -123,7 +160,7 @@ class ViewModel {
     value.listen(onData8, onError: onError);
   }
 
-  var sock;
+  Socket sock;
 
   MacrosConfigTextFile macroConfigFile = new MacrosConfigTextFile();
   DetectFlagFile detectFlagFile = new DetectFlagFile();
@@ -196,6 +233,15 @@ class ViewModel {
           print('write file ok');
         } else if (socketMessage['type'] == 'write_file_error') {
           print('write file error');
+        } else if (socketMessage['type'] == 'get_camera_image_ok') {
+          if (socketMessage['result']['camera'] == 'adas') {
+            print('get_camera_image_ok');
+            _adasPicture.add(base64Decode(socketMessage['result']['image']));
+          } else if (socketMessage['result']['camera'] == 'driver') {
+            _dmsPicture.add(base64Decode(socketMessage['result']['image']));
+          }
+        } else if (socketMessage['type'] == 'get_camera_image_error') {
+          print('get_camera_image_error');
         }
 
         buffer.removeRange(0, buffer.length + total);

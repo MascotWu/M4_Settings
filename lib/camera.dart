@@ -20,44 +20,16 @@ class CameraPage extends StatefulWidget {
   _CameraPageState createState() => _CameraPageState();
 }
 
-class Coordinate {
-  var carWidth;
-  var cameraLeftDist;
-  var cameraRightDist;
-}
-
 class _CameraPageState extends State<CameraPage> {
   ViewModel vm;
 
+  Image _adasImage;
+  Image _dmsImage;
+
   _CameraPageState() {
     vm = ViewModel.get();
-
-    vm.getCameraConfig();
   }
 
-  void _setConfig() {
-    Coordinate coords = new Coordinate();
-    coords.carWidth = double.parse(carWidthController.text);
-    coords.cameraRightDist = double.parse(cameraRightDistController.text);
-    coords.cameraLeftDist = double.parse(cameraLeftDistController.text);
-
-    var glassWidth = coords.cameraLeftDist + coords.cameraRightDist;
-    var glassMargin = (coords.carWidth - glassWidth) * 0.5;
-    var leftDist = coords.cameraLeftDist + glassMargin;
-    var rightDist = coords.cameraRightDist + glassMargin;
-
-    var configurations = {
-      "camera_height": cameraHeightController.text,
-      "left_dist_to_camera": leftDist.toString(),
-      "right_dist_to_camera": rightDist.toString(),
-      "front_dist_to_camera": cameraFrontDistController.text
-    };
-    vm.addOrUpdate(vm.detectFlagFile, configurations);
-    vm.addOrUpdate(vm.macroConfigFile, configurations);
-  }
-
-  // Create a text controller and use it to retrieve the current value
-  // of the TextField.
   final carWidthController = TextEditingController(text: '2.2');
   final cameraHeightController = TextEditingController(text: '1.5');
   final cameraRightDistController = TextEditingController(text: '0.8');
@@ -79,82 +51,40 @@ class _CameraPageState extends State<CameraPage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-
       body: Column(
         children: <Widget>[
           Container(
             padding: EdgeInsets.all(8.0),
             alignment: Alignment.center,
-            child: TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: '车宽',
-              ),
-              controller: carWidthController,
+            child: FlatButton(
+              child: Text("拍照ADAS"),
+              onPressed: () {
+                vm.takePictureOfAdas().listen((picture) {
+                  setState(() {
+                    _adasImage = Image.memory(picture);
+                  });
+                });
+              },
             ),
           ),
+          _adasImage ?? Text(''),
           Container(
             padding: EdgeInsets.all(8.0),
             alignment: Alignment.center,
-            child: TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: '摄像头高度',
-              ),
-              controller: cameraHeightController,
+            child: FlatButton(
+              child: Text("拍照DMS"),
+              onPressed: () {
+                vm.takePictureOfDms().listen((picture) {
+                  setState(() {
+                    _dmsImage = Image.memory(picture);
+                  });
+                });
+              },
             ),
           ),
-          Container(
-            padding: EdgeInsets.all(8.0),
-            alignment: Alignment.center,
-            child: TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: '摄像头离玻璃右边缘',
-              ),
-              controller: cameraRightDistController,
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.all(8.0),
-            alignment: Alignment.center,
-            child: TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: '摄像头离玻璃左边缘',
-              ),
-              controller: cameraLeftDistController,
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.all(8.0),
-            alignment: Alignment.center,
-            child: TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: '摄像头离车头',
-              ),
-              controller: cameraFrontDistController,
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.all(8.0),
-            alignment: Alignment.center,
-            child: TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: '车前轮轴到车头',
-              ),
-              controller: frontWheelFrontDistController,
-            ),
-          ),
+          _dmsImage ?? Text('')
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _setConfig,
-        tooltip: 'Increment',
-        child: Icon(Icons.done),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
       resizeToAvoidBottomPadding: false,
     );
   }
