@@ -49,3 +49,23 @@ class DmsSetupFlagFile extends ConfigurationFile {
     return gflagEncode(config);
   }
 }
+
+class MProtocolJsonFile extends ConfigurationFile {
+  @override
+  get path => '/data/mprot/mprot.json';
+
+  @override
+  generateFileContent() {
+    return jsonEncode(config);
+  }
+}
+
+class MProtocolConfigJsonFile extends ConfigurationFile {
+  @override
+  get path => '/data/mprot/config/config.json';
+
+  @override
+  generateFileContent() {
+    return jsonEncode(config);
+  }
+}

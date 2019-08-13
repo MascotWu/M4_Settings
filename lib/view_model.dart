@@ -166,6 +166,9 @@ class ViewModel {
   DetectFlagFile detectFlagFile = new DetectFlagFile();
   DmsSetupFlagFile dmsSetupFlagFile = new DmsSetupFlagFile();
   CanInputJsonFile canInputJsonFile = new CanInputJsonFile();
+  MProtocolConfigJsonFile mProtocolConfigJsonFile =
+      new MProtocolConfigJsonFile();
+  MProtocolJsonFile mProtocolJsonFile = new MProtocolJsonFile();
 
   void onData8(Socket socket) {
     sock = socket;
