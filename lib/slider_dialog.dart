@@ -5,7 +5,12 @@ class SliderDialog extends StatefulWidget {
 
   final double value;
 
-  SliderDialog({Key key, this.value, this.max}) : super(key: key);
+  final int divisions;
+
+  final Function onChange;
+
+  SliderDialog({Key key, this.value, this.max, this.divisions, this.onChange})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _SliderDialogState(value);
@@ -29,14 +34,14 @@ class _SliderDialogState extends State<SliderDialog> {
           child: Slider(
             value: _value,
             max: widget.max,
+            divisions: widget.divisions,
             onChanged: (value) {
               setState(() {
                 _value = value;
               });
+              widget.onChange(value);
             },
-            onChangeEnd: (value) {
-              Navigator.pop(context, value);
-            },
+            onChangeEnd: (value) {},
           ),
         ),
       ],

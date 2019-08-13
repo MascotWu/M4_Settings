@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class Picker extends StatefulWidget {
   final String title;
 
-  final List<String> options;
+  final List<Map<String, dynamic>> options;
 
   Picker({Key key, this.title, this.options}) : super(key: key);
 
@@ -19,12 +19,12 @@ class PickerState extends State<Picker> {
     return SimpleDialog(
         title: Text(widget.title),
         children: widget.options.map(
-          (value) {
+          (option) {
             return new SimpleDialogOption(
               onPressed: () {
-                Navigator.pop(context, value);
+                Navigator.pop(context, option['value']);
               },
-              child: Text(value),
+              child: Text(option['title']),
             );
           },
         ).toList());

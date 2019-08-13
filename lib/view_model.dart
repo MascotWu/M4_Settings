@@ -28,7 +28,7 @@ class ViewModel {
     return _cameraConfiguration;
   }
 
-  update(Configuration file, configurations) {
+  update(ConfigurationFile file, configurations) {
     file.config.addAll(configurations);
 
     var message = Uint8List(4);
@@ -37,8 +37,8 @@ class ViewModel {
     var command = jsonEncode({
       "type": "write_file",
       "data": {
-        "path": file.getPath(),
-        "data": base64Encode(utf8.encode(gflagEncode(file.config)))
+        "path": file.path,
+        "data": base64Encode(utf8.encode(file.generateFileContent()))
       }
     });
 
@@ -71,7 +71,7 @@ class ViewModel {
 
     // connect device and waiting
     Socket.connect("192.168.43.1", 16400).then((Socket socket) {
-      socket.listen(onData);
+      socket.listen(onData, onError: onError);
       socket.write('set_instruction_server_host this\n');
       print("Connect成功");
     }, onError: (e) {
@@ -95,26 +95,29 @@ class ViewModel {
 
   var sock;
 
+  MacrosConfigTextFile macroConfigFile = new MacrosConfigTextFile();
+  DetectFlagFile detectFlagFile = new DetectFlagFile();
+  DmsSetupFlagFile dmsSetupFlagFile = new DmsSetupFlagFile();
+  CanInputJsonFile canInputJsonFile = new CanInputJsonFile();
+
   void onData8(Socket socket) {
     sock = socket;
-    socket.listen(onData9);
+    socket.listen(onData9, onError: onError);
 
+    getFiles(socket, macroConfigFile);
+    getFiles(socket, detectFlagFile);
+    getFiles(socket, dmsSetupFlagFile);
+    getFiles(socket, canInputJsonFile);
+  }
+
+  getFiles(Socket socket, ConfigurationFile file) {
     var message = Uint8List(4);
     var byteData = ByteData.view(message.buffer);
-    var command =
-        jsonEncode({"type": "read_file", "data": macroConfigFile.getPath()});
-    byteData.setUint32(0, command.length);
-    socket.add(message);
-    socket.add(utf8.encode(command));
-    command =
-        jsonEncode({"type": "read_file", "data": detectFlagFile.getPath()});
+    var command = jsonEncode({"type": "read_file", "data": file.path});
     byteData.setUint32(0, command.length);
     socket.add(message);
     socket.add(utf8.encode(command));
   }
-
-  MacrosConfigTextFile macroConfigFile = new MacrosConfigTextFile();
-  DetectFlagFile detectFlagFile = new DetectFlagFile();
 
   var length = 0;
   var total;
@@ -127,36 +130,56 @@ class ViewModel {
           event[1] * 0x010000 +
           event[2] * 0x0100 +
           event[3];
+      total += 4;
 
-      buffer.addAll(event);
       state = 'amend';
-      total -= event.length - 4;
     }
     if (state == 'amend') {
-      if (total == 0) {
+      buffer.addAll(event);
+      total -= event.length;
+
+      while (total <= 0) {
         state = 'first';
 
-        var socketMessage =
-            jsonDecode(String.fromCharCodes(buffer.getRange(4, buffer.length)));
+        var socketMessage = jsonDecode(
+            String.fromCharCodes(buffer.getRange(4, buffer.length + total)));
 
         if (socketMessage['type'] == 'read_file_ok') {
-          if (socketMessage['result']['path'] == macroConfigFile.getPath()) {
+          if (socketMessage['result']['path'] == macroConfigFile.path) {
             macroConfigFile.config = gflagDecode(String.fromCharCodes(
                 base64Decode(socketMessage['result']['data'])));
             _cameraConfiguration.add(macroConfigFile.config);
-          } else if (socketMessage['result']['path'] ==
-              detectFlagFile.getPath()) {
+          } else if (socketMessage['result']['path'] == detectFlagFile.path) {
             detectFlagFile.config = gflagDecode(String.fromCharCodes(
                 base64Decode(socketMessage['result']['data'])));
+          } else if (socketMessage['result']['path'] == canInputJsonFile.path) {
+            canInputJsonFile.config = jsonDecode(String.fromCharCodes(
+                base64Decode(socketMessage['result']['data'])));
+          } else if (socketMessage['result']['path'] == dmsSetupFlagFile.path) {
+            dmsSetupFlagFile.config = gflagDecode(String.fromCharCodes(
+                base64Decode(socketMessage['result']['data'])));
           }
-        }
-        if (socketMessage['type'] == 'write_file_ok') {
+        } else if (socketMessage['type'] == 'read_file_error') {
+          print('read_file_error');
+        } else if (socketMessage['type'] == 'write_file_ok') {
           print('write file ok');
+        } else if (socketMessage['type'] == 'write_file_error') {
+          print('write file error');
         }
-      } else {
-        total -= event.length;
+
+        buffer.removeRange(0, buffer.length + total);
+
+        if (total >= -4)
+          break;
+        else {
+          total = buffer[0] * 0x01000000 +
+              buffer[1] * 0x010000 +
+              buffer[2] * 0x0100 +
+              buffer[3];
+          total += 4;
+          total -= buffer.length;
+        }
       }
-      buffer.clear();
     }
   }
 

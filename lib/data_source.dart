@@ -24,8 +24,11 @@ class DataSourceState extends State<DataSourcePage> {
                     context: context,
                     barrierDismissible: false, // user must tap button!
                     builder: (BuildContext context) {
-                      return Picker(
-                          title: '请选择信号源', options: ["CAN信号", "模拟信号", "GPS信号"]);
+                      return Picker(title: '请选择信号源', options: [
+                        {'title': "CAN信号", 'value': 1},
+                        {'title': "模拟信号", 'value': 2},
+                        {'title': "GPS信号", 'value': 3},
+                      ]);
                     });
               },
             ),
@@ -36,7 +39,10 @@ class DataSourceState extends State<DataSourcePage> {
                     context: context,
                     barrierDismissible: false, // user must tap button!
                     builder: (BuildContext context) {
-                      return Picker(title: '请选择波特率', options: ["500k", "250k"]);
+                      return Picker(title: '请选择波特率', options: [
+                        {'title': "500k", 'value': 1},
+                        {'title': "250k", 'value': 2}
+                      ]);
                     });
               },
             ),

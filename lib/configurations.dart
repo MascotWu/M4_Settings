@@ -1,20 +1,51 @@
-class Configuration {
-  getPath() {}
-  Map<String, dynamic> config;
+import 'dart:convert';
+
+import 'convert.dart';
+
+abstract class ConfigurationFile {
+  var path;
+
+  Map<String, dynamic> config = {};
+
+  generateFileContent();
 }
 
-class MacrosConfigTextFile with Configuration {
-  final String _path = '/sdcard/run/macros_config.txt';
+class MacrosConfigTextFile extends ConfigurationFile {
+  @override
+  final path = '/sdcard/run/macros_config.txt';
 
-  getPath() {
-    return _path;
+  @override
+  generateFileContent() {
+    return gflagEncode(config);
   }
 }
 
-class DetectFlagFile with Configuration {
-  final String _path = '/sdcard/run/detect.flag';
+class DetectFlagFile extends ConfigurationFile {
+  @override
+  String get path => '/sdcard/run/detect.flag';
 
-  getPath() {
-    return _path;
+  @override
+  generateFileContent() {
+    return gflagEncode(config);
+  }
+}
+
+class CanInputJsonFile extends ConfigurationFile {
+  @override
+  get path => '/sdcard/run/can_input.json';
+
+  @override
+  generateFileContent() {
+    return jsonEncode(config);
+  }
+}
+
+class DmsSetupFlagFile extends ConfigurationFile {
+  @override
+  get path => '/sdcard/run/dms_setup.flag';
+
+  @override
+  generateFileContent() {
+    return gflagEncode(config);
   }
 }
