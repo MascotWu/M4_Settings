@@ -47,7 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
   double _speed = 0;
   var _textOfConnectButton = "";
 
-  var vm = ViewModel.get();
+  ViewModel vm = ViewModel.get();
 
   @override
   Widget build(BuildContext context) {
@@ -147,6 +147,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   );
                 }).then((speed) {
               print({'speed': speed});
+
+              if (speed == -1)
+                vm.deleteSpeed();
+              else if (speed != null) {
+                vm.addOrUpdateSpeed(speed);
+              }
             });
           },
         ),
@@ -159,6 +165,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   List<Map<String, dynamic>> speeds = [
+    {'title': '无', 'value': -1},
     {'title': '20km/h', 'value': 20},
     {'title': '40km/h', 'value': 40},
     {'title': '60km/h', 'value': 60},

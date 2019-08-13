@@ -28,9 +28,32 @@ class ViewModel {
     return _cameraConfiguration;
   }
 
-  update(ConfigurationFile file, configurations) {
+  addOrUpdate(ConfigurationFile file, configurations) {
     file.config.addAll(configurations);
+    push(file);
+  }
 
+  addOrUpdateSpeed(int speed) {
+    if (canInputJsonFile.config.containsKey('main')) {
+      canInputJsonFile.config['main']['fake_speed'] = speed;
+      push(canInputJsonFile);
+    }
+  }
+
+  deleteSpeed() {
+    if (canInputJsonFile.config.containsKey('main') &&
+        canInputJsonFile.config['main'].containsKey('fake_speed')) {
+      canInputJsonFile.config['main'].remove('fake_speed');
+      push(canInputJsonFile);
+    }
+  }
+
+  delete(ConfigurationFile file, String key) {
+    file.config.remove(key);
+    push(file);
+  }
+
+  push(ConfigurationFile file) {
     var message = Uint8List(4);
     var bytedata = ByteData.view(message.buffer);
 
@@ -125,6 +148,7 @@ class ViewModel {
   List<int> buffer = [];
 
   void onData9(List<int> event) {
+    print('通信成功');
     if (state == 'first') {
       total = event[0] * 0x01000000 +
           event[1] * 0x010000 +

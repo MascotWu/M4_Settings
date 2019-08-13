@@ -52,8 +52,8 @@ class _CameraPageState extends State<CameraPage> {
       "right_dist_to_camera": rightDist.toString(),
       "front_dist_to_camera": cameraFrontDistController.text
     };
-    vm.update(vm.detectFlagFile, configurations);
-    vm.update(vm.macroConfigFile, configurations);
+    vm.addOrUpdate(vm.detectFlagFile, configurations);
+    vm.addOrUpdate(vm.macroConfigFile, configurations);
   }
 
   // Create a text controller and use it to retrieve the current value

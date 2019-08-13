@@ -124,7 +124,7 @@ class AlertState extends State<AlertPage> {
                 setState(() {
                   _fcw = value;
                 });
-                vm.update(
+                vm.addOrUpdate(
                     vm.macroConfigFile, {'enable_fcw': value ? '1' : '0'});
               },
               secondary: const Icon(Icons.warning),
@@ -136,7 +136,7 @@ class AlertState extends State<AlertPage> {
                 setState(() {
                   _hmw = value;
                 });
-                vm.update(vm.detectFlagFile, {'enable_hmw': value.toString()});
+                vm.addOrUpdate(vm.detectFlagFile, {'enable_hmw': value.toString()});
               },
               secondary: const Icon(Icons.lightbulb_outline),
             ),
@@ -147,7 +147,7 @@ class AlertState extends State<AlertPage> {
                 setState(() {
                   _ldw = value;
                 });
-                vm.update(vm.detectFlagFile, {'enable_ldw': value.toString()});
+                vm.addOrUpdate(vm.detectFlagFile, {'enable_ldw': value.toString()});
               },
               secondary: const Icon(Icons.lightbulb_outline),
             ),
@@ -158,7 +158,7 @@ class AlertState extends State<AlertPage> {
                 setState(() {
                   _tsr = value;
                 });
-                vm.update(vm.detectFlagFile, {'enable_tsr': value.toString()});
+                vm.addOrUpdate(vm.detectFlagFile, {'enable_tsr': value.toString()});
               },
               secondary: const Icon(Icons.lightbulb_outline),
             ),
@@ -169,7 +169,7 @@ class AlertState extends State<AlertPage> {
                 setState(() {
                   _pcw = value;
                 });
-                vm.update(vm.detectFlagFile, {'enable_pcw': value.toString()});
+                vm.addOrUpdate(vm.detectFlagFile, {'enable_pcw': value.toString()});
               },
               secondary: const Icon(Icons.lightbulb_outline),
             ),
@@ -180,7 +180,7 @@ class AlertState extends State<AlertPage> {
                 setState(() {
                   _alertItemEyeclose1 = value;
                 });
-                vm.update(vm.dmsSetupFlagFile,
+                vm.addOrUpdate(vm.dmsSetupFlagFile,
                     {'alert_item_eyeclose1': value.toString()});
               },
               secondary: const Icon(Icons.lightbulb_outline),
@@ -192,7 +192,7 @@ class AlertState extends State<AlertPage> {
                 setState(() {
                   _alertItemEyeclose2 = value;
                 });
-                vm.update(vm.dmsSetupFlagFile,
+                vm.addOrUpdate(vm.dmsSetupFlagFile,
                     {'alert_item_eyeclose2': value.toString()});
               },
               secondary: const Icon(Icons.lightbulb_outline),
@@ -204,7 +204,7 @@ class AlertState extends State<AlertPage> {
                 setState(() {
                   _alertItemBow = value;
                 });
-                vm.update(
+                vm.addOrUpdate(
                     vm.dmsSetupFlagFile, {'alert_item_bow': value.toString()});
               },
               secondary: const Icon(Icons.lightbulb_outline),
@@ -216,7 +216,7 @@ class AlertState extends State<AlertPage> {
                 setState(() {
                   _alertItemPhone = value;
                 });
-                vm.update(vm.dmsSetupFlagFile,
+                vm.addOrUpdate(vm.dmsSetupFlagFile,
                     {'alert_item_phone': value.toString()});
               },
               secondary: const Icon(Icons.lightbulb_outline),
@@ -228,7 +228,7 @@ class AlertState extends State<AlertPage> {
                 setState(() {
                   _alertItemLookaround = value;
                 });
-                vm.update(vm.dmsSetupFlagFile,
+                vm.addOrUpdate(vm.dmsSetupFlagFile,
                     {'alert_item_lookaround': value.toString()});
               },
               secondary: const Icon(Icons.lightbulb_outline),
@@ -240,7 +240,7 @@ class AlertState extends State<AlertPage> {
                 setState(() {
                   _alertItemYawn = value;
                 });
-                vm.update(
+                vm.addOrUpdate(
                     vm.dmsSetupFlagFile, {'alert_item_yawn': value.toString()});
               },
               secondary: const Icon(Icons.lightbulb_outline),
@@ -252,7 +252,7 @@ class AlertState extends State<AlertPage> {
                 setState(() {
                   _alertItemSmoking = value;
                 });
-                vm.update(vm.dmsSetupFlagFile,
+                vm.addOrUpdate(vm.dmsSetupFlagFile,
                     {'alert_item_smoking': value.toString()});
               },
               secondary: const Icon(Icons.lightbulb_outline),
@@ -264,7 +264,7 @@ class AlertState extends State<AlertPage> {
                 setState(() {
                   _alertItemDemobilized = value;
                 });
-                vm.update(vm.dmsSetupFlagFile,
+                vm.addOrUpdate(vm.dmsSetupFlagFile,
                     {'alert_item_demobilized': value.toString()});
               },
               secondary: const Icon(Icons.lightbulb_outline),
@@ -276,7 +276,7 @@ class AlertState extends State<AlertPage> {
                 setState(() {
                   _alertItemDriverchange = value;
                 });
-                vm.update(vm.dmsSetupFlagFile,
+                vm.addOrUpdate(vm.dmsSetupFlagFile,
                     {'alert_item_driverchange': value.toString()});
               },
               secondary: const Icon(Icons.lightbulb_outline),
@@ -288,7 +288,7 @@ class AlertState extends State<AlertPage> {
                 setState(() {
                   _alertItemOcclusion = value;
                 });
-                vm.update(vm.dmsSetupFlagFile,
+                vm.addOrUpdate(vm.dmsSetupFlagFile,
                     {'alert_item_occlusion': value.toString()});
               },
               secondary: const Icon(Icons.lightbulb_outline),
@@ -300,7 +300,7 @@ class AlertState extends State<AlertPage> {
                 setState(() {
                   _alertItemLookup = value;
                 });
-                vm.update(vm.dmsSetupFlagFile,
+                vm.addOrUpdate(vm.dmsSetupFlagFile,
                     {'alert_item_lookup': value.toString()});
               },
               secondary: const Icon(Icons.lightbulb_outline),
@@ -313,7 +313,7 @@ class AlertState extends State<AlertPage> {
                   _alertItemEyeocclusion = value;
                 });
 
-                vm.update(vm.dmsSetupFlagFile,
+                vm.addOrUpdate(vm.dmsSetupFlagFile,
                     {'alert_item_eyeocclusion': value.toString()});
               },
               secondary: const Icon(Icons.lightbulb_outline),
@@ -325,7 +325,7 @@ class AlertState extends State<AlertPage> {
                 setState(() {
                   _alertItemHandsoff = value;
                 });
-                vm.update(vm.dmsSetupFlagFile,
+                vm.addOrUpdate(vm.dmsSetupFlagFile,
                     {'alert_item_handsoff': value.toString()});
               },
               secondary: const Icon(Icons.lightbulb_outline),
@@ -338,7 +338,7 @@ class AlertState extends State<AlertPage> {
                   _alertItemLongtimedrive = value;
                 });
 
-                vm.update(vm.dmsSetupFlagFile,
+                vm.addOrUpdate(vm.dmsSetupFlagFile,
                     {'alert_item_longtimedrive': value.toString()});
               },
               secondary: const Icon(Icons.lightbulb_outline),
