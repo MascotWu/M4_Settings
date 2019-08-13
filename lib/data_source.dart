@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/picker_dialog.dart';
 
+import 'view_model.dart';
+
 class DataSourcePage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -11,6 +13,7 @@ class DataSourcePage extends StatefulWidget {
 class DataSourceState extends State<DataSourcePage> {
   @override
   Widget build(BuildContext context) {
+    ViewModel vm = ViewModel.get();
     return Scaffold(
         appBar: AppBar(
           title: Text("信号源"),
@@ -35,15 +38,16 @@ class DataSourceState extends State<DataSourcePage> {
             ListTile(
               title: Text("波特率"),
               onTap: () {
-                showDialog<void>(
+                showDialog<String>(
                     context: context,
-                    barrierDismissible: false, // user must tap button!
                     builder: (BuildContext context) {
                       return Picker(title: '请选择波特率', options: [
-                        {'title': "500k", 'value': 1},
-                        {'title': "250k", 'value': 2}
+                        {'title': "500k"},
+                        {'title': "250k"}
                       ]);
-                    });
+                    }).then((baudRate) {
+                  if (baudRate != null) vm.addOrUpdateBaudRate(baudRate);
+                });
               },
             ),
           ],

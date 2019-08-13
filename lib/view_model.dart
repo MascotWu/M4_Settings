@@ -40,6 +40,13 @@ class ViewModel {
     }
   }
 
+  addOrUpdateBaudRate(String baudRate) {
+    if (  canInputJsonFile.config.containsKey('main')) {
+      canInputJsonFile.config['main']['baudrate'] = baudRate;
+      push(canInputJsonFile);
+    }
+  }
+
   deleteSpeed() {
     if (canInputJsonFile.config.containsKey('main') &&
         canInputJsonFile.config['main'].containsKey('fake_speed')) {

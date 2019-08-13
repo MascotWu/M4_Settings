@@ -22,7 +22,7 @@ class PickerState extends State<Picker> {
           (option) {
             return new SimpleDialogOption(
               onPressed: () {
-                Navigator.pop(context, option['value']);
+                Navigator.pop(context, option['value'] ?? option['title']);
               },
               child: Text(option['title']),
             );
