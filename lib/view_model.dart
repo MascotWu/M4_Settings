@@ -284,4 +284,14 @@ class ViewModel {
     mProtocolConfigJsonFile.config['reg_param']['reg_id'] = deviceId;
     push(mProtocolConfigJsonFile);
   }
+
+  void addOrUpdatePlateNumber(String plateNumber) {
+    mProtocolConfigJsonFile.config['reg_param']['car_num'] = plateNumber;
+    push(mProtocolConfigJsonFile);
+  }
+
+  addOrUpdateTerminalId(String terminalId) {
+    mProtocolConfigJsonFile.config['reg_param']['dev_id'] = terminalId;
+    push(mProtocolConfigJsonFile);
+  }
 }

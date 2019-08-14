@@ -18,9 +18,15 @@ class _Jt808ConfigState extends State<Jt808ConfigPage> {
   TextEditingController deviceIdOfJT808Controller =
       new TextEditingController(text: '009381374186');
 
+  TextEditingController terminalIdController =
+      new TextEditingController(text: 'METI231');
+
   TextEditingController associatedWithVideoController;
 
   TextEditingController ignoreSpeedLimitedController;
+
+  TextEditingController plateNumberController =
+      new TextEditingController(text: '沪BXIA97');
 
   @override
   Widget build(BuildContext context) {
@@ -96,6 +102,7 @@ class _Jt808ConfigState extends State<Jt808ConfigPage> {
                 border: OutlineInputBorder(),
                 labelText: '车牌号',
               ),
+              controller: plateNumberController,
             ),
           ),
           Container(
@@ -116,6 +123,7 @@ class _Jt808ConfigState extends State<Jt808ConfigPage> {
                 border: OutlineInputBorder(),
                 labelText: '终端ID',
               ),
+              controller: terminalIdController,
             ),
           ),
           Container(
@@ -144,5 +152,7 @@ class _Jt808ConfigState extends State<Jt808ConfigPage> {
     vm.addOrUpdateServerIp(ipController.text);
     vm.addOrUpdateServerPort(portController.text);
     vm.addOrUpdateDeviceIdOfJT808(deviceIdOfJT808Controller.text);
+    vm.addOrUpdatePlateNumber(plateNumberController.text);
+    vm.addOrUpdateTerminalId(terminalIdController.text);
   }
 }
