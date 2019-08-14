@@ -6,8 +6,6 @@ import 'dart:typed_data';
 import 'package:flutter_app/configurations.dart';
 import 'package:rxdart/rxdart.dart';
 
-import 'convert.dart';
-
 class ViewModel {
   var _connectionStatus = new BehaviorSubject<bool>();
   var _cameraConfiguration = new BehaviorSubject<Map<String, dynamic>>();
@@ -34,22 +32,17 @@ class ViewModel {
   }
 
   addOrUpdateSpeed(int speed) {
-    if (canInputJsonFile.config.containsKey('main')) {
-      canInputJsonFile.config['main']['fake_speed'] = speed;
-      push(canInputJsonFile);
-    }
+    canInputJsonFile.config['main']['fake_speed'] = speed;
+    push(canInputJsonFile);
   }
 
   addOrUpdateBaudRate(String baudRate) {
-    if (canInputJsonFile.config.containsKey('main')) {
-      canInputJsonFile.config['main']['baudrate'] = baudRate;
-      push(canInputJsonFile);
-    }
+    canInputJsonFile.config['main']['baudrate'] = baudRate;
+    push(canInputJsonFile);
   }
 
   deleteSpeed() {
-    if (canInputJsonFile.config.containsKey('main') &&
-        canInputJsonFile.config['main'].containsKey('fake_speed')) {
+    if (canInputJsonFile.config['main'].containsKey('fake_speed')) {
       canInputJsonFile.config['main'].remove('fake_speed');
       push(canInputJsonFile);
     }
@@ -178,6 +171,8 @@ class ViewModel {
     getFiles(socket, detectFlagFile);
     getFiles(socket, dmsSetupFlagFile);
     getFiles(socket, canInputJsonFile);
+    getFiles(socket, mProtocolConfigJsonFile);
+    getFiles(socket, mProtocolJsonFile);
   }
 
   getFiles(Socket socket, ConfigurationFile file) {
@@ -217,17 +212,25 @@ class ViewModel {
 
         if (socketMessage['type'] == 'read_file_ok') {
           if (socketMessage['result']['path'] == macroConfigFile.path) {
-            macroConfigFile.config = gflagDecode(String.fromCharCodes(
+            macroConfigFile.setConfig(String.fromCharCodes(
                 base64Decode(socketMessage['result']['data'])));
             _cameraConfiguration.add(macroConfigFile.config);
           } else if (socketMessage['result']['path'] == detectFlagFile.path) {
-            detectFlagFile.config = gflagDecode(String.fromCharCodes(
+            detectFlagFile.setConfig(String.fromCharCodes(
                 base64Decode(socketMessage['result']['data'])));
           } else if (socketMessage['result']['path'] == canInputJsonFile.path) {
-            canInputJsonFile.config = jsonDecode(String.fromCharCodes(
+            canInputJsonFile.setConfig(String.fromCharCodes(
                 base64Decode(socketMessage['result']['data'])));
           } else if (socketMessage['result']['path'] == dmsSetupFlagFile.path) {
-            dmsSetupFlagFile.config = gflagDecode(String.fromCharCodes(
+            dmsSetupFlagFile.setConfig(String.fromCharCodes(
+                base64Decode(socketMessage['result']['data'])));
+          } else if (socketMessage['result']['path'] ==
+              mProtocolConfigJsonFile.path) {
+            mProtocolConfigJsonFile.setConfig(String.fromCharCodes(
+                base64Decode(socketMessage['result']['data'])));
+          } else if (socketMessage['result']['path'] ==
+              mProtocolJsonFile.path) {
+            mProtocolJsonFile.setConfig(String.fromCharCodes(
                 base64Decode(socketMessage['result']['data'])));
           }
         } else if (socketMessage['type'] == 'read_file_error') {
@@ -292,6 +295,17 @@ class ViewModel {
 
   addOrUpdateTerminalId(String terminalId) {
     mProtocolConfigJsonFile.config['reg_param']['dev_id'] = terminalId;
+    push(mProtocolConfigJsonFile);
+  }
+
+  addOrUpdateAssociatedWithVideo(bool associated) {
+    mProtocolConfigJsonFile.config['reg_param']['associated_video'] =
+        associated;
+    push(mProtocolConfigJsonFile);
+  }
+
+  addOrUpdateIgnoreSpeedLimited(bool ignore) {
+    mProtocolConfigJsonFile.config['ignore_spdth'] = ignore;
     push(mProtocolConfigJsonFile);
   }
 }

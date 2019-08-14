@@ -21,17 +21,27 @@ class _Jt808ConfigState extends State<Jt808ConfigPage> {
   TextEditingController terminalIdController =
       new TextEditingController(text: 'METI231');
 
-  TextEditingController associatedWithVideoController;
+  bool _associatedWithVideo;
 
   TextEditingController ignoreSpeedLimitedController;
 
   TextEditingController plateNumberController =
       new TextEditingController(text: '沪BXIA97');
 
-  @override
-  Widget build(BuildContext context) {
+  bool _ignoreSpeedLimitation;
+
+  _Jt808ConfigState() {
     vm = ViewModel.get();
 
+    _ignoreSpeedLimitation =
+        vm.mProtocolConfigJsonFile.config['ignore_spdth'] ?? false;
+    _associatedWithVideo = vm.mProtocolConfigJsonFile.config['reg_param']
+            ['associated_video'] ??
+        false;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('JT808协议'),
@@ -72,27 +82,27 @@ class _Jt808ConfigState extends State<Jt808ConfigPage> {
               controller: deviceIdOfJT808Controller,
             ),
           ),
-          Container(
-            padding: EdgeInsets.all(8.0),
-            alignment: Alignment.center,
-            child: TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: '关联视频',
-              ),
-              controller: associatedWithVideoController,
-            ),
+          SwitchListTile(
+            title: const Text('关联视频'),
+            value: _associatedWithVideo,
+            onChanged: (bool associated) {
+              setState(() {
+                _associatedWithVideo = associated;
+              });
+              vm.addOrUpdateAssociatedWithVideo(associated);
+            },
+            secondary: const Icon(Icons.lightbulb_outline),
           ),
-          Container(
-            padding: EdgeInsets.all(8.0),
-            alignment: Alignment.center,
-            child: TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: '忽略速度限制',
-              ),
-              controller: ignoreSpeedLimitedController,
-            ),
+          SwitchListTile(
+            title: const Text('忽略速度限制'),
+            value: _ignoreSpeedLimitation,
+            onChanged: (bool ignore) {
+              setState(() {
+                _ignoreSpeedLimitation = ignore;
+              });
+              vm.addOrUpdateIgnoreSpeedLimited(ignore);
+            },
+            secondary: const Icon(Icons.lightbulb_outline),
           ),
           Container(
             padding: EdgeInsets.all(8.0),

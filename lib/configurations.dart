@@ -7,6 +7,8 @@ abstract class ConfigurationFile {
 
   Map<String, dynamic> config = {};
 
+  setConfig(String content);
+
   generateFileContent();
 }
 
@@ -18,6 +20,11 @@ class MacrosConfigTextFile extends ConfigurationFile {
   generateFileContent() {
     return gflagEncode(config);
   }
+
+  @override
+  setConfig(String content) {
+    return config = gflagDecode(content);
+  }
 }
 
 class DetectFlagFile extends ConfigurationFile {
@@ -27,6 +34,11 @@ class DetectFlagFile extends ConfigurationFile {
   @override
   generateFileContent() {
     return gflagEncode(config);
+  }
+
+  @override
+  setConfig(String content) {
+    return config = gflagDecode(content);
   }
 }
 
@@ -38,6 +50,12 @@ class CanInputJsonFile extends ConfigurationFile {
   generateFileContent() {
     return jsonEncode(config);
   }
+
+  @override
+  setConfig(String content) {
+    config = jsonDecode(content);
+    config['main'] ??= {};
+  }
 }
 
 class DmsSetupFlagFile extends ConfigurationFile {
@@ -47,6 +65,11 @@ class DmsSetupFlagFile extends ConfigurationFile {
   @override
   generateFileContent() {
     return gflagEncode(config);
+  }
+
+  @override
+  setConfig(String content) {
+    return config = gflagDecode(content);
   }
 }
 
@@ -58,18 +81,27 @@ class MProtocolJsonFile extends ConfigurationFile {
   generateFileContent() {
     return jsonEncode(config);
   }
+
+  @override
+  setConfig(String content) {
+    return config = jsonDecode(content);
+  }
 }
 
 class MProtocolConfigJsonFile extends ConfigurationFile {
-  MProtocolConfigJsonFile() {
-    config = {'server': {}, 'reg_param': {}, 'resolution': {}};
-  }
-
   @override
   get path => '/data/mprot/config/config.json';
 
   @override
   generateFileContent() {
     return jsonEncode(config);
+  }
+
+  @override
+  setConfig(String content) {
+    config = jsonDecode(content);
+    config['server'] ??= {};
+    config['reg_param'] ??= {};
+    config['resolution'] ??= {};
   }
 }
