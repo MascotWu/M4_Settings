@@ -269,4 +269,19 @@ class ViewModel {
     print(e);
     _connectionStatus.add(false);
   }
+
+  void addOrUpdateServerIp(String ip) {
+    mProtocolConfigJsonFile.config['server']['ipaddr'] = ip;
+    push(mProtocolConfigJsonFile);
+  }
+
+  void addOrUpdateServerPort(String port) {
+    mProtocolConfigJsonFile.config['server']['port'] = port;
+    push(mProtocolConfigJsonFile);
+  }
+
+  void addOrUpdateDeviceIdOfJT808(String deviceId) {
+    mProtocolConfigJsonFile.config['reg_param']['reg_id'] = deviceId;
+    push(mProtocolConfigJsonFile);
+  }
 }

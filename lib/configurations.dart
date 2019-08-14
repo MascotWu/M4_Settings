@@ -61,6 +61,10 @@ class MProtocolJsonFile extends ConfigurationFile {
 }
 
 class MProtocolConfigJsonFile extends ConfigurationFile {
+  MProtocolConfigJsonFile() {
+    config = {'server': {}, 'reg_param': {}, 'resolution': {}};
+  }
+
   @override
   get path => '/data/mprot/config/config.json';
 
