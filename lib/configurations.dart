@@ -100,8 +100,5 @@ class MProtocolConfigJsonFile extends ConfigurationFile {
   @override
   setConfig(String content) {
     config = jsonDecode(content);
-    config['server'] ??= {};
-    config['reg_param'] ??= {};
-    config['resolution'] ??= {};
   }
 }

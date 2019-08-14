@@ -5,10 +5,7 @@ import 'package:flutter_app/view_model.dart';
 import 'jt808.dart';
 
 class ProtocolPage extends StatefulWidget {
-  @override
-  _ProtocolPageState createState() {
-    return _ProtocolPageState();
-  }
+  createState() => _ProtocolPageState();
 }
 
 class _ProtocolPageState extends State<ProtocolPage> {

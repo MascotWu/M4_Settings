@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/view_model.dart';
 
-class AlertPage extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return new AlertState();
-  }
+class AlertSettingsPage extends StatefulWidget {
+  createState() => new AlertSettingsState();
 }
 
-class AlertState extends State<AlertPage> {
+class AlertSettingsState extends State<AlertSettingsPage> {
   ViewModel vm;
 
-  AlertState() {
+  AlertSettingsState() {
     vm = ViewModel.get();
 
     _fcw = vm.macroConfigFile.config['enable_fcw'] == '1' ?? false;
@@ -136,7 +133,8 @@ class AlertState extends State<AlertPage> {
                 setState(() {
                   _hmw = value;
                 });
-                vm.addOrUpdate(vm.detectFlagFile, {'enable_hmw': value.toString()});
+                vm.addOrUpdate(
+                    vm.detectFlagFile, {'enable_hmw': value.toString()});
               },
               secondary: const Icon(Icons.lightbulb_outline),
             ),
@@ -147,7 +145,8 @@ class AlertState extends State<AlertPage> {
                 setState(() {
                   _ldw = value;
                 });
-                vm.addOrUpdate(vm.detectFlagFile, {'enable_ldw': value.toString()});
+                vm.addOrUpdate(
+                    vm.detectFlagFile, {'enable_ldw': value.toString()});
               },
               secondary: const Icon(Icons.lightbulb_outline),
             ),
@@ -158,7 +157,8 @@ class AlertState extends State<AlertPage> {
                 setState(() {
                   _tsr = value;
                 });
-                vm.addOrUpdate(vm.detectFlagFile, {'enable_tsr': value.toString()});
+                vm.addOrUpdate(
+                    vm.detectFlagFile, {'enable_tsr': value.toString()});
               },
               secondary: const Icon(Icons.lightbulb_outline),
             ),
@@ -169,7 +169,8 @@ class AlertState extends State<AlertPage> {
                 setState(() {
                   _pcw = value;
                 });
-                vm.addOrUpdate(vm.detectFlagFile, {'enable_pcw': value.toString()});
+                vm.addOrUpdate(
+                    vm.detectFlagFile, {'enable_pcw': value.toString()});
               },
               secondary: const Icon(Icons.lightbulb_outline),
             ),

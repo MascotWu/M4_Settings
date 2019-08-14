@@ -189,7 +189,7 @@ class _Jt808ConfigState extends State<Jt808ConfigPage> {
         onPressed: _setConfig,
         tooltip: 'Increment',
         child: Icon(Icons.done),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
       resizeToAvoidBottomPadding: false,
     );
   }

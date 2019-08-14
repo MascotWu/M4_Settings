@@ -3,49 +3,22 @@ import 'package:flutter_app/data_source.dart';
 import 'package:flutter_app/protocol.dart';
 import 'package:flutter_app/slider_dialog.dart';
 
-import 'alert.dart';
+import 'alert_settings.dart';
 import 'camera.dart';
 import 'camera_settings.dart';
 import 'picker_dialog.dart';
 import 'view_model.dart';
 
-void main() => runApp(MyApp());
-
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+class HomePage extends StatefulWidget {
+  HomePage({Key key, this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  double _volume;
-  double _speed = 0;
+class _HomePageState extends State<HomePage> {
   var _textOfConnectButton = "";
 
   ViewModel vm = ViewModel.get();
@@ -94,17 +67,17 @@ class _MyHomePageState extends State<MyHomePage> {
             Navigator.push(
                 context,
                 new MaterialPageRoute(
-                    builder: (context) => new CameraSettingsPage(
-                          title: '摄像头',
-                        )));
+                    builder: (context) => new CameraSettingsPage()));
           },
         ),
         ListTile(
           leading: FlutterLogo(),
           title: Text('报警'),
           onTap: () {
-            Navigator.push(context,
-                new MaterialPageRoute(builder: (context) => new AlertPage()));
+            Navigator.push(
+                context,
+                new MaterialPageRoute(
+                    builder: (context) => new AlertSettingsPage()));
           },
         ),
         ListTile(
@@ -161,10 +134,8 @@ class _MyHomePageState extends State<MyHomePage> {
           leading: FlutterLogo(),
           title: Text('拍照'),
           onTap: () {
-            Navigator.push(
-                context,
-                new MaterialPageRoute(
-                    builder: (context) => new CameraPage(title: '拍照')));
+            Navigator.push(context,
+                new MaterialPageRoute(builder: (context) => new CameraPage()));
           },
         ),
       ]),

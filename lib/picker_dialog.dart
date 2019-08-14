@@ -7,10 +7,7 @@ class Picker extends StatefulWidget {
 
   Picker({Key key, this.title, this.options}) : super(key: key);
 
-  @override
-  State<StatefulWidget> createState() {
-    return new PickerState();
-  }
+  createState() => PickerState();
 }
 
 class PickerState extends State<Picker> {

@@ -4,10 +4,7 @@ import 'package:flutter_app/picker_dialog.dart';
 import 'view_model.dart';
 
 class DataSourcePage extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return DataSourceState();
-  }
+  createState() => DataSourceState();
 }
 
 class DataSourceState extends State<DataSourcePage> {

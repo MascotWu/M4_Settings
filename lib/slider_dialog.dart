@@ -12,8 +12,7 @@ class SliderDialog extends StatefulWidget {
   SliderDialog({Key key, this.value, this.max, this.divisions, this.onChange})
       : super(key: key);
 
-  @override
-  State<StatefulWidget> createState() => _SliderDialogState(value);
+  createState() => _SliderDialogState(value);
 }
 
 class _SliderDialogState extends State<SliderDialog> {
@@ -41,7 +40,6 @@ class _SliderDialogState extends State<SliderDialog> {
               });
               widget.onChange(value);
             },
-            onChangeEnd: (value) {},
           ),
         ),
       ],
