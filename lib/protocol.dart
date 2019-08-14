@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/subiao.dart';
 import 'package:flutter_app/view_model.dart';
 
 import 'jt808.dart';
@@ -40,8 +41,10 @@ class _ProtocolPageState extends State<ProtocolPage> {
           ListTile(
             title: Text('苏标协议'),
             onTap: () {
-              vm.addOrUpdate(vm.mProtocolJsonFile, {'protocol': 'subiao'});
-              Navigator.pop(context);
+              Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (context) => SuBiaoConfigPage()));
             },
           ),
         ],

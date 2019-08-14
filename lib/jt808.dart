@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'picker_dialog.dart';
 import 'view_model.dart';
 
 class Jt808ConfigPage extends StatefulWidget {
@@ -29,6 +30,26 @@ class _Jt808ConfigState extends State<Jt808ConfigPage> {
       new TextEditingController(text: '沪BXIA97');
 
   bool _ignoreSpeedLimitation;
+
+  var colors = [
+    {'title': '蓝色', 'value': 1},
+    {'title': '黄色', 'value': 2},
+    {'title': '黑色', 'value': 3},
+    {'title': '白色', 'value': 4},
+    {'title': '其他', 'value': 9},
+  ];
+
+  var resolutions = [
+    {'title': 'CIF(352×288)', 'value': "CIF"},
+    {'title': 'HD1(704×288)', 'value': "HD1"},
+    {'title': 'D1(704×576)', 'value': "D1"},
+    {'title': 'VGA(640×480)', 'value': "VGA"},
+    {'title': '720P(1280×720)', 'value': "720P"},
+    {'title': '1080P(1920×1080)', 'value': "1080P"},
+  ];
+
+  int _color;
+  String _resolution;
 
   _Jt808ConfigState() {
     vm = ViewModel.get();
@@ -89,7 +110,6 @@ class _Jt808ConfigState extends State<Jt808ConfigPage> {
               setState(() {
                 _associatedWithVideo = associated;
               });
-              vm.addOrUpdateAssociatedWithVideo(associated);
             },
             secondary: const Icon(Icons.lightbulb_outline),
           ),
@@ -100,7 +120,6 @@ class _Jt808ConfigState extends State<Jt808ConfigPage> {
               setState(() {
                 _ignoreSpeedLimitation = ignore;
               });
-              vm.addOrUpdateIgnoreSpeedLimited(ignore);
             },
             secondary: const Icon(Icons.lightbulb_outline),
           ),
@@ -115,15 +134,24 @@ class _Jt808ConfigState extends State<Jt808ConfigPage> {
               controller: plateNumberController,
             ),
           ),
-          Container(
-            padding: EdgeInsets.all(8.0),
-            alignment: Alignment.center,
-            child: TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: '车牌颜色',
-              ),
-            ),
+          ListTile(
+            leading: FlutterLogo(),
+            title: Text('车牌颜色'),
+            onTap: () {
+              return showDialog<int>(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Picker(
+                      title: '请选择车牌颜色',
+                      options: colors,
+                    );
+                  }).then((color) {
+                print({'color': color});
+                if (color != null) {
+                  _color = color;
+                }
+              });
+            },
           ),
           Container(
             padding: EdgeInsets.all(8.0),
@@ -136,15 +164,24 @@ class _Jt808ConfigState extends State<Jt808ConfigPage> {
               controller: terminalIdController,
             ),
           ),
-          Container(
-            padding: EdgeInsets.all(8.0),
-            alignment: Alignment.center,
-            child: TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: '附件分辨率',
-              ),
-            ),
+          ListTile(
+            leading: FlutterLogo(),
+            title: Text('附件分辨率'),
+            onTap: () {
+              return showDialog<String>(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Picker(
+                      title: '请选择附件分辨率',
+                      options: resolutions,
+                    );
+                  }).then((resolution) {
+                print({'resolution': resolution});
+                if (resolution != null) {
+                  _resolution = resolution;
+                }
+              });
+            },
           ),
         ],
       ),
@@ -158,7 +195,16 @@ class _Jt808ConfigState extends State<Jt808ConfigPage> {
   }
 
   void _setConfig() {
-    vm.addOrUpdate(vm.mProtocolJsonFile, {'protocol': 'jt808'});
+    if (vm.mProtocolJsonFile.config['protocol'] != 'jt808') {
+      vm.resetMProtocolConfigJsonFile('jt808');
+      vm.addOrUpdate(vm.mProtocolJsonFile, {'protocol': 'jt808'});
+      vm.push(vm.mProtocolJsonFile);
+    }
+
+    if (_color != null) vm.addOrUpdatePlateColor(_color);
+    if (_resolution != null) vm.addOrUpdateResolutionForJt808(_resolution);
+    vm.addOrUpdateAssociatedWithVideoOfJT808(_associatedWithVideo);
+    vm.addOrUpdateIgnoreSpeedLimited(_ignoreSpeedLimitation);
     vm.addOrUpdateServerIp(ipController.text);
     vm.addOrUpdateServerPort(portController.text);
     vm.addOrUpdateDeviceIdOfJT808(deviceIdOfJT808Controller.text);

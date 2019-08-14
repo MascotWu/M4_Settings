@@ -298,7 +298,7 @@ class ViewModel {
     push(mProtocolConfigJsonFile);
   }
 
-  addOrUpdateAssociatedWithVideo(bool associated) {
+  addOrUpdateAssociatedWithVideoOfJT808(bool associated) {
     mProtocolConfigJsonFile.config['reg_param']['associated_video'] =
         associated;
     push(mProtocolConfigJsonFile);
@@ -306,6 +306,52 @@ class ViewModel {
 
   addOrUpdateIgnoreSpeedLimited(bool ignore) {
     mProtocolConfigJsonFile.config['ignore_spdth'] = ignore;
+    push(mProtocolConfigJsonFile);
+  }
+
+  addOrUpdatePlateColor(int color) {
+    mProtocolConfigJsonFile.config['reg_param']['plate_color'] = color;
+    push(mProtocolConfigJsonFile);
+  }
+
+  addOrUpdateResolutionForJt808(String resolution) {
+    mProtocolConfigJsonFile.config['resolution'] ??= {};
+    mProtocolConfigJsonFile.config['resolution']['adas_video'] = resolution;
+    mProtocolConfigJsonFile.config['resolution']['adas_image'] = resolution;
+    mProtocolConfigJsonFile.config['resolution']['dms_video'] = resolution;
+    mProtocolConfigJsonFile.config['resolution']['dms_image'] = resolution;
+    push(mProtocolConfigJsonFile);
+  }
+
+  resetMProtocolConfigJsonFile(String protocol) {
+    if (protocol == 'jt808')
+      mProtocolConfigJsonFile.config = {
+        "server": {},
+        "reg_param": {},
+        "resolution": {}
+      };
+    else if (protocol == 'subiao')
+      mProtocolConfigJsonFile.config = {'protocol': {}, 'resolution': {}};
+  }
+
+  addOrUpdateResolutionForSuBiao(String resolution) {
+    mProtocolConfigJsonFile.config['resolution'] ??= {};
+    mProtocolConfigJsonFile.config['resolution']['adas_video'] = resolution;
+    mProtocolConfigJsonFile.config['resolution']['adas_image'] = resolution;
+    mProtocolConfigJsonFile.config['resolution']['dms_video'] = resolution;
+    mProtocolConfigJsonFile.config['resolution']['dms_image'] = resolution;
+    push(mProtocolConfigJsonFile);
+  }
+
+  addOrUpdateAssociatedWithVideoOfSuBiao(bool associated) {
+    mProtocolConfigJsonFile.config['protocol'] ??= {};
+    mProtocolConfigJsonFile.config['protocol']['associated_video'] = associated;
+    push(mProtocolConfigJsonFile);
+  }
+
+  addOrUpdateUseRtData(bool useRtData) {
+    mProtocolConfigJsonFile.config['protocol'] ??= {};
+    mProtocolConfigJsonFile.config['protocol']['use_rtdata'] = useRtData;
     push(mProtocolConfigJsonFile);
   }
 }
