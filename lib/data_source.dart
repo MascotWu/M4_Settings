@@ -22,7 +22,7 @@ class DataSourceState extends State<DataSourcePage> {
               onTap: () {
                 showDialog<void>(
                     context: context,
-                    barrierDismissible: false, // user must tap button!
+                    barrierDismissible: false,
                     builder: (BuildContext context) {
                       return Picker(title: '请选择信号源', options: [
                         {'title': "CAN信号", 'value': 1},
