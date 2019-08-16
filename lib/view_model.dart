@@ -240,8 +240,8 @@ class ViewModel {
         } else if (socketMessage['type'] == 'write_file_error') {
           print('write file error');
         } else if (socketMessage['type'] == 'get_camera_image_ok') {
+          print('get_camera_image_ok');
           if (socketMessage['result']['camera'] == 'adas') {
-            print('get_camera_image_ok');
             _adasPicture.add(base64Decode(socketMessage['result']['image']));
           } else if (socketMessage['result']['camera'] == 'driver') {
             _dmsPicture.add(base64Decode(socketMessage['result']['image']));

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'curve_painter.dart';
 import 'view_model.dart';
 
 class CameraPage extends StatefulWidget {
@@ -17,21 +18,19 @@ class _CameraPageState extends State<CameraPage> {
     vm = ViewModel.get();
   }
 
-  final carWidthController = TextEditingController(text: '2.2');
-  final cameraHeightController = TextEditingController(text: '1.5');
-  final cameraRightDistController = TextEditingController(text: '0.8');
-  final cameraLeftDistController = TextEditingController(text: '0.8');
-  final cameraFrontDistController = TextEditingController(text: '0.1');
-  final frontWheelFrontDistController = TextEditingController(text: '1.5');
+  Offset offset1 = Offset(200, 60);
+  Offset offset2 = Offset(180, 150);
+  Offset offset3 = Offset(220, 90);
+  Offset offset4 = Offset(250, 180);
 
-  @override
-  void dispose() {
-    carWidthController.dispose();
-    super.dispose();
-  }
+  int pointSelected;
+
+  CurvePainter curvePainter;
 
   @override
   Widget build(BuildContext context) {
+    curvePainter = CurvePainter(
+        point1: offset1, point2: offset2, point3: offset3, point4: offset4);
     return Scaffold(
       appBar: AppBar(
         title: Text('拍照'),
@@ -52,7 +51,84 @@ class _CameraPageState extends State<CameraPage> {
               },
             ),
           ),
-          _adasImage ?? Text(''),
+          Container(
+              padding: EdgeInsets.all(8.0),
+              height: 250,
+              alignment: Alignment.center,
+              child: Stack(
+                children: <Widget>[
+                  Center(
+                    child: _adasImage ?? Text(''),
+                  ),
+                  Center(
+                    child: CustomPaint(
+                      painter: curvePainter,
+                      child: Center(
+                        child: GestureDetector(
+                          onPanStart: (detail) {
+                            var offsets = [
+                              (offset1 - detail.localPosition)
+                                  .distanceSquared
+                                  .round(),
+                              (offset2 - detail.localPosition)
+                                  .distanceSquared
+                                  .round(),
+                              (offset3 - detail.localPosition)
+                                  .distanceSquared
+                                  .round(),
+                              (offset4 - detail.localPosition)
+                                  .distanceSquared
+                                  .round()
+                            ];
+
+                            var b = [
+                              (offset1 - detail.localPosition)
+                                  .distanceSquared
+                                  .round(),
+                              (offset2 - detail.localPosition)
+                                  .distanceSquared
+                                  .round(),
+                              (offset3 - detail.localPosition)
+                                  .distanceSquared
+                                  .round(),
+                              (offset4 - detail.localPosition)
+                                  .distanceSquared
+                                  .round()
+                            ];
+                            b.sort();
+                            var r = b[0];
+                            pointSelected = -1;
+                            if (r < 1000)
+                              for (var i = 0; i < 4; i++) {
+                                if (r == offsets[i]) {
+                                  pointSelected = i + 1;
+                                }
+                              }
+                          },
+                          onPanUpdate: (detail) {
+                            if (pointSelected != null)
+                              setState(() {
+                                if (pointSelected == 1) {
+                                  offset1 +=
+                                      Offset(detail.delta.dx, detail.delta.dy);
+                                } else if (pointSelected == 2) {
+                                  offset2 +=
+                                      Offset(detail.delta.dx, detail.delta.dy);
+                                } else if (pointSelected == 3) {
+                                  offset3 +=
+                                      Offset(detail.delta.dx, detail.delta.dy);
+                                } else if (pointSelected == 4) {
+                                  offset4 +=
+                                      Offset(detail.delta.dx, detail.delta.dy);
+                                }
+                              });
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              )),
           Container(
             padding: EdgeInsets.all(8.0),
             alignment: Alignment.center,
@@ -70,7 +146,39 @@ class _CameraPageState extends State<CameraPage> {
           _dmsImage ?? Text('')
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _setConfig,
+        child: Icon(Icons.done),
+      ),
       resizeToAvoidBottomPadding: false,
     );
+  }
+
+  void _setConfig() {
+    vm.addOrUpdate(vm.macroConfigFile, {
+      'camera_pitch': curvePainter.pitch,
+      'camera_yaw': curvePainter.yaw,
+      'camera_roll': 0.0,
+      'camera_fov_w': curvePainter.opticalParam['fu'],
+      'camera_fov_h': curvePainter.opticalParam['fv'],
+      'camera_cu': curvePainter.opticalParam['cu'],
+      'camera_cv': curvePainter.opticalParam['cv'],
+      'roi_width': curvePainter.opticalParam['width'],
+      'roi_height': curvePainter.opticalParam['height'],
+    });
+
+    vm.addOrUpdate(vm.detectFlagFile, {
+      'pitch': curvePainter.pitch,
+      'yaw': curvePainter.yaw,
+      'roll': 0.0,
+      'fu': curvePainter.opticalParam['fu'],
+      'fv': curvePainter.opticalParam['fv'],
+      'cu': curvePainter.opticalParam['cu'],
+      'cv': curvePainter.opticalParam['cv'],
+      'image_width': curvePainter.opticalParam['width'],
+      'image_height': curvePainter.opticalParam['height'],
+    });
+
+    Navigator.pop(context);
   }
 }

@@ -62,7 +62,7 @@ class _HomePageState extends State<HomePage> {
         ),
         ListTile(
           leading: FlutterLogo(),
-          title: Text('摄像头'),
+          title: Text('摄像头设置'),
           onTap: () {
             Navigator.push(
                 context,
@@ -132,7 +132,7 @@ class _HomePageState extends State<HomePage> {
         ),
         ListTile(
           leading: FlutterLogo(),
-          title: Text('拍照'),
+          title: Text('摄像头调校'),
           onTap: () {
             Navigator.push(context,
                 new MaterialPageRoute(builder: (context) => new CameraPage()));
