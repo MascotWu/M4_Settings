@@ -173,6 +173,8 @@ class ViewModel {
     getFiles(socket, canInputJsonFile);
     getFiles(socket, mProtocolConfigJsonFile);
     getFiles(socket, mProtocolJsonFile);
+
+    getVolume();
   }
 
   getFiles(Socket socket, ConfigurationFile file) {
@@ -248,6 +250,12 @@ class ViewModel {
           }
         } else if (socketMessage['type'] == 'get_camera_image_error') {
           print('get_camera_image_error');
+        } else if (socketMessage['type'] == 'get_system_volume_ok') {
+          print('get_system_volume_ok');
+          volume = socketMessage['result'];
+          _volume.add(socketMessage['result']);
+        } else if (socketMessage['type'] == 'set_system_volume_ok') {
+          print('set_system_volume_ok');
         }
 
         buffer.removeRange(0, buffer.length + total);
@@ -353,5 +361,28 @@ class ViewModel {
     mProtocolConfigJsonFile.config['protocol'] ??= {};
     mProtocolConfigJsonFile.config['protocol']['use_rtdata'] = useRtData;
     push(mProtocolConfigJsonFile);
+  }
+
+  num volume;
+
+  var _volume = new BehaviorSubject<double>();
+
+  getVolume() {
+    var message = Uint8List(4);
+    var byteData = ByteData.view(message.buffer);
+    var command = jsonEncode({"type": "get_system_volume"});
+    byteData.setUint32(0, command.length);
+    sock.add(message);
+    sock.add(utf8.encode(command));
+    return _volume;
+  }
+
+  void setVolume(volume) {
+    var message = Uint8List(4);
+    var byteData = ByteData.view(message.buffer);
+    var command = jsonEncode({"type": "set_system_volume", "data": volume});
+    byteData.setUint32(0, command.length);
+    sock.add(message);
+    sock.add(utf8.encode(command));
   }
 }

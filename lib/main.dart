@@ -23,11 +23,13 @@ class _HomePageState extends State<HomePage> {
 
   ViewModel vm = ViewModel.get();
 
+  double _volume;
+
   @override
   Widget build(BuildContext context) {
     vm.establishConnection();
     vm.isConnectedWithDevice().listen(onConnectionStatusChanged);
-
+    _volume = vm.volume ?? 0.7;
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -94,15 +96,24 @@ class _HomePageState extends State<HomePage> {
           leading: FlutterLogo(),
           title: Text('音量'),
           onTap: () {
-            return showDialog<void>(
+            setState(() {
+              _volume = vm.volume;
+            });
+            return showDialog<double>(
                 context: context,
                 builder: (BuildContext context) {
                   return SliderDialog(
-                    value: 2,
-                    max: 3,
+                    value: _volume,
+                    max: 0.8,
                     divisions: 3,
                     onChange: (volume) {
                       print({'volume': volume});
+                      if (volume != null) {
+                        vm.setVolume(volume);
+                        setState(() {
+                          _volume = volume;
+                        });
+                      }
                     },
                   );
                 });
