@@ -7,7 +7,6 @@ import 'package:rxdart/rxdart.dart';
 
 class ViewModel {
   var _connectionStatus = new BehaviorSubject<bool>();
-  var _cameraConfiguration = new BehaviorSubject<Map<String, dynamic>>();
 
   static ViewModel vm = new ViewModel();
 
@@ -17,22 +16,14 @@ class ViewModel {
       print("等待连接");
 
       serverSocket.listen(deviceConnected, onError: (e) {
-        print("没有网络的时候无法监听本地端口");
-        print(e);
+        print("没有网络的时候无法监听本地端口 $e");
         _connectionStatus.add(false);
       });
-    }).catchError((e) {
-      print('网络连接已断开');
     });
   }
 
   static get() {
-    print('---get---');
     return vm;
-  }
-
-  getCameraConfig() {
-    return _cameraConfiguration;
   }
 
   addOrUpdate(ConfigurationFile file, configurations) {
@@ -174,7 +165,6 @@ class ViewModel {
           if (socketMessage['result']['path'] == macroConfigFile.path) {
             macroConfigFile.setConfig(String.fromCharCodes(
                 base64Decode(socketMessage['result']['data'])));
-            _cameraConfiguration.add(macroConfigFile.config);
           } else if (socketMessage['result']['path'] == detectFlagFile.path) {
             detectFlagFile.setConfig(String.fromCharCodes(
                 base64Decode(socketMessage['result']['data'])));

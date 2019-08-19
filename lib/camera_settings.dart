@@ -17,20 +17,18 @@ class _CameraSettingsPageState extends State<CameraSettingsPage> {
 
   _CameraSettingsPageState() {
     vm = ViewModel.get();
-
-    vm.getCameraConfig();
   }
 
   void _setConfig() {
-    Coordinate coords = new Coordinate();
-    coords.carWidth = double.parse(carWidthController.text);
-    coords.cameraRightDist = double.parse(cameraRightDistController.text);
-    coords.cameraLeftDist = double.parse(cameraLeftDistController.text);
+    Coordinate coordinate = new Coordinate();
+    coordinate.carWidth = double.parse(carWidthController.text);
+    coordinate.cameraRightDist = double.parse(cameraRightDistController.text);
+    coordinate.cameraLeftDist = double.parse(cameraLeftDistController.text);
 
-    var glassWidth = coords.cameraLeftDist + coords.cameraRightDist;
-    var glassMargin = (coords.carWidth - glassWidth) * 0.5;
-    var leftDist = coords.cameraLeftDist + glassMargin;
-    var rightDist = coords.cameraRightDist + glassMargin;
+    var glassWidth = coordinate.cameraLeftDist + coordinate.cameraRightDist;
+    var glassMargin = (coordinate.carWidth - glassWidth) * 0.5;
+    var leftDist = coordinate.cameraLeftDist + glassMargin;
+    var rightDist = coordinate.cameraRightDist + glassMargin;
 
     var configurations = {
       "camera_height": cameraHeightController.text,
