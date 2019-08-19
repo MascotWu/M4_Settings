@@ -28,8 +28,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    vm.isConnectedWithDevice().listen(onConnectionStatusChanged);
-    _volume = vm.volume ?? 0.7;
+    vm.connectionStatus.listen(onConnectionStatusChanged);
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -120,8 +119,6 @@ class _HomePageState extends State<HomePage> {
                     options: speeds,
                   );
                 }).then((speed) {
-              print({'speed': speed});
-
               if (speed == -1)
                 vm.deleteSpeed();
               else if (speed != null) {
@@ -143,7 +140,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   void onConnectionStatusChanged(bool isConnected) {
-    print("is connected $isConnected");
     if (!isConnected) {
       Navigator.pop(context);
       Navigator.push(context,

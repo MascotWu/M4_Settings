@@ -108,10 +108,6 @@ class ViewModel {
     sock.add(utf8.encode(command));
   }
 
-  Observable<bool> isConnectedWithDevice() {
-    return _connectionStatus;
-  }
-
   Observable<bool> get connectionStatus => _connectionStatus;
 
   clear() {}

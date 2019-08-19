@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-class CurvePainter extends CustomPainter {
-  CurvePainter({this.point1, this.point2, this.point3, this.point4});
+class LanePainter extends CustomPainter {
+  LanePainter({this.point1, this.point2, this.point3, this.point4});
 
   // to prevent creating Paint Object frequently
   final p = Paint();
@@ -82,7 +82,7 @@ class CurvePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(CurvePainter oldDelegate) {
+  bool shouldRepaint(LanePainter oldDelegate) {
     return oldDelegate.point1 != point1 ||
         oldDelegate.point2 != point2 ||
         oldDelegate.point3 != point3 ||

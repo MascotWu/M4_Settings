@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'curve_painter.dart';
+import 'lane_painter.dart';
 import 'view_model.dart';
 
 class CameraPage extends StatefulWidget {
@@ -25,11 +25,11 @@ class _CameraPageState extends State<CameraPage> {
 
   int pointSelected;
 
-  CurvePainter curvePainter;
+  LanePainter curvePainter;
 
   @override
   Widget build(BuildContext context) {
-    curvePainter = CurvePainter(
+    curvePainter = LanePainter(
         point1: offset1, point2: offset2, point3: offset3, point4: offset4);
     return Scaffold(
       appBar: AppBar(

@@ -14,17 +14,12 @@ class _ConnectionPageState extends State<ConnectionPage> {
   ViewModel vm = ViewModel.get();
   var connectionButtonText = '连接';
 
-  _ConnectionPageState() {
-    print('_ConnectionPageState 构造函数');
-  }
-
   StreamSubscription subscription;
 
   @override
   void initState() {
     super.initState();
 
-    print('initState');
     subscription = vm.connectionStatus.listen(onConnectionStatusChanged);
   }
 
@@ -50,8 +45,6 @@ class _ConnectionPageState extends State<ConnectionPage> {
   }
 
   onConnectionStatusChanged(bool isConnected) {
-    print({'onConnectionStatusChanged': isConnected});
-
     if (isConnected) {
       subscription.cancel();
       Navigator.push(
