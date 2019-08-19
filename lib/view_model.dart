@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
@@ -10,15 +9,25 @@ class ViewModel {
   var _connectionStatus = new BehaviorSubject<bool>();
   var _cameraConfiguration = new BehaviorSubject<Map<String, dynamic>>();
 
-  ViewModel() {
-    ServerSocket.bind(InternetAddress.anyIPv4, 16346)
-        .then(onDataReceived, onError: onError)
-        .catchError(onError);
-  }
-
   static ViewModel vm = new ViewModel();
 
+  ViewModel() {
+    ServerSocket.bind(InternetAddress.anyIPv4, 16346)
+        .then((ServerSocket serverSocket) {
+      print("等待连接");
+
+      serverSocket.listen(deviceConnected, onError: (e) {
+        print("没有网络的时候无法监听本地端口");
+        print(e);
+        _connectionStatus.add(false);
+      });
+    }).catchError((e) {
+      print('网络连接已断开');
+    });
+  }
+
   static get() {
+    print('---get---');
     return vm;
   }
 
@@ -112,46 +121,9 @@ class ViewModel {
     return _connectionStatus;
   }
 
-  // Since the device doesn't know the IP address of the cellphone, and the
-  // IP address of device is fixed, it is necessary for cellphone to connect
-  // the device first and send a string message to the device:
-  //
-  //   'set_instruction_server_host this\n'
-  //
-  // to tell the device to establish a tcp connection to itself. After that,
-  // the device will reply
-  //
-  //   'OK\n'
-  //
-  // and try to connect the cellphone.
-
-  establishConnection() {
-    // if server socket have not established yet
-    // then establish it.
-
-    // connect device and waiting
-    Socket.connect("192.168.43.1", 16400).then((Socket socket) {
-      socket.listen(onData, onError: onError);
-      socket.write('set_instruction_server_host this\n');
-      print("Connect成功");
-    }, onError: (e) {
-      print("e");
-      print(e);
-      _connectionStatus.add(false);
-    });
-  }
+  Observable<bool> get connectionStatus => _connectionStatus;
 
   clear() {}
-
-  void onData(List<int> event) {
-    _connectionStatus.add(String.fromCharCodes(event) == "OK\n");
-    print("Connect成功，收到OK");
-  }
-
-  FutureOr onDataReceived(ServerSocket value) {
-    print("开始监听");
-    value.listen(onData8, onError: onError);
-  }
 
   Socket sock;
 
@@ -162,20 +134,6 @@ class ViewModel {
   MProtocolConfigJsonFile mProtocolConfigJsonFile =
       new MProtocolConfigJsonFile();
   MProtocolJsonFile mProtocolJsonFile = new MProtocolJsonFile();
-
-  void onData8(Socket socket) {
-    sock = socket;
-    socket.listen(onData9, onError: onError);
-
-    getFiles(socket, macroConfigFile);
-    getFiles(socket, detectFlagFile);
-    getFiles(socket, dmsSetupFlagFile);
-    getFiles(socket, canInputJsonFile);
-    getFiles(socket, mProtocolConfigJsonFile);
-    getFiles(socket, mProtocolJsonFile);
-
-    getVolume();
-  }
 
   getFiles(Socket socket, ConfigurationFile file) {
     var message = Uint8List(4);
@@ -192,7 +150,7 @@ class ViewModel {
   List<int> buffer = [];
 
   void onData9(List<int> event) {
-    print('通信成功');
+    print('收到数据包 ${event.length}');
     if (state == 'first') {
       total = event[0] * 0x01000000 +
           event[1] * 0x010000 +
@@ -272,13 +230,6 @@ class ViewModel {
         }
       }
     }
-  }
-
-  onError(e) {
-    print("Error:没有网络的时候 ");
-
-    print(e);
-    _connectionStatus.add(false);
   }
 
   void addOrUpdateServerIp(String ip) {
@@ -384,5 +335,59 @@ class ViewModel {
     byteData.setUint32(0, command.length);
     sock.add(message);
     sock.add(utf8.encode(command));
+  }
+
+  // Since the device doesn't know the IP address of the cellphone, and the
+  // IP address of device is fixed, it is necessary for cellphone to connect
+  // the device first and send a string message to the device:
+  //
+  //   'set_instruction_server_host this\n'
+  //
+  // to tell the device to establish a tcp connection to itself. After that,
+  // the device will reply
+  //
+  //   'OK\n'
+  //
+  // and try to connect the cellphone.
+  tellDeviceTheIpOfPhone() {
+    // if server socket have not established yet
+    // then establish it.
+
+    // connect device, send command and wait for response.
+    Socket.connect("192.168.43.1", 16400).then((Socket socket) {
+      socket.listen((List<int> event) {
+        if (String.fromCharCodes(event) == "OK\n") print("在设备上配置手机的IP地址成功");
+      });
+      socket.write('set_instruction_server_host this\n');
+      print("正在在设备上配置手机的IP地址");
+    }, onError: (e) {
+      print('在设备上配置手机的IP地址失败 $e');
+      _connectionStatus.add(false);
+    }).timeout(Duration(seconds: 2), onTimeout: () {
+      print("在设备上配置手机的IP地址超时");
+      _connectionStatus.add(false);
+    });
+  }
+
+  waitingForDeviceToConnect() {}
+
+  deviceConnected(Socket socket) {
+    print("连接建立");
+    _connectionStatus.add(true);
+    sock = socket;
+
+    socket.listen(onData9, onError: (e) {
+      print('socket.listen报错 $e');
+      _connectionStatus.add(false);
+    });
+
+    getFiles(socket, macroConfigFile);
+    getFiles(socket, detectFlagFile);
+    getFiles(socket, dmsSetupFlagFile);
+    getFiles(socket, canInputJsonFile);
+    getFiles(socket, mProtocolConfigJsonFile);
+    getFiles(socket, mProtocolJsonFile);
+
+    getVolume();
   }
 }

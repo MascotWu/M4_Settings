@@ -6,6 +6,7 @@ import 'package:flutter_app/slider_dialog.dart';
 import 'alert_settings.dart';
 import 'camera.dart';
 import 'camera_settings.dart';
+import 'connection.dart';
 import 'picker_dialog.dart';
 import 'view_model.dart';
 
@@ -27,7 +28,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    vm.establishConnection();
     vm.isConnectedWithDevice().listen(onConnectionStatusChanged);
     _volume = vm.volume ?? 0.7;
     return Scaffold(
@@ -154,7 +154,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   void onConnectionStatusChanged(bool isConnected) {
-    _textOfConnectButton = isConnected ? '已连接' : '连接';
+    print("is connected $isConnected");
+    if (!isConnected) {
+      Navigator.pop(context);
+      Navigator.push(context,
+          new MaterialPageRoute(builder: (context) => ConnectionPage()));
+    }
   }
 
   List<Map<String, dynamic>> speeds = [
