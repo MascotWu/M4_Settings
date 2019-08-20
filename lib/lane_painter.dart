@@ -112,14 +112,16 @@ class LanePainter extends CustomPainter {
 
     var oc = {'x': opticalParam.cu, 'y': opticalParam.cv};
 
-    pitch = atan2(
-            vp.dy - oc['y'],
-            sqrt(opticalParam.fv * opticalParam.fv +
-                (vp.dx - oc['x']) * (vp.dx - oc['x']))) *
-        180 /
-        pi;
+    pitch = (atan2(
+                vp.dy - oc['y'],
+                sqrt(opticalParam.fv * opticalParam.fv +
+                    (vp.dx - oc['x']) * (vp.dx - oc['x']))) *
+            180 /
+            pi)
+        .toStringAsFixed(1);
 
-    yaw = atan2(opticalParam.cu - vp.dx, opticalParam.fu) * 180 / pi;
+    yaw = (atan2(opticalParam.cu - vp.dx, opticalParam.fu) * 180 / pi)
+        .toStringAsFixed(1);
   }
 
   cpr(Offset a, Offset b, Offset c) {
@@ -139,6 +141,6 @@ class LanePainter extends CustomPainter {
       minWidth: 0,
       maxWidth: size.width,
     );
-    textPainter.paint(canvas, Offset(10, 10));
+    textPainter.paint(canvas, vp + Offset(10, 10));
   }
 }

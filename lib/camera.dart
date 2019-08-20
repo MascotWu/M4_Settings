@@ -48,7 +48,7 @@ class _CameraPageState extends State<CameraPage> {
             padding: EdgeInsets.all(8.0),
             alignment: Alignment.center,
             child: FlatButton(
-              child: Text("拍照ADAS"),
+              child: Text("ADAS摄像头拍照"),
               onPressed: () {
                 vm.takePictureOfAdas().listen((picture) {
                   setState(() {
@@ -140,7 +140,7 @@ class _CameraPageState extends State<CameraPage> {
             padding: EdgeInsets.all(8.0),
             alignment: Alignment.center,
             child: FlatButton(
-              child: Text("拍照DMS"),
+              child: Text("DMS摄像头拍照"),
               onPressed: () {
                 vm.takePictureOfDms().listen((picture) {
                   setState(() {
