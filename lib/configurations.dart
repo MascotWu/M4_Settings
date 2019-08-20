@@ -10,6 +10,13 @@ abstract class ConfigurationFile {
   setConfig(String content);
 
   generateFileContent();
+
+  void handle(socketMessage) {
+    if (socketMessage['result']['path'] == path) {
+      setConfig(
+          String.fromCharCodes(base64Decode(socketMessage['result']['data'])));
+    }
+  }
 }
 
 class MacrosConfigTextFile extends ConfigurationFile {

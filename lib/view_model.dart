@@ -131,90 +131,20 @@ class ViewModel {
     socket.add(utf8.encode(command));
   }
 
-  var length = 0;
-  var total;
-  var state = "first";
-  List<int> buffer = [];
+  List<int> _buffer = [];
 
-  void onData9(List<int> event) {
-    print('收到数据包 ${event.length}');
-    if (state == 'first') {
-      total = event[0] * 0x01000000 +
-          event[1] * 0x010000 +
-          event[2] * 0x0100 +
-          event[3];
-      total += 4;
+  void onData(List<int> buffer) {
+    _buffer.addAll(buffer);
 
-      state = 'amend';
-    }
-    if (state == 'amend') {
-      buffer.addAll(event);
-      total -= event.length;
+    while (_buffer.length >= 4) {
+      var length =
+          ByteData.view(Uint8List.fromList(_buffer).buffer, 0, 4).getUint32(0);
 
-      while (total <= 0) {
-        state = 'first';
+      if (_buffer.length < length + 4) break;
 
-        var socketMessage = jsonDecode(
-            String.fromCharCodes(buffer.getRange(4, buffer.length + total)));
-
-        if (socketMessage['type'] == 'read_file_ok') {
-          if (socketMessage['result']['path'] == macroConfigFile.path) {
-            macroConfigFile.setConfig(String.fromCharCodes(
-                base64Decode(socketMessage['result']['data'])));
-          } else if (socketMessage['result']['path'] == detectFlagFile.path) {
-            detectFlagFile.setConfig(String.fromCharCodes(
-                base64Decode(socketMessage['result']['data'])));
-          } else if (socketMessage['result']['path'] == canInputJsonFile.path) {
-            canInputJsonFile.setConfig(String.fromCharCodes(
-                base64Decode(socketMessage['result']['data'])));
-          } else if (socketMessage['result']['path'] == dmsSetupFlagFile.path) {
-            dmsSetupFlagFile.setConfig(String.fromCharCodes(
-                base64Decode(socketMessage['result']['data'])));
-          } else if (socketMessage['result']['path'] ==
-              mProtocolConfigJsonFile.path) {
-            mProtocolConfigJsonFile.setConfig(String.fromCharCodes(
-                base64Decode(socketMessage['result']['data'])));
-          } else if (socketMessage['result']['path'] ==
-              mProtocolJsonFile.path) {
-            mProtocolJsonFile.setConfig(String.fromCharCodes(
-                base64Decode(socketMessage['result']['data'])));
-          }
-        } else if (socketMessage['type'] == 'read_file_error') {
-          print('read_file_error');
-        } else if (socketMessage['type'] == 'write_file_ok') {
-          print('write file ok');
-        } else if (socketMessage['type'] == 'write_file_error') {
-          print('write file error');
-        } else if (socketMessage['type'] == 'get_camera_image_ok') {
-          print('get_camera_image_ok');
-          if (socketMessage['result']['camera'] == 'adas') {
-            _adasPicture.add(base64Decode(socketMessage['result']['image']));
-          } else if (socketMessage['result']['camera'] == 'driver') {
-            _dmsPicture.add(base64Decode(socketMessage['result']['image']));
-          }
-        } else if (socketMessage['type'] == 'get_camera_image_error') {
-          print('get_camera_image_error');
-        } else if (socketMessage['type'] == 'get_system_volume_ok') {
-          print('get_system_volume_ok');
-          volume = socketMessage['result'];
-          _volume.add(socketMessage['result']);
-        } else if (socketMessage['type'] == 'set_system_volume_ok') {
-          print('set_system_volume_ok');
-        }
-
-        buffer.removeRange(0, buffer.length + total);
-
-        if (total >= -4)
-          break;
-        else {
-          total = buffer[0] * 0x01000000 +
-              buffer[1] * 0x010000 +
-              buffer[2] * 0x0100 +
-              buffer[3];
-          total += 4;
-          total -= buffer.length;
-        }
-      }
+      var command = String.fromCharCodes(_buffer, 4, length + 4);
+      onCommand(command);
+      _buffer.removeRange(0, length + 4);
     }
   }
 
@@ -300,7 +230,7 @@ class ViewModel {
     push(mProtocolConfigJsonFile);
   }
 
-  num volume;
+  double volume;
 
   var _volume = new BehaviorSubject<double>();
 
@@ -362,7 +292,7 @@ class ViewModel {
     _connectionStatus.add(true);
     sock = socket;
 
-    socket.listen(onData9, onError: (e) {
+    socket.listen(onData, onError: (e) {
       print('socket.listen报错 $e');
       _connectionStatus.add(false);
     });
@@ -375,5 +305,28 @@ class ViewModel {
     getFiles(socket, mProtocolJsonFile);
 
     getVolume();
+  }
+
+  onCommand(String command) {
+    var socketMessage = jsonDecode(command);
+
+    print(socketMessage['type']);
+    if (socketMessage['type'] == 'read_file_ok') {
+      macroConfigFile.handle(socketMessage);
+      detectFlagFile.handle(socketMessage);
+      canInputJsonFile.handle(socketMessage);
+      dmsSetupFlagFile.handle(socketMessage);
+      mProtocolConfigJsonFile.handle(socketMessage);
+      mProtocolJsonFile.handle(socketMessage);
+    } else if (socketMessage['type'] == 'get_camera_image_ok') {
+      if (socketMessage['result']['camera'] == 'adas') {
+        _adasPicture.add(base64Decode(socketMessage['result']['image']));
+      } else if (socketMessage['result']['camera'] == 'driver') {
+        _dmsPicture.add(base64Decode(socketMessage['result']['image']));
+      }
+    } else if (socketMessage['type'] == 'get_system_volume_ok') {
+      volume = socketMessage['result'].toDouble();
+      _volume.add(socketMessage['result'].toDouble());
+    }
   }
 }
