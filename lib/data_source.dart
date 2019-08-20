@@ -73,7 +73,6 @@ class _SpeedDataSource extends State<SpeedDataSourcePage> {
               onTap: () {
                 showDialog<Map>(
                     context: context,
-                    barrierDismissible: false,
                     builder: (BuildContext context) {
                       return Picker(
                           title: '请选择车型', options: createCarOptions());
