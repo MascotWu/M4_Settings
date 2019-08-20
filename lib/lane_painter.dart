@@ -28,22 +28,17 @@ class LanePainter extends CustomPainter {
     'width': 1280,
   };
 
-  drawLane(Canvas canvas, Size size) {
+  drawAnchor(Canvas canvas, Size size) {
     p.color = Colors.amber;
     p.style = PaintingStyle.fill;
     canvas.drawCircle(point1, 4, p);
-
-    p.color = Colors.amberAccent;
-    p.style = PaintingStyle.fill;
     canvas.drawCircle(point2, 4, p);
-
-    p.color = Colors.deepPurple;
-    p.style = PaintingStyle.fill;
     canvas.drawCircle(point3, 4, p);
-
-    p.color = Colors.deepPurpleAccent;
-    p.style = PaintingStyle.fill;
     canvas.drawCircle(point4, 4, p);
+  }
+
+  drawLane(Canvas canvas, Size size) {
+    drawAnchor(canvas, size);
 
     canvas.drawLine(
       point1,
