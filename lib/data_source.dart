@@ -20,6 +20,7 @@ class DataSourceState extends State<DataSourcePage> {
             ListTile(
               leading: const Icon(Icons.timer),
               title: Text("速度"),
+              trailing: Icon(Icons.navigate_next),
               onTap: () {
                 Navigator.push(
                     context,
@@ -85,7 +86,7 @@ class _SpeedDataSource extends State<SpeedDataSourcePage> {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.wifi_tethering),
+              leading: const Icon(Icons.tap_and_play),
               title: Text("模拟信号"),
               onTap: () {
                 vm.addOrUpdate(vm.canInputJsonFile, analogConfig);

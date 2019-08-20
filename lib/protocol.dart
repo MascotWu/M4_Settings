@@ -20,6 +20,7 @@ class _ProtocolPageState extends State<ProtocolPage> {
         padding: const EdgeInsets.all(8.0),
         children: <Widget>[
           ListTile(
+            leading: const Icon(Icons.assignment),
             title: Text('天迈协议'),
             onTap: () {
               vm.addOrUpdate(vm.mProtocolJsonFile, {'protocol': 'tianmai'});
@@ -27,7 +28,9 @@ class _ProtocolPageState extends State<ProtocolPage> {
             },
           ),
           ListTile(
+            leading: const Icon(Icons.assignment),
             title: Text('JT808协议'),
+            trailing: Icon(Icons.navigate_next),
             onTap: () {
               Navigator.push(
                   context,
@@ -36,7 +39,9 @@ class _ProtocolPageState extends State<ProtocolPage> {
             },
           ),
           ListTile(
+            leading: const Icon(Icons.assignment),
             title: Text('苏标协议'),
+            trailing: Icon(Icons.navigate_next),
             onTap: () {
               Navigator.push(
                   context,

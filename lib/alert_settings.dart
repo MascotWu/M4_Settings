@@ -136,7 +136,7 @@ class AlertSettingsState extends State<AlertSettingsPage> {
                 vm.addOrUpdate(
                     vm.detectFlagFile, {'enable_hmw': value.toString()});
               },
-              secondary: const Icon(Icons.lightbulb_outline),
+              secondary: const Icon(Icons.warning),
             ),
             SwitchListTile(
               title: const Text('LDW报警'),
@@ -148,7 +148,7 @@ class AlertSettingsState extends State<AlertSettingsPage> {
                 vm.addOrUpdate(
                     vm.detectFlagFile, {'enable_ldw': value.toString()});
               },
-              secondary: const Icon(Icons.lightbulb_outline),
+              secondary: const Icon(Icons.warning),
             ),
             SwitchListTile(
               title: const Text('超速预警(TSR)'),
@@ -160,7 +160,7 @@ class AlertSettingsState extends State<AlertSettingsPage> {
                 vm.addOrUpdate(
                     vm.detectFlagFile, {'enable_tsr': value.toString()});
               },
-              secondary: const Icon(Icons.lightbulb_outline),
+              secondary: const Icon(Icons.warning),
             ),
             SwitchListTile(
               title: const Text('行人预警'),
@@ -172,7 +172,7 @@ class AlertSettingsState extends State<AlertSettingsPage> {
                 vm.addOrUpdate(
                     vm.detectFlagFile, {'enable_pcw': value.toString()});
               },
-              secondary: const Icon(Icons.lightbulb_outline),
+              secondary: const Icon(Icons.warning),
             ),
             SwitchListTile(
               title: const Text('轻度闭眼'),
@@ -184,7 +184,7 @@ class AlertSettingsState extends State<AlertSettingsPage> {
                 vm.addOrUpdate(vm.dmsSetupFlagFile,
                     {'alert_item_eyeclose1': value.toString()});
               },
-              secondary: const Icon(Icons.lightbulb_outline),
+              secondary: const Icon(Icons.warning),
             ),
             SwitchListTile(
               title: const Text('重度闭眼'),
@@ -196,7 +196,7 @@ class AlertSettingsState extends State<AlertSettingsPage> {
                 vm.addOrUpdate(vm.dmsSetupFlagFile,
                     {'alert_item_eyeclose2': value.toString()});
               },
-              secondary: const Icon(Icons.lightbulb_outline),
+              secondary: const Icon(Icons.warning),
             ),
             SwitchListTile(
               title: const Text('低头'),
@@ -208,7 +208,7 @@ class AlertSettingsState extends State<AlertSettingsPage> {
                 vm.addOrUpdate(
                     vm.dmsSetupFlagFile, {'alert_item_bow': value.toString()});
               },
-              secondary: const Icon(Icons.lightbulb_outline),
+              secondary: const Icon(Icons.warning),
             ),
             SwitchListTile(
               title: const Text('打电话'),
@@ -220,7 +220,7 @@ class AlertSettingsState extends State<AlertSettingsPage> {
                 vm.addOrUpdate(vm.dmsSetupFlagFile,
                     {'alert_item_phone': value.toString()});
               },
-              secondary: const Icon(Icons.lightbulb_outline),
+              secondary: const Icon(Icons.warning),
             ),
             SwitchListTile(
               title: const Text('左顾右盼'),
@@ -232,7 +232,7 @@ class AlertSettingsState extends State<AlertSettingsPage> {
                 vm.addOrUpdate(vm.dmsSetupFlagFile,
                     {'alert_item_lookaround': value.toString()});
               },
-              secondary: const Icon(Icons.lightbulb_outline),
+              secondary: const Icon(Icons.warning),
             ),
             SwitchListTile(
               title: const Text('打哈欠'),
@@ -244,7 +244,7 @@ class AlertSettingsState extends State<AlertSettingsPage> {
                 vm.addOrUpdate(
                     vm.dmsSetupFlagFile, {'alert_item_yawn': value.toString()});
               },
-              secondary: const Icon(Icons.lightbulb_outline),
+              secondary: const Icon(Icons.warning),
             ),
             SwitchListTile(
               title: const Text('吸烟'),
@@ -256,7 +256,7 @@ class AlertSettingsState extends State<AlertSettingsPage> {
                 vm.addOrUpdate(vm.dmsSetupFlagFile,
                     {'alert_item_smoking': value.toString()});
               },
-              secondary: const Icon(Icons.lightbulb_outline),
+              secondary: const Icon(Icons.warning),
             ),
             SwitchListTile(
               title: const Text('离岗'),
@@ -268,7 +268,7 @@ class AlertSettingsState extends State<AlertSettingsPage> {
                 vm.addOrUpdate(vm.dmsSetupFlagFile,
                     {'alert_item_demobilized': value.toString()});
               },
-              secondary: const Icon(Icons.lightbulb_outline),
+              secondary: const Icon(Icons.warning),
             ),
             SwitchListTile(
               title: const Text('驾驶员变更'),
@@ -280,7 +280,7 @@ class AlertSettingsState extends State<AlertSettingsPage> {
                 vm.addOrUpdate(vm.dmsSetupFlagFile,
                     {'alert_item_driverchange': value.toString()});
               },
-              secondary: const Icon(Icons.lightbulb_outline),
+              secondary: const Icon(Icons.warning),
             ),
             SwitchListTile(
               title: const Text('遮挡'),
@@ -292,7 +292,7 @@ class AlertSettingsState extends State<AlertSettingsPage> {
                 vm.addOrUpdate(vm.dmsSetupFlagFile,
                     {'alert_item_occlusion': value.toString()});
               },
-              secondary: const Icon(Icons.lightbulb_outline),
+              secondary: const Icon(Icons.warning),
             ),
             SwitchListTile(
               title: const Text('抬头'),
@@ -304,7 +304,7 @@ class AlertSettingsState extends State<AlertSettingsPage> {
                 vm.addOrUpdate(vm.dmsSetupFlagFile,
                     {'alert_item_lookup': value.toString()});
               },
-              secondary: const Icon(Icons.lightbulb_outline),
+              secondary: const Icon(Icons.warning),
             ),
             SwitchListTile(
               title: const Text('墨镜遮挡'),
@@ -317,7 +317,7 @@ class AlertSettingsState extends State<AlertSettingsPage> {
                 vm.addOrUpdate(vm.dmsSetupFlagFile,
                     {'alert_item_eyeocclusion': value.toString()});
               },
-              secondary: const Icon(Icons.lightbulb_outline),
+              secondary: const Icon(Icons.warning),
             ),
             SwitchListTile(
               title: const Text('双手脱离方向盘'),
@@ -329,7 +329,7 @@ class AlertSettingsState extends State<AlertSettingsPage> {
                 vm.addOrUpdate(vm.dmsSetupFlagFile,
                     {'alert_item_handsoff': value.toString()});
               },
-              secondary: const Icon(Icons.lightbulb_outline),
+              secondary: const Icon(Icons.warning),
             ),
             SwitchListTile(
               title: const Text('长时间驾驶'),
@@ -342,7 +342,7 @@ class AlertSettingsState extends State<AlertSettingsPage> {
                 vm.addOrUpdate(vm.dmsSetupFlagFile,
                     {'alert_item_longtimedrive': value.toString()});
               },
-              secondary: const Icon(Icons.lightbulb_outline),
+              secondary: const Icon(Icons.warning),
             ),
           ],
         )));

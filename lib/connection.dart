@@ -46,9 +46,7 @@ class _ConnectionPageState extends State<ConnectionPage> {
 
   onConnectionStatusChanged(bool isConnected) {
     if (isConnected) {
-      subscription.cancel();
-
-      Navigator.push(
+      Navigator.pushReplacement(
           context,
           new MaterialPageRoute(
               builder: (context) => HomePage(title: 'M4配置工具')));
@@ -58,7 +56,6 @@ class _ConnectionPageState extends State<ConnectionPage> {
         toastLength: Toast.LENGTH_SHORT,
         timeInSecForIos: 1,
       );
-
       setState(() {
         connectionButtonText = '连接';
       });

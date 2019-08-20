@@ -37,6 +37,10 @@ class _HomePageState extends State<HomePage> {
     vm.connectionStatus.listen(onConnectionStatusChanged);
     return Scaffold(
       appBar: AppBar(
+        leading: Container(
+          padding: EdgeInsets.symmetric(vertical: 13),
+          child: Image.asset('assets/ic_small.png'),
+        ),
         title: Text(widget.title),
         actions: <Widget>[
           FlatButton(
@@ -48,7 +52,8 @@ class _HomePageState extends State<HomePage> {
       body: Column(children: <Widget>[
         ListTile(
           leading: const Icon(Icons.surround_sound),
-          title: Text('信号源'),
+          title: Text('信号源设置'),
+          trailing: Icon(Icons.navigate_next),
           onTap: () {
             Navigator.push(
                 context,
@@ -59,6 +64,7 @@ class _HomePageState extends State<HomePage> {
         ListTile(
           leading: const Icon(Icons.camera),
           title: Text('摄像头设置'),
+          trailing: Icon(Icons.navigate_next),
           onTap: () {
             Navigator.push(
                 context,
@@ -68,7 +74,8 @@ class _HomePageState extends State<HomePage> {
         ),
         ListTile(
           leading: const Icon(Icons.warning),
-          title: Text('报警'),
+          title: Text('报警设置'),
+          trailing: Icon(Icons.navigate_next),
           onTap: () {
             Navigator.push(
                 context,
@@ -77,8 +84,9 @@ class _HomePageState extends State<HomePage> {
           },
         ),
         ListTile(
-          leading: const Icon(Icons.attach_file),
-          title: Text('协议'),
+          leading: const Icon(Icons.assignment),
+          title: Text('协议设置'),
+          trailing: Icon(Icons.navigate_next),
           onTap: () {
             Navigator.push(
                 context,
@@ -88,7 +96,7 @@ class _HomePageState extends State<HomePage> {
         ),
         ListTile(
           leading: const Icon(Icons.volume_up),
-          title: Text('音量'),
+          title: Text('音量设置'),
           onTap: () {
             return showDialog<double>(
                 context: context,
@@ -96,7 +104,6 @@ class _HomePageState extends State<HomePage> {
                   return SliderDialog(
                     value: _volume,
                     max: 0.8,
-                    divisions: 3,
                     onChange: (volume) {
                       print({'volume': volume});
                       if (volume != null) {
@@ -113,7 +120,7 @@ class _HomePageState extends State<HomePage> {
         ),
         ListTile(
           leading: const Icon(Icons.timer),
-          title: Text('假速度'),
+          title: Text('假速度设置'),
           onTap: () {
             return showDialog<int>(
                 context: context,
@@ -134,6 +141,7 @@ class _HomePageState extends State<HomePage> {
         ListTile(
           leading: const Icon(Icons.camera_enhance),
           title: Text('摄像头调校'),
+          trailing: Icon(Icons.navigate_next),
           onTap: () {
             Navigator.push(context,
                 new MaterialPageRoute(builder: (context) => new CameraPage()));
@@ -145,8 +153,7 @@ class _HomePageState extends State<HomePage> {
 
   void onConnectionStatusChanged(bool isConnected) {
     if (!isConnected) {
-      Navigator.pop(context);
-      Navigator.push(context,
+      Navigator.pushReplacement(context,
           new MaterialPageRoute(builder: (context) => ConnectionPage()));
     }
   }

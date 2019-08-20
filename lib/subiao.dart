@@ -63,7 +63,7 @@ class _SuBiaoConfigState extends State<SuBiaoConfigPage> {
                 _associatedWithVideo = associated;
               });
             },
-            secondary: const Icon(Icons.lightbulb_outline),
+            secondary: const Icon(Icons.ondemand_video),
           ),
           SwitchListTile(
             title: const Text('使用部标机信号'),
@@ -73,7 +73,7 @@ class _SuBiaoConfigState extends State<SuBiaoConfigPage> {
                 _useRtData = ignore;
               });
             },
-            secondary: const Icon(Icons.lightbulb_outline),
+            secondary: const Icon(Icons.tap_and_play),
           ),
           ListTile(
             leading: const Icon(Icons.attach_file),

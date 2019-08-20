@@ -119,7 +119,7 @@ class _Jt808ConfigState extends State<Jt808ConfigPage> {
                 _associatedWithVideo = associated;
               });
             },
-            secondary: const Icon(Icons.lightbulb_outline),
+            secondary: const Icon(Icons.ondemand_video),
           ),
           SwitchListTile(
             title: const Text('忽略速度限制'),
@@ -129,7 +129,7 @@ class _Jt808ConfigState extends State<Jt808ConfigPage> {
                 _ignoreSpeedLimitation = ignore;
               });
             },
-            secondary: const Icon(Icons.lightbulb_outline),
+            secondary: const Icon(Icons.block),
           ),
           Container(
             padding: EdgeInsets.all(8.0),

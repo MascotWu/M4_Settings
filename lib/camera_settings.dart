@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'view_model.dart';
 
@@ -21,6 +22,17 @@ class _CameraSettingsPageState extends State<CameraSettingsPage> {
 
   void _setConfig() {
     Coordinate coordinate = new Coordinate();
+
+    if (double.tryParse(carWidthController.text) == null ||
+        double.tryParse(cameraRightDistController.text) == null ||
+        double.tryParse(cameraLeftDistController.text) == null) {
+      Fluttertoast.showToast(
+        msg: "所有数据必须是整数或者小数",
+        toastLength: Toast.LENGTH_SHORT,
+        timeInSecForIos: 1,
+      );
+    }
+
     coordinate.carWidth = double.parse(carWidthController.text);
     coordinate.cameraRightDist = double.parse(cameraRightDistController.text);
     coordinate.cameraLeftDist = double.parse(cameraLeftDistController.text);
@@ -99,7 +111,7 @@ class _CameraSettingsPageState extends State<CameraSettingsPage> {
               child: TextField(
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
-                  labelText: '摄像头离玻璃右边缘',
+                  labelText: '摄像头离玻璃右边缘 ①',
                 ),
                 controller: cameraRightDistController,
               ),
@@ -110,7 +122,7 @@ class _CameraSettingsPageState extends State<CameraSettingsPage> {
               child: TextField(
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
-                  labelText: '摄像头离玻璃左边缘',
+                  labelText: '摄像头离玻璃左边缘 ②',
                 ),
                 controller: cameraLeftDistController,
               ),
@@ -121,7 +133,7 @@ class _CameraSettingsPageState extends State<CameraSettingsPage> {
               child: TextField(
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
-                  labelText: '摄像头离车头',
+                  labelText: '摄像头离车头 ③',
                 ),
                 controller: cameraFrontDistController,
               ),
@@ -132,7 +144,7 @@ class _CameraSettingsPageState extends State<CameraSettingsPage> {
               child: TextField(
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
-                  labelText: '车前轮轴到车头',
+                  labelText: '车前轮轴到车头 ④',
                 ),
                 controller: frontWheelFrontDistController,
               ),
@@ -163,4 +175,6 @@ class _CameraSettingsPageState extends State<CameraSettingsPage> {
       resizeToAvoidBottomPadding: false,
     );
   }
+
+  double onError(String source) {}
 }
