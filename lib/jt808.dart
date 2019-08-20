@@ -136,7 +136,7 @@ class _Jt808ConfigState extends State<Jt808ConfigPage> {
             ),
           ),
           ListTile(
-            leading: FlutterLogo(),
+            leading: const Icon(Icons.color_lens),
             title: Text('车牌颜色'),
             onTap: () {
               return showDialog<int>(
@@ -166,7 +166,7 @@ class _Jt808ConfigState extends State<Jt808ConfigPage> {
             ),
           ),
           ListTile(
-            leading: FlutterLogo(),
+            leading: const Icon(Icons.attach_file),
             title: Text('附件分辨率'),
             onTap: () {
               return showDialog<String>(

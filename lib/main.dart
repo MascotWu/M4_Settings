@@ -47,7 +47,7 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Column(children: <Widget>[
         ListTile(
-          leading: FlutterLogo(),
+          leading: const Icon(Icons.surround_sound),
           title: Text('信号源'),
           onTap: () {
             Navigator.push(
@@ -57,7 +57,7 @@ class _HomePageState extends State<HomePage> {
           },
         ),
         ListTile(
-          leading: FlutterLogo(),
+          leading: const Icon(Icons.camera),
           title: Text('摄像头设置'),
           onTap: () {
             Navigator.push(
@@ -67,7 +67,7 @@ class _HomePageState extends State<HomePage> {
           },
         ),
         ListTile(
-          leading: FlutterLogo(),
+          leading: const Icon(Icons.warning),
           title: Text('报警'),
           onTap: () {
             Navigator.push(
@@ -77,7 +77,7 @@ class _HomePageState extends State<HomePage> {
           },
         ),
         ListTile(
-          leading: FlutterLogo(),
+          leading: const Icon(Icons.attach_file),
           title: Text('协议'),
           onTap: () {
             Navigator.push(
@@ -87,7 +87,7 @@ class _HomePageState extends State<HomePage> {
           },
         ),
         ListTile(
-          leading: FlutterLogo(),
+          leading: const Icon(Icons.volume_up),
           title: Text('音量'),
           onTap: () {
             return showDialog<double>(
@@ -112,7 +112,7 @@ class _HomePageState extends State<HomePage> {
           },
         ),
         ListTile(
-          leading: FlutterLogo(),
+          leading: const Icon(Icons.timer),
           title: Text('假速度'),
           onTap: () {
             return showDialog<int>(
@@ -132,7 +132,7 @@ class _HomePageState extends State<HomePage> {
           },
         ),
         ListTile(
-          leading: FlutterLogo(),
+          leading: const Icon(Icons.camera_enhance),
           title: Text('摄像头调校'),
           onTap: () {
             Navigator.push(context,

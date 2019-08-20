@@ -69,7 +69,7 @@ class _SuBiaoConfigState extends State<SuBiaoConfigPage> {
             secondary: const Icon(Icons.lightbulb_outline),
           ),
           ListTile(
-            leading: FlutterLogo(),
+            leading: const Icon(Icons.attach_file),
             title: Text('附件分辨率'),
             onTap: () {
               return showDialog<String>(

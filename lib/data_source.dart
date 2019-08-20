@@ -18,6 +18,7 @@ class DataSourceState extends State<DataSourcePage> {
         body: Column(
           children: <Widget>[
             ListTile(
+              leading: const Icon(Icons.timer),
               title: Text("速度"),
               onTap: () {
                 Navigator.push(
@@ -27,6 +28,7 @@ class DataSourceState extends State<DataSourcePage> {
               },
             ),
             ListTile(
+              leading: const Icon(Icons.shutter_speed),
               title: Text("波特率"),
               onTap: () {
                 showDialog<String>(
@@ -66,6 +68,7 @@ class _SpeedDataSource extends State<SpeedDataSourcePage> {
         body: Column(
           children: <Widget>[
             ListTile(
+              leading: const Icon(Icons.memory),
               title: Text("CAN信号"),
               onTap: () {
                 showDialog<Map>(
@@ -83,6 +86,7 @@ class _SpeedDataSource extends State<SpeedDataSourcePage> {
               },
             ),
             ListTile(
+              leading: const Icon(Icons.wifi_tethering),
               title: Text("模拟信号"),
               onTap: () {
                 vm.addOrUpdate(vm.canInputJsonFile, analogConfig);
@@ -90,6 +94,7 @@ class _SpeedDataSource extends State<SpeedDataSourcePage> {
               },
             ),
             ListTile(
+              leading: const Icon(Icons.gps_fixed),
               title: Text("GPS信号"),
               onTap: () {
                 vm.addOrUpdate(vm.canInputJsonFile, gpsConfig);
