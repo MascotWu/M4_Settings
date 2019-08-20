@@ -61,75 +61,97 @@ class _CameraSettingsPageState extends State<CameraSettingsPage> {
       appBar: AppBar(
         title: Text('摄像头设置'),
       ),
-      body: Column(
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.all(8.0),
-            alignment: Alignment.center,
-            child: TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: '车宽',
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.all(14.0),
+              alignment: Alignment.center,
+              child: TextField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: '车宽',
+                ),
+                controller: carWidthController,
               ),
-              controller: carWidthController,
             ),
-          ),
-          Container(
-            padding: EdgeInsets.all(8.0),
-            alignment: Alignment.center,
-            child: TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: '摄像头高度',
+            Container(
+              padding: EdgeInsets.all(14.0),
+              alignment: Alignment.center,
+              child: TextField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: '摄像头高度',
+                ),
+                controller: cameraHeightController,
               ),
-              controller: cameraHeightController,
             ),
-          ),
-          Container(
-            padding: EdgeInsets.all(8.0),
-            alignment: Alignment.center,
-            child: TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: '摄像头离玻璃右边缘',
+            Container(
+              padding: EdgeInsets.all(14.0),
+              alignment: Alignment.center,
+              child: TextField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: '摄像头离玻璃右边缘',
+                ),
+                controller: cameraRightDistController,
               ),
-              controller: cameraRightDistController,
             ),
-          ),
-          Container(
-            padding: EdgeInsets.all(8.0),
-            alignment: Alignment.center,
-            child: TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: '摄像头离玻璃左边缘',
+            Container(
+              padding: EdgeInsets.all(14.0),
+              alignment: Alignment.center,
+              child: TextField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: '摄像头离玻璃左边缘',
+                ),
+                controller: cameraLeftDistController,
               ),
-              controller: cameraLeftDistController,
             ),
-          ),
-          Container(
-            padding: EdgeInsets.all(8.0),
-            alignment: Alignment.center,
-            child: TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: '摄像头离车头',
+            Container(
+              padding: EdgeInsets.all(14.0),
+              alignment: Alignment.center,
+              child: TextField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: '摄像头离车头',
+                ),
+                controller: cameraFrontDistController,
               ),
-              controller: cameraFrontDistController,
             ),
-          ),
-          Container(
-            padding: EdgeInsets.all(8.0),
-            alignment: Alignment.center,
-            child: TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: '车前轮轴到车头',
+            Container(
+              padding: EdgeInsets.all(14.0),
+              alignment: Alignment.center,
+              child: TextField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: '车前轮轴到车头',
+                ),
+                controller: frontWheelFrontDistController,
               ),
-              controller: frontWheelFrontDistController,
             ),
-          ),
-        ],
+            Container(
+              padding: EdgeInsets.all(14.0),
+              alignment: Alignment.center,
+              child: Image.asset('assets/c-car-pos-front.png'),
+            ),
+            Container(
+              padding: EdgeInsets.all(14.0),
+              alignment: Alignment.center,
+              child: Image.asset('assets/c-car-pos-side.png'),
+            ),
+            Container(
+              padding: EdgeInsets.all(14.0),
+              alignment: Alignment.center,
+              child: Image.asset('assets/c-truck-pos-front.png'),
+            ),
+            Container(
+              padding: EdgeInsets.all(14.0),
+              alignment: Alignment.center,
+              child: Image.asset('assets/c-truck-pos-side.png'),
+            ),
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _setConfig,

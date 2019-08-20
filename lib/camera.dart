@@ -159,24 +159,24 @@ class _CameraPageState extends State<CameraPage> {
       'camera_pitch': curvePainter.pitch,
       'camera_yaw': curvePainter.yaw,
       'camera_roll': 0.0,
-      'camera_fov_w': curvePainter.opticalParam['fu'],
-      'camera_fov_h': curvePainter.opticalParam['fv'],
-      'camera_cu': curvePainter.opticalParam['cu'],
-      'camera_cv': curvePainter.opticalParam['cv'],
-      'roi_width': curvePainter.opticalParam['width'],
-      'roi_height': curvePainter.opticalParam['height'],
+      'camera_fov_w': curvePainter.opticalParam.fu,
+      'camera_fov_h': curvePainter.opticalParam.fv,
+      'camera_cu': curvePainter.opticalParam.cu,
+      'camera_cv': curvePainter.opticalParam.cv,
+      'roi_width': curvePainter.opticalParam.width,
+      'roi_height': curvePainter.opticalParam.height,
     });
 
     vm.addOrUpdate(vm.detectFlagFile, {
       'pitch': curvePainter.pitch,
       'yaw': curvePainter.yaw,
       'roll': 0.0,
-      'fu': curvePainter.opticalParam['fu'],
-      'fv': curvePainter.opticalParam['fv'],
-      'cu': curvePainter.opticalParam['cu'],
-      'cv': curvePainter.opticalParam['cv'],
-      'image_width': curvePainter.opticalParam['width'],
-      'image_height': curvePainter.opticalParam['height'],
+      'fu': curvePainter.opticalParam.fu,
+      'fv': curvePainter.opticalParam.fv,
+      'cu': curvePainter.opticalParam.cu,
+      'cv': curvePainter.opticalParam.cv,
+      'image_width': curvePainter.opticalParam.width,
+      'image_height': curvePainter.opticalParam.height,
     });
 
     Navigator.pop(context);
