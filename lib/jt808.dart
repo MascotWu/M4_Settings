@@ -65,9 +65,16 @@ class _Jt808ConfigState extends State<Jt808ConfigPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('JT808协议'),
-      ),
+      appBar: AppBar(title: Text('JT808协议'), actions: <Widget>[
+        // action button
+        FlatButton(
+          child: Text(
+            '保存',
+            style: TextStyle(color: Colors.white, fontSize: 16),
+          ),
+          onPressed: _setConfig,
+        ),
+      ]),
       body: ListView(
         padding: const EdgeInsets.all(8.0),
         children: <Widget>[
@@ -185,11 +192,6 @@ class _Jt808ConfigState extends State<Jt808ConfigPage> {
             },
           ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _setConfig,
-        tooltip: 'Increment',
-        child: Icon(Icons.done),
       ),
       resizeToAvoidBottomPadding: false,
     );

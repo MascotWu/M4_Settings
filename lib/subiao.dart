@@ -42,9 +42,16 @@ class _SuBiaoConfigState extends State<SuBiaoConfigPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('JT808协议'),
-      ),
+      appBar: AppBar(title: Text('苏标协议'), actions: <Widget>[
+        // action button
+        FlatButton(
+          child: Text(
+            '保存',
+            style: TextStyle(color: Colors.white, fontSize: 16),
+          ),
+          onPressed: _setConfig,
+        ),
+      ]),
       body: ListView(
         padding: const EdgeInsets.all(8.0),
         children: <Widget>[
@@ -88,11 +95,6 @@ class _SuBiaoConfigState extends State<SuBiaoConfigPage> {
             },
           ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _setConfig,
-        tooltip: 'Increment',
-        child: Icon(Icons.done),
       ),
       resizeToAvoidBottomPadding: false,
     );

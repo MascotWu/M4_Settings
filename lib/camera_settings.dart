@@ -58,9 +58,16 @@ class _CameraSettingsPageState extends State<CameraSettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('摄像头设置'),
-      ),
+      appBar: AppBar(title: Text('摄像头设置'), actions: <Widget>[
+        // action button
+        FlatButton(
+          child: Text(
+            '保存',
+            style: TextStyle(color: Colors.white, fontSize: 16),
+          ),
+          onPressed: _setConfig,
+        ),
+      ]),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
@@ -152,10 +159,6 @@ class _CameraSettingsPageState extends State<CameraSettingsPage> {
             ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _setConfig,
-        child: Icon(Icons.done),
       ),
       resizeToAvoidBottomPadding: false,
     );

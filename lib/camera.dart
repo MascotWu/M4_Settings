@@ -32,9 +32,16 @@ class _CameraPageState extends State<CameraPage> {
     curvePainter = LanePainter(
         point1: offset1, point2: offset2, point3: offset3, point4: offset4);
     return Scaffold(
-      appBar: AppBar(
-        title: Text('拍照'),
-      ),
+      appBar: AppBar(title: Text('摄像头调校'), actions: <Widget>[
+        // action button
+        FlatButton(
+          child: Text(
+            '保存',
+            style: TextStyle(color: Colors.white, fontSize: 16),
+          ),
+          onPressed: _setConfig,
+        ),
+      ]),
       body: Column(
         children: <Widget>[
           Container(
@@ -145,10 +152,6 @@ class _CameraPageState extends State<CameraPage> {
           ),
           _dmsImage ?? Text('')
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _setConfig,
-        child: Icon(Icons.done),
       ),
       resizeToAvoidBottomPadding: false,
     );
