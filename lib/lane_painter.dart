@@ -74,6 +74,7 @@ class LanePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    calculateFactorOnce(size);
     drawCenterCross(canvas, size);
     drawLane(canvas, size);
     drawVanishPoint(canvas, size);
@@ -93,8 +94,6 @@ class LanePainter extends CustomPainter {
     var v2 = cpr(point1, point2, point4);
 
     vp = (point3.scale(v2, v2) - point4.scale(v1, v1)) / (v2 - v1);
-
-    print('vp $vp');
 
     p.color = Colors.redAccent;
     p.strokeWidth = 1;
@@ -142,5 +141,19 @@ class LanePainter extends CustomPainter {
       maxWidth: size.width,
     );
     textPainter.paint(canvas, vp + Offset(10, 10));
+  }
+
+  var hasBeenCalculated = false;
+
+  calculateFactorOnce(Size size) {
+    if (hasBeenCalculated) return;
+    hasBeenCalculated = true;
+    var fovFactor = opticalParam.fu / opticalParam.cu;
+    opticalParam.width = size.width.round();
+    opticalParam.height = size.height.round();
+    opticalParam.cu = (size.width * 0.5).round();
+    opticalParam.cv = (size.height * 0.5).round();
+    opticalParam.fu = (fovFactor * opticalParam.cu).round();
+    opticalParam.fv = (fovFactor * opticalParam.cv).round();
   }
 }
