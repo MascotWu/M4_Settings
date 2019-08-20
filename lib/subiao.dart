@@ -108,5 +108,7 @@ class _SuBiaoConfigState extends State<SuBiaoConfigPage> {
     if (_resolution != null) vm.addOrUpdateResolutionForSuBiao(_resolution);
     vm.addOrUpdateAssociatedWithVideoOfSuBiao(_associatedWithVideo);
     vm.addOrUpdateUseRtData(_useRtData);
+
+    Navigator.pop(context);
   }
 }

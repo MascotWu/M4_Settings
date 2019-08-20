@@ -75,8 +75,10 @@ class _SpeedDataSource extends State<SpeedDataSourcePage> {
                       return Picker(
                           title: '请选择车型', options: createCarOptions());
                     }).then((result) {
-                  if (result != null)
+                  if (result != null) {
                     vm.addOrUpdate(vm.canInputJsonFile, result);
+                    Navigator.pop(context);
+                  }
                 });
               },
             ),
@@ -84,12 +86,14 @@ class _SpeedDataSource extends State<SpeedDataSourcePage> {
               title: Text("模拟信号"),
               onTap: () {
                 vm.addOrUpdate(vm.canInputJsonFile, analogConfig);
+                Navigator.pop(context);
               },
             ),
             ListTile(
               title: Text("GPS信号"),
               onTap: () {
                 vm.addOrUpdate(vm.canInputJsonFile, gpsConfig);
+                Navigator.pop(context);
               },
             ),
           ],

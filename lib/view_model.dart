@@ -232,8 +232,6 @@ class ViewModel {
 
   double volume;
 
-  var _volume = new BehaviorSubject<double>();
-
   getVolume() {
     var message = Uint8List(4);
     var byteData = ByteData.view(message.buffer);
@@ -241,7 +239,6 @@ class ViewModel {
     byteData.setUint32(0, command.length);
     sock.add(message);
     sock.add(utf8.encode(command));
-    return _volume;
   }
 
   void setVolume(volume) {
@@ -326,7 +323,6 @@ class ViewModel {
       }
     } else if (socketMessage['type'] == 'get_system_volume_ok') {
       volume = socketMessage['result'].toDouble();
-      _volume.add(socketMessage['result'].toDouble());
     }
   }
 }

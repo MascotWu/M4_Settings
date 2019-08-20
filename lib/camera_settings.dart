@@ -38,6 +38,8 @@ class _CameraSettingsPageState extends State<CameraSettingsPage> {
     };
     vm.addOrUpdate(vm.detectFlagFile, configurations);
     vm.addOrUpdate(vm.macroConfigFile, configurations);
+
+    Navigator.pop(context);
   }
 
   final carWidthController = TextEditingController(text: '2.2');

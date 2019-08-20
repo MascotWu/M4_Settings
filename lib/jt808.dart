@@ -22,7 +22,7 @@ class _Jt808ConfigState extends State<Jt808ConfigPage> {
   TextEditingController terminalIdController =
       new TextEditingController(text: 'METI231');
 
-  bool _associatedWithVideo;
+  bool _associatedWithVideo = false;
 
   TextEditingController ignoreSpeedLimitedController;
 
@@ -56,9 +56,10 @@ class _Jt808ConfigState extends State<Jt808ConfigPage> {
 
     _ignoreSpeedLimitation =
         vm.mProtocolConfigJsonFile.config['ignore_spdth'] ?? false;
-    _associatedWithVideo = vm.mProtocolConfigJsonFile.config['reg_param']
-            ['associated_video'] ??
-        false;
+    if (vm.mProtocolConfigJsonFile.config['reg_param'] != null)
+      _associatedWithVideo = vm.mProtocolConfigJsonFile.config['reg_param']
+              ['associated_video'] ??
+          false;
   }
 
   @override
@@ -210,5 +211,7 @@ class _Jt808ConfigState extends State<Jt808ConfigPage> {
     vm.addOrUpdateDeviceIdOfJT808(deviceIdOfJT808Controller.text);
     vm.addOrUpdatePlateNumber(plateNumberController.text);
     vm.addOrUpdateTerminalId(terminalIdController.text);
+
+    Navigator.pop(context);
   }
 }

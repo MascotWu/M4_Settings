@@ -27,6 +27,12 @@ class _HomePageState extends State<HomePage> {
   double _volume;
 
   @override
+  void initState() {
+    _volume = vm.volume ?? 0.0;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     vm.connectionStatus.listen(onConnectionStatusChanged);
     return Scaffold(
@@ -84,9 +90,6 @@ class _HomePageState extends State<HomePage> {
           leading: FlutterLogo(),
           title: Text('音量'),
           onTap: () {
-            setState(() {
-              _volume = vm.volume;
-            });
             return showDialog<double>(
                 context: context,
                 builder: (BuildContext context) {
@@ -98,6 +101,7 @@ class _HomePageState extends State<HomePage> {
                       print({'volume': volume});
                       if (volume != null) {
                         vm.setVolume(volume);
+                        vm.volume = volume;
                         setState(() {
                           _volume = volume;
                         });
