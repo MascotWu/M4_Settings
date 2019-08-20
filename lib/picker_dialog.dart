@@ -14,15 +14,20 @@ class PickerState extends State<Picker> {
   @override
   Widget build(BuildContext context) {
     return SimpleDialog(
-        title: Text(widget.title),
+        title: Container(
+          padding: EdgeInsets.only(bottom: 16),
+          child: Text(widget.title),
+        ),
         children: widget.options.map(
           (option) {
-            return new SimpleDialogOption(
-              onPressed: () {
-                Navigator.pop(context, option['value'] ?? option['title']);
-              },
-              child: Text(option['title']),
-            );
+            return Container(
+                padding: EdgeInsets.symmetric(vertical: 5.0),
+                child: SimpleDialogOption(
+                  onPressed: () {
+                    Navigator.pop(context, option['value'] ?? option['title']);
+                  },
+                  child: Text(option['title']),
+                ));
           },
         ).toList());
   }
