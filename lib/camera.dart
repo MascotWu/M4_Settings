@@ -18,10 +18,10 @@ class _CameraPageState extends State<CameraPage> {
     vm = ViewModel.get();
   }
 
-  Offset offset1 = Offset(200, 60);
-  Offset offset2 = Offset(180, 150);
-  Offset offset3 = Offset(220, 90);
-  Offset offset4 = Offset(250, 180);
+  Offset offset1 = Offset(140, 120);
+  Offset offset2 = Offset(100, 180);
+  Offset offset3 = Offset(200, 120);
+  Offset offset4 = Offset(240, 180);
 
   int pointSelected;
 

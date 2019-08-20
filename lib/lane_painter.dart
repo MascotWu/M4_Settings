@@ -10,10 +10,11 @@ class LanePainter extends CustomPainter {
 
   final sizeOfCross = 10;
 
-  Offset point1 = Offset(100, 100);
-  Offset point2 = Offset(200, 140);
-  Offset point3 = Offset(100, 150);
-  Offset point4 = Offset(200, 140);
+  Offset point1;
+  Offset point2;
+  Offset point3;
+  Offset point4;
+
   Offset vp;
 
   var yaw;

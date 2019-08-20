@@ -47,6 +47,8 @@ class _ConnectionPageState extends State<ConnectionPage> {
   onConnectionStatusChanged(bool isConnected) {
     if (isConnected) {
       subscription.cancel();
+      Navigator.pop(context);
+
       Navigator.push(
           context,
           new MaterialPageRoute(
