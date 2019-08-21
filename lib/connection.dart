@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import 'main.dart';
+import 'home.dart';
 import 'view_model.dart';
 
 class ConnectionPage extends StatefulWidget {
@@ -29,9 +29,25 @@ class _ConnectionPageState extends State<ConnectionPage> {
         body: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-          Text('请将手机连接到目标设备的热点上，然后点击"连接"按钮'),
+          Container(
+              padding: EdgeInsets.all(40),
+              child: Image.asset(
+                'assets/ic_launcher.png',
+                scale: 1.5,
+              )),
+          Container(
+              padding: EdgeInsets.only(bottom: 180),
+              child: Center(
+                child: Text(
+                  '请将手机连接到目标设备的热点上\n然后点击"连接"按钮',
+                  style: TextStyle(color: Colors.black54, height: 1.3),
+                ),
+              )),
           FlatButton(
             child: Text(connectionButtonText),
+            padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 78),
+            color: Colors.blueAccent,
+            textColor: Colors.white,
             onPressed: () {
               vm.waitingForDeviceToConnect();
               vm.tellDeviceTheIpOfPhone();
@@ -40,7 +56,14 @@ class _ConnectionPageState extends State<ConnectionPage> {
                 connectionButtonText = '正在连接';
               });
             },
-          )
+          ),
+          Container(
+            padding: EdgeInsets.only(top: 30),
+            child: Text(
+              '取消登录',
+              style: TextStyle(color: Colors.black26, height: 1.3),
+            ),
+          ),
         ]));
   }
 
