@@ -30,12 +30,6 @@ class _ConnectionPageState extends State<ConnectionPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
           Container(
-              padding: EdgeInsets.all(40),
-              child: Image.asset(
-                'assets/ic_launcher.png',
-                scale: 1.5,
-              )),
-          Container(
               padding: EdgeInsets.only(bottom: 180),
               child: Center(
                 child: Text(

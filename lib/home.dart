@@ -37,10 +37,6 @@ class _HomePageState extends State<HomePage> {
     vm.connectionStatus.listen(onConnectionStatusChanged);
     return Scaffold(
       appBar: AppBar(
-        leading: Container(
-          padding: EdgeInsets.symmetric(vertical: 13),
-          child: Image.asset('assets/ic_small.png'),
-        ),
         title: Text(widget.title),
         actions: <Widget>[
           FlatButton(
