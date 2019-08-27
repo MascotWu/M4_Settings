@@ -42,22 +42,18 @@ class _CameraPageState extends State<CameraPage> {
           onPressed: _setConfig,
         ),
       ]),
-      body: Column(
+      body: SingleChildScrollView(child: Column(
         children: <Widget>[
-          Container(
-            padding: EdgeInsets.all(8.0),
-            alignment: Alignment.center,
-            child: FlatButton(
-              child: Text("ADAS摄像头拍照"),
+          ListTile(title: Text('ADAS摄像头'),
+              trailing: FlatButton(
+                  child: Icon(Icons.camera_alt, color: Colors.blue),
               onPressed: () {
                 vm.takePictureOfAdas().listen((picture) {
                   setState(() {
                     _adasImage = Image.memory(picture);
                   });
                 });
-              },
-            ),
-          ),
+              })),
           Container(
               padding: EdgeInsets.all(8.0),
               height: 250,
@@ -136,23 +132,24 @@ class _CameraPageState extends State<CameraPage> {
                   ),
                 ],
               )),
+          ListTile(title: Text("DMS摄像头拍照"),
+              trailing: FlatButton(
+                  child: Icon(Icons.camera_alt, color: Colors.blue,),
+                  onPressed: () {
+                    vm.takePictureOfDms().listen((picture) {
+                      setState(() {
+                        _dmsImage = Image.memory(picture);
+                      });
+                    });
+                  })),
           Container(
-            padding: EdgeInsets.all(8.0),
-            alignment: Alignment.center,
-            child: FlatButton(
-              child: Text("DMS摄像头拍照"),
-              onPressed: () {
-                vm.takePictureOfDms().listen((picture) {
-                  setState(() {
-                    _dmsImage = Image.memory(picture);
-                  });
-                });
-              },
-            ),
-          ),
-          _dmsImage ?? Text('')
+              padding: EdgeInsets.all(8.0),
+              height: 250,
+              alignment: Alignment.center,
+              child:
+              _dmsImage ?? Text(''))
         ],
-      ),
+      )),
       resizeToAvoidBottomPadding: false,
     );
   }
