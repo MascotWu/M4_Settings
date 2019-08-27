@@ -55,7 +55,7 @@ class CanInputJsonFile extends ConfigurationFile {
 
   @override
   generateFileContent() {
-    return jsonEncode(config);
+    return JsonEncoder.withIndent('\t').convert(config);
   }
 
   @override
@@ -86,7 +86,7 @@ class MProtocolJsonFile extends ConfigurationFile {
 
   @override
   generateFileContent() {
-    return jsonEncode(config);
+    return JsonEncoder.withIndent('\t').convert(config);
   }
 
   @override
@@ -101,7 +101,7 @@ class MProtocolConfigJsonFile extends ConfigurationFile {
 
   @override
   generateFileContent() {
-    return jsonEncode(config);
+    return JsonEncoder.withIndent('\t').convert(config);
   }
 
   @override

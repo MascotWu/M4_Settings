@@ -32,6 +32,8 @@ class ViewModel {
   }
 
   addOrUpdateSpeed(int speed) {
+    if (!canInputJsonFile.config.containsKey('main'))
+      canInputJsonFile.config['main'] = {};
     canInputJsonFile.config['main']['fake_speed'] = speed;
     push(canInputJsonFile);
   }
@@ -44,8 +46,8 @@ class ViewModel {
   deleteSpeed() {
     if (canInputJsonFile.config['main'].containsKey('fake_speed')) {
       canInputJsonFile.config['main'].remove('fake_speed');
-      push(canInputJsonFile);
     }
+      push(canInputJsonFile);
   }
 
   var _adasPicture = new BehaviorSubject<Uint8List>();
