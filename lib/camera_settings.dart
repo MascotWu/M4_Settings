@@ -25,7 +25,10 @@ class _CameraSettingsPageState extends State<CameraSettingsPage> {
 
     if (double.tryParse(carWidthController.text) == null ||
         double.tryParse(cameraRightDistController.text) == null ||
-        double.tryParse(cameraLeftDistController.text) == null) {
+        double.tryParse(cameraLeftDistController.text) == null ||
+        double.tryParse(cameraHeightController.text) == null ||
+        double.tryParse(cameraFrontDistController.text) == null ||
+        double.tryParse(frontWheelFrontDistController.text) == null) {
       Fluttertoast.showToast(
         msg: "所有数据必须是整数或者小数",
         toastLength: Toast.LENGTH_SHORT,
@@ -36,20 +39,28 @@ class _CameraSettingsPageState extends State<CameraSettingsPage> {
     coordinate.carWidth = double.parse(carWidthController.text);
     coordinate.cameraRightDist = double.parse(cameraRightDistController.text);
     coordinate.cameraLeftDist = double.parse(cameraLeftDistController.text);
+    var cameraFrontDist = double.parse(cameraFrontDistController.text);
+    var frontWheelFrontDist = double.parse(frontWheelFrontDistController.text);
 
     var glassWidth = coordinate.cameraLeftDist + coordinate.cameraRightDist;
     var glassMargin = (coordinate.carWidth - glassWidth) * 0.5;
     var leftDist = coordinate.cameraLeftDist + glassMargin;
     var rightDist = coordinate.cameraRightDist + glassMargin;
 
-    var configurations = {
+    vm.addOrUpdate(vm.detectFlagFile, {
+      "camera_height": cameraHeightController.text,
+      "left_vehicle_edge_dist": leftDist.toString(),
+      "right_vehicle_edge_dist": rightDist.toString(),
+      "front_vehicle_edge_dist": cameraFrontDist,
+      "front_wheel_camera_dist": cameraFrontDist - frontWheelFrontDist
+    });
+
+    vm.addOrUpdate(vm.macroConfigFile, {
       "camera_height": cameraHeightController.text,
       "left_dist_to_camera": leftDist.toString(),
       "right_dist_to_camera": rightDist.toString(),
       "front_dist_to_camera": cameraFrontDistController.text
-    };
-    vm.addOrUpdate(vm.detectFlagFile, configurations);
-    vm.addOrUpdate(vm.macroConfigFile, configurations);
+    });
 
     Navigator.pop(context);
   }

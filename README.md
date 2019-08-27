@@ -1,14 +1,15 @@
-设计文档
-信号选择
-选择速度信号的来源
-CAN信号
-模拟
-GPS
-实现方式：
+### 信号选择
+#### 选择速度信号的来源
+信号源有三种
+* CAN信号
+* 模拟
+* GPS
+
+**实现方式**
+
 写/sdcard/run/can_input.json
 
-
-CAN信号车型表：
+**CAN信号车型表**
 
 把can_input.json里面对应的speed left_turn right_turn替换成对应车型的。
 
@@ -67,29 +68,33 @@ CAN信号车型表：
             "polarity": 1
         }
 
+#### 选择信号的波特率
+波特率有两种
+* 500k
+* 250k
 
+**实现方式**
 
-选择信号的波特率
-500k
-250k
-实现方式
-/sdcard/run/can_input.json
+写文件 /sdcard/run/can_input.json
+
 修改.main.baudrate
 类型：字符串
 可能的值：500k 250k
-摄像头
-3.1 设置参数
 
-参数						默认值
-​
-车宽							2.2
-摄像头高度					1.5
-摄像头离玻璃右边缘 ① 			0.8
-摄像头离玻璃左边缘 ② 			0.8
-摄像头离车头 ③ 				0.1
-车前轮轴到车头 ④ 				1.5
+### 摄像头
 
-实现方式
+#### 3.1 设置参数
+参数 | 默认值 
+:-: | :-: 
+车宽| 2.2 
+摄像头高度|1.5
+摄像头离玻璃右边缘 ①|0.8
+摄像头离玻璃左边缘 ②|0.8
+摄像头离车头 ③|0.1
+车前轮轴到车头 ④|1.5
+
+**实现方式**
+
 修改以下两个文件，填写的时候需要做一个简单的计算：
 车辆配置文件/sdcard/run/macros_config.txt
 camera_height
@@ -99,10 +104,10 @@ front_dist_to_camera
 
 车道配置文件/sdcard/run/detect.flag
 camera_height
-    		left_vehicle_edge_dist
-    		right_vehicle_edge_dist
-front_wheel_camera_dist
-front_vehicle_edge_dist
+left_vehicle_edge_dist
+right_vehicle_edge_dist
+front_wheel_camera_dist 摄像头到车头 - 车前轮轴到车头
+front_vehicle_edge_dist 摄像头到车头
 
 3.2标定
 标定方式：灭点标定
