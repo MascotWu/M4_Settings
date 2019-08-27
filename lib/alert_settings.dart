@@ -19,7 +19,7 @@ class AlertSettingsState extends State<AlertSettingsPage> {
 
     _tsr = vm.detectFlagFile.config['enable_tsr'] == 'true' ?? false;
 
-    _pcw = vm.detectFlagFile.config['enable_pcw'] == 'true' ?? false;
+    _pcw = vm.detectFlagFile.config['enable_ped'] == 'true' ?? false;
 
     _alertItemEyeclose1 =
         vm.dmsSetupFlagFile.config['alert_item_eyeclose1'] == 'true' ?? false;
@@ -170,7 +170,7 @@ class AlertSettingsState extends State<AlertSettingsPage> {
                   _pcw = value;
                 });
                 vm.addOrUpdate(
-                    vm.detectFlagFile, {'enable_pcw': value.toString()});
+                    vm.detectFlagFile, {'enable_ped': value.toString()});
               },
               secondary: const Icon(Icons.warning),
             ),
