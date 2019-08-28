@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:gbk2utf8/gbk2utf8.dart';
+
 import 'convert.dart';
 
 abstract class ConfigurationFile {
@@ -7,14 +9,14 @@ abstract class ConfigurationFile {
 
   Map<String, dynamic> config = {};
 
-  setConfig(String content);
+  setConfig(List<int> content);
 
   generateFileContent();
 
   void handle(socketMessage) {
     if (socketMessage['result']['path'] == path) {
       setConfig(
-          String.fromCharCodes(base64Decode(socketMessage['result']['data'])));
+          base64Decode(socketMessage['result']['data']));
     }
   }
 }
@@ -25,12 +27,12 @@ class MacrosConfigTextFile extends ConfigurationFile {
 
   @override
   generateFileContent() {
-    return gflagEncode(config);
+    return utf8.encode(gflagEncode(config));
   }
 
   @override
-  setConfig(String content) {
-    return config = gflagDecode(content);
+  setConfig(List<int> content) {
+    return config = gflagDecode(utf8.decode(content));
   }
 }
 
@@ -40,12 +42,12 @@ class DetectFlagFile extends ConfigurationFile {
 
   @override
   generateFileContent() {
-    return gflagEncode(config);
+    return utf8.encode(gflagEncode(config));
   }
 
   @override
-  setConfig(String content) {
-    return config = gflagDecode(content);
+  setConfig(List<int> content) {
+    return config = gflagDecode(utf8.decode(content));
   }
 }
 
@@ -55,12 +57,12 @@ class CanInputJsonFile extends ConfigurationFile {
 
   @override
   generateFileContent() {
-    return JsonEncoder.withIndent('\t').convert(config);
+    return utf8.encode(JsonEncoder.withIndent('\t').convert(config));
   }
 
   @override
-  setConfig(String content) {
-    config = jsonDecode(content);
+  setConfig(List<int> content) {
+    config = jsonDecode(utf8.decode(content));
     config['main'] ??= {};
   }
 }
@@ -71,12 +73,12 @@ class DmsSetupFlagFile extends ConfigurationFile {
 
   @override
   generateFileContent() {
-    return gflagEncode(config);
+    return utf8.encode(gflagEncode(config));
   }
 
   @override
-  setConfig(String content) {
-    return config = gflagDecode(content);
+  setConfig(List<int> content) {
+    return config = gflagDecode(utf8.decode(content));
   }
 }
 
@@ -86,12 +88,12 @@ class MProtocolJsonFile extends ConfigurationFile {
 
   @override
   generateFileContent() {
-    return JsonEncoder.withIndent('\t').convert(config);
+    return utf8.encode(JsonEncoder.withIndent('\t').convert(config));
   }
 
   @override
-  setConfig(String content) {
-    return config = jsonDecode(content);
+  setConfig(List<int> content) {
+    return config = jsonDecode(utf8.decode(content));
   }
 }
 
@@ -101,11 +103,11 @@ class MProtocolConfigJsonFile extends ConfigurationFile {
 
   @override
   generateFileContent() {
-    return JsonEncoder.withIndent('\t').convert(config);
+    return gbk.encode(JsonEncoder.withIndent('\t').convert(config));
   }
 
   @override
-  setConfig(String content) {
-    config = jsonDecode(content);
+  setConfig(List<int> content) {
+    config = jsonDecode(gbk.decode(content));
   }
 }

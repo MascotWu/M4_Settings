@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'picker_dialog.dart';
 import 'view_model.dart';
@@ -11,23 +14,23 @@ class _Jt808ConfigState extends State<Jt808ConfigPage> {
   ViewModel vm;
 
   TextEditingController ipController =
-      new TextEditingController(text: '192.168.43.71');
+  new TextEditingController();
 
   TextEditingController portController =
-      new TextEditingController(text: '3411');
+  new TextEditingController();
 
   TextEditingController deviceIdOfJT808Controller =
-      new TextEditingController(text: '009381374186');
+  new TextEditingController();
 
   TextEditingController terminalIdController =
-      new TextEditingController(text: 'METI231');
+  new TextEditingController();
 
   bool _associatedWithVideo = false;
 
   TextEditingController ignoreSpeedLimitedController;
 
   TextEditingController plateNumberController =
-      new TextEditingController(text: '沪BXIA97');
+  new TextEditingController();
 
   bool _ignoreSpeedLimitation;
 
@@ -56,10 +59,44 @@ class _Jt808ConfigState extends State<Jt808ConfigPage> {
 
     _ignoreSpeedLimitation =
         vm.mProtocolConfigJsonFile.config['ignore_spdth'] ?? false;
-    if (vm.mProtocolConfigJsonFile.config['reg_param'] != null)
-      _associatedWithVideo = vm.mProtocolConfigJsonFile.config['reg_param']
-              ['associated_video'] ??
-          false;
+
+    vm.mProtocolConfigJsonFile.config['reg_param'] ??= {};
+    vm.mProtocolConfigJsonFile.config['server'] ??= {};
+    vm.mProtocolConfigJsonFile.config['resolution'] ??= {};
+
+    ipController.text = vm.mProtocolConfigJsonFile.config['server']['ipaddr'];
+    portController.text = vm.mProtocolConfigJsonFile.config['server']['port'];
+
+    vm.mProtocolConfigJsonFile.config['server']['heartbeat_period'] ??= 30;
+
+    vm.mProtocolConfigJsonFile.config['reg_param']['province_id'] ??= 0;
+    vm.mProtocolConfigJsonFile.config['reg_param']['city_id'] ??= 0;
+    vm.mProtocolConfigJsonFile.config['reg_param']['vendor'] ??= 'MNEYE';
+    vm.mProtocolConfigJsonFile.config['reg_param']['product'] ??=
+    "MINIEYE_ADAS/DSM";
+    var random = Random(DateTime
+        .now()
+        .millisecondsSinceEpoch);
+
+    vm.mProtocolConfigJsonFile.config['reg_param']['dev_id'] ??=
+        random.nextInt(pow(36, 3)).toRadixString(36).toUpperCase() +
+            random.nextInt(pow(36, 4)).toRadixString(36).toUpperCase();
+
+    terminalIdController.text =
+    vm.mProtocolConfigJsonFile.config['reg_param']['dev_id'];
+
+    deviceIdOfJT808Controller.text =
+    vm.mProtocolConfigJsonFile.config['reg_param']['reg_id'];
+
+    _color = vm.mProtocolConfigJsonFile.config['reg_param']['plate_color'];
+    plateNumberController.text =
+    vm.mProtocolConfigJsonFile.config['reg_param']['car_num'];
+
+    _associatedWithVideo = vm.mProtocolConfigJsonFile.config['reg_param']
+    ['associated_video'] ?? false;
+    _color = vm.mProtocolConfigJsonFile.config['reg_param']['plate_color'];
+
+    _resolution = vm.mProtocolConfigJsonFile.config['resolution']['adas_video'];
   }
 
   @override
@@ -198,13 +235,49 @@ class _Jt808ConfigState extends State<Jt808ConfigPage> {
   }
 
   void _setConfig() {
+    if (_associatedWithVideo && _resolution == null) {
+      Fluttertoast.showToast(
+        msg: "请选择附件分辨率",
+        toastLength: Toast.LENGTH_SHORT,
+        timeInSecForIos: 1,
+      );
+      return;
+    }
+
+    if (_color == null || plateNumberController.text.isEmpty) {
+      Fluttertoast.showToast(
+        msg: "请填写车牌号并选择车牌颜色",
+        toastLength: Toast.LENGTH_SHORT,
+        timeInSecForIos: 1,
+      );
+      return;
+    }
+
+    if (ipController.text.isEmpty || portController.text.isEmpty) {
+      Fluttertoast.showToast(
+        msg: "请填写ip地址以及端口号",
+        toastLength: Toast.LENGTH_SHORT,
+        timeInSecForIos: 1,
+      );
+      return;
+    }
+
+    if (terminalIdController.text.isEmpty) {
+      Fluttertoast.showToast(
+        msg: "请填写终端id",
+        toastLength: Toast.LENGTH_SHORT,
+        timeInSecForIos: 1,
+      );
+      return;
+    }
+
     if (vm.mProtocolJsonFile.config['protocol'] != 'jt808') {
       vm.resetMProtocolConfigJsonFile('jt808');
       vm.addOrUpdate(vm.mProtocolJsonFile, {'protocol': 'jt808'});
       vm.push(vm.mProtocolJsonFile);
     }
 
-    if (_color != null) vm.addOrUpdatePlateColor(_color);
+    vm.addOrUpdatePlateColor(_color);
     if (_resolution != null) vm.addOrUpdateResolutionForJt808(_resolution);
     vm.addOrUpdateAssociatedWithVideoOfJT808(_associatedWithVideo);
     vm.addOrUpdateIgnoreSpeedLimited(_ignoreSpeedLimitation);

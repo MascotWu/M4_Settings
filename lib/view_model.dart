@@ -100,7 +100,7 @@ class ViewModel {
       "type": "write_file",
       "data": {
         "path": file.path,
-        "data": base64Encode(utf8.encode(file.generateFileContent()))
+        "data": base64Encode(file.generateFileContent())
       }
     });
 
