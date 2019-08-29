@@ -267,8 +267,26 @@ camera: adas, driver
 	}
 }
 
+9.调试命令
 
-9.附件
+start adas
+stop adas
+/system/bin/adas.sh
+ps |grep split_detect
+
+# DSM: Driver Status Monitor
+# DMS: Driver Monitor System
+start dsm
+stop dsm
+/system/bin/dsm.sh
+ps |grep dms
+
+rm /sdcard/run/can_input.json
+rm /sdcard/run/detect.flag
+rm /sdcard/run/dms_setup.flag
+rm /sdcard/run/macros_config.txt
+
+10.附件
 can_input.json
 {
 
