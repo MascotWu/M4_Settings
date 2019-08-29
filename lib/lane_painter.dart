@@ -4,15 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/view_model.dart';
 
 class OpticalParam {
-  double cu = 677.75209;
-  double cv = 347.364193;
-  double fu = 1478.09764;
-  double fv = 1478.09764;
-
-//  double cu = 640;
-//  double cv = 360;
-//  double fu = 1458;
-//  double fv = 1458;
+  double cu = 640;
+  double cv = 360;
+  double fu = 1458;
+  double fv = 1458;
   double height = 720;
   double width = 1280;
 }
@@ -134,6 +129,13 @@ class LanePainter extends CustomPainter {
 
     yaw = (atan2(opticalParam.cu - vp.dx, opticalParam.fu) * 180 / pi)
         .toStringAsFixed(1);
+
+    ViewModel
+        .get()
+        .pitch = pitch;
+    ViewModel
+        .get()
+        .yaw = yaw;
   }
 
   cpr(Offset a, Offset b, Offset c) {

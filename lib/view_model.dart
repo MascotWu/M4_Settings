@@ -24,7 +24,7 @@ class ViewModel {
     });
   }
 
-  static get() {
+  static ViewModel get() {
     return vm;
   }
 
@@ -213,6 +213,9 @@ class ViewModel {
       mProtocolConfigJsonFile.config = {'protocol': {}, 'resolution': {}};
   }
 
+  String yaw;
+  String pitch;
+
   addOrUpdateResolutionForSuBiao(String resolution) {
     mProtocolConfigJsonFile.config['resolution'] ??= {};
     mProtocolConfigJsonFile.config['resolution']['adas_video'] = resolution;
@@ -317,6 +320,7 @@ class ViewModel {
   }
 
   OpticalParam opticalParam = OpticalParam();
+  OpticalParam OriginalOpticalParam = OpticalParam();
   bool hasBeenCalculated = false;
 
   onCommand(String command) {
@@ -339,12 +343,21 @@ class ViewModel {
     } else if (socketMessage['type'] == 'get_system_volume_ok') {
       volume = socketMessage['result'].toDouble();
     } else if (socketMessage['type'] == 'get_camera_params_ok') {
+      hasBeenCalculated = false;
       opticalParam.cu = socketMessage['result']['cu'];
       opticalParam.cv = socketMessage['result']['cv'];
       opticalParam.fu = socketMessage['result']['fu'];
       opticalParam.fv = socketMessage['result']['fv'];
       opticalParam.width = socketMessage['result']['width'].toDouble();
       opticalParam.height = socketMessage['result']['height'].toDouble();
+
+      OriginalOpticalParam.cu = socketMessage['result']['cu'];
+      OriginalOpticalParam.cv = socketMessage['result']['cv'];
+      OriginalOpticalParam.fu = socketMessage['result']['fu'];
+      OriginalOpticalParam.fv = socketMessage['result']['fv'];
+      OriginalOpticalParam.width = socketMessage['result']['width'].toDouble();
+      OriginalOpticalParam.height =
+          socketMessage['result']['height'].toDouble();
     }
   }
 }

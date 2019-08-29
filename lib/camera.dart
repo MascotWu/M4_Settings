@@ -163,29 +163,37 @@ class _CameraPageState extends State<CameraPage> {
   void _setConfig() {
     OpticalParam opticalParam = ViewModel
         .get()
-        .opticalParam;
+        .OriginalOpticalParam;
     vm.addOrUpdate(vm.macroConfigFile, {
-      'camera_pitch': curvePainter.pitch,
-      'camera_yaw': curvePainter.yaw,
+      'camera_pitch': ViewModel
+          .get()
+          .pitch,
+      'camera_yaw': ViewModel
+          .get()
+          .yaw,
       'camera_roll': 0.0,
       'camera_fov_w': opticalParam.fu,
       'camera_fov_h': opticalParam.fv,
       'camera_cu': opticalParam.cu,
       'camera_cv': opticalParam.cv,
-      'roi_width': opticalParam.width,
-      'roi_height': opticalParam.height,
+      'roi_width': opticalParam.width.round(),
+      'roi_height': opticalParam.height.round(),
     });
 
     vm.addOrUpdate(vm.detectFlagFile, {
-      'pitch': curvePainter.pitch,
-      'yaw': curvePainter.yaw,
+      'pitch': ViewModel
+          .get()
+          .pitch,
+      'yaw': ViewModel
+          .get()
+          .yaw,
       'roll': 0.0,
       'fu': opticalParam.fu,
       'fv': opticalParam.fv,
       'cu': opticalParam.cu,
       'cv': opticalParam.cv,
-      'image_width': opticalParam.width,
-      'image_height': opticalParam.height,
+      'image_width': opticalParam.width.round(),
+      'image_height': opticalParam.height.round(),
     });
 
     Navigator.pop(context);
