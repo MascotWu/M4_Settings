@@ -43,7 +43,6 @@ class _ConnectionPageState extends State<ConnectionPage> {
             color: Colors.blueAccent,
             textColor: Colors.white,
             onPressed: () {
-              vm.waitingForDeviceToConnect();
               vm.tellDeviceTheIpOfPhone();
 
               setState(() {

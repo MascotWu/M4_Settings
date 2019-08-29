@@ -5,6 +5,8 @@ import 'dart:typed_data';
 import 'package:flutter_app/configurations.dart';
 import 'package:rxdart/rxdart.dart';
 
+import 'lane_painter.dart';
+
 class ViewModel {
   var _connectionStatus = new BehaviorSubject<bool>();
 
@@ -284,8 +286,6 @@ class ViewModel {
     });
   }
 
-  waitingForDeviceToConnect() {}
-
   deviceConnected(Socket socket) {
     print("连接建立");
     _connectionStatus.add(true);
@@ -304,7 +304,20 @@ class ViewModel {
     getFiles(socket, mProtocolJsonFile);
 
     getVolume();
+    getCameraParams();
   }
+
+  void getCameraParams() {
+    var message = Uint8List(4);
+    var byteData = ByteData.view(message.buffer);
+    var command = jsonEncode({"type": "get_camera_params"});
+    byteData.setUint32(0, command.length);
+    sock.add(message);
+    sock.add(utf8.encode(command));
+  }
+
+  OpticalParam opticalParam = OpticalParam();
+  bool hasBeenCalculated = false;
 
   onCommand(String command) {
     var socketMessage = jsonDecode(command);
@@ -325,6 +338,13 @@ class ViewModel {
       }
     } else if (socketMessage['type'] == 'get_system_volume_ok') {
       volume = socketMessage['result'].toDouble();
+    } else if (socketMessage['type'] == 'get_camera_params_ok') {
+      opticalParam.cu = socketMessage['result']['cu'];
+      opticalParam.cv = socketMessage['result']['cv'];
+      opticalParam.fu = socketMessage['result']['fu'];
+      opticalParam.fv = socketMessage['result']['fv'];
+      opticalParam.width = socketMessage['result']['width'].toDouble();
+      opticalParam.height = socketMessage['result']['height'].toDouble();
     }
   }
 }

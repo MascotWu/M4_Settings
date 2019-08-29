@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/view_model.dart';
 
 class OpticalParam {
   double cu = 677.75209;
@@ -18,8 +19,6 @@ class OpticalParam {
 
 class LanePainter extends CustomPainter {
   LanePainter({this.point1, this.point2, this.point3, this.point4});
-
-  OpticalParam opticalParam = OpticalParam();
 
   // to prevent creating Paint Object frequently
   final p = Paint();
@@ -64,6 +63,9 @@ class LanePainter extends CustomPainter {
   drawCenterCross(Canvas canvas, Size size) {
     p.color = Colors.blueAccent;
     p.strokeWidth = 1;
+    OpticalParam opticalParam = ViewModel
+        .get()
+        .opticalParam;
     Offset center = Offset(opticalParam.cu, opticalParam.cv);
     canvas.drawLine(
       Offset(center.dx - sizeOfCross, center.dy),
@@ -117,6 +119,9 @@ class LanePainter extends CustomPainter {
       p,
     );
 
+    OpticalParam opticalParam = ViewModel
+        .get()
+        .opticalParam;
     var oc = {'x': opticalParam.cu, 'y': opticalParam.cv};
 
     pitch = (atan2(
@@ -151,11 +156,17 @@ class LanePainter extends CustomPainter {
     textPainter.paint(canvas, vp + Offset(10, 10));
   }
 
-  var hasBeenCalculated = false;
 
   calculateFactorOnce(Size size) {
-    if (hasBeenCalculated) return;
-    hasBeenCalculated = true;
+    if (ViewModel
+        .get()
+        .hasBeenCalculated) return;
+    ViewModel
+        .get()
+        .hasBeenCalculated = true;
+    OpticalParam opticalParam = ViewModel
+        .get()
+        .opticalParam;
 
     var fovFactor = opticalParam.fu / opticalParam.cu;
 
