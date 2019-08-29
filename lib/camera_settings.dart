@@ -163,16 +163,6 @@ class _CameraSettingsPageState extends State<CameraSettingsPage> {
             Container(
               padding: EdgeInsets.all(14.0),
               alignment: Alignment.center,
-              child: Image.asset('assets/c-car-pos-front.png'),
-            ),
-            Container(
-              padding: EdgeInsets.all(14.0),
-              alignment: Alignment.center,
-              child: Image.asset('assets/c-car-pos-side.png'),
-            ),
-            Container(
-              padding: EdgeInsets.all(14.0),
-              alignment: Alignment.center,
               child: Image.asset('assets/c-truck-pos-front.png'),
             ),
             Container(
