@@ -3,12 +3,17 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 class OpticalParam {
-  var cu = 640;
-  var cv = 360;
-  var fu = 1458;
-  var fv = 1458;
-  var height = 720;
-  var width = 1280;
+  double cu = 677.75209;
+  double cv = 347.364193;
+  double fu = 1478.09764;
+  double fv = 1478.09764;
+
+//  double cu = 640;
+//  double cv = 360;
+//  double fu = 1458;
+//  double fv = 1458;
+  double height = 720;
+  double width = 1280;
 }
 
 class LanePainter extends CustomPainter {
@@ -59,15 +64,16 @@ class LanePainter extends CustomPainter {
   drawCenterCross(Canvas canvas, Size size) {
     p.color = Colors.blueAccent;
     p.strokeWidth = 1;
+    Offset center = Offset(opticalParam.cu, opticalParam.cv);
     canvas.drawLine(
-      Offset(size.width / 2 - sizeOfCross, size.height / 2),
-      Offset(size.width / 2 + sizeOfCross, size.height / 2),
+      Offset(center.dx - sizeOfCross, center.dy),
+      Offset(center.dx + sizeOfCross, center.dy),
       p,
     );
 
     canvas.drawLine(
-      Offset(size.width / 2, size.height / 2 - sizeOfCross),
-      Offset(size.width / 2, size.height / 2 + sizeOfCross),
+      Offset(center.dx, center.dy - sizeOfCross),
+      Offset(center.dx, center.dy + sizeOfCross),
       p,
     );
   }
@@ -94,6 +100,8 @@ class LanePainter extends CustomPainter {
     var v2 = cpr(point1, point2, point4);
 
     vp = (point3.scale(v2, v2) - point4.scale(v1, v1)) / (v2 - v1);
+
+    print('vp $vp');
 
     p.color = Colors.redAccent;
     p.strokeWidth = 1;
@@ -148,12 +156,14 @@ class LanePainter extends CustomPainter {
   calculateFactorOnce(Size size) {
     if (hasBeenCalculated) return;
     hasBeenCalculated = true;
+
     var fovFactor = opticalParam.fu / opticalParam.cu;
-    opticalParam.width = size.width.round();
-    opticalParam.height = size.height.round();
-    opticalParam.cu = (size.width * 0.5).round();
-    opticalParam.cv = (size.height * 0.5).round();
-    opticalParam.fu = (fovFactor * opticalParam.cu).round();
-    opticalParam.fv = (fovFactor * opticalParam.cv).round();
+
+    opticalParam.width = size.width;
+    opticalParam.height = size.height;
+    opticalParam.cu = opticalParam.cu / 4;
+    opticalParam.cv = opticalParam.cv / 4;
+    opticalParam.fu = fovFactor * opticalParam.cu;
+    opticalParam.fv = fovFactor * opticalParam.cu;
   }
 }

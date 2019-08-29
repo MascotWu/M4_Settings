@@ -26,6 +26,8 @@ class _HomePageState extends State<HomePage> {
 
   double _volume;
 
+  var _speed = '';
+
   @override
   void initState() {
     _volume = vm.volume ?? 0.0;
@@ -117,6 +119,7 @@ class _HomePageState extends State<HomePage> {
         ListTile(
           leading: const Icon(Icons.timer),
           title: Text('假速度设置'),
+          subtitle: Text(_speed),
           onTap: () {
             return showDialog<int>(
                 context: context,
@@ -126,11 +129,18 @@ class _HomePageState extends State<HomePage> {
                     options: speeds,
                   );
                 }).then((speed) {
-              if (speed == -1)
-                vm.deleteSpeed();
-              else if (speed != null) {
-                vm.addOrUpdateSpeed(speed);
-              }
+              if (speed == null)
+                return;
+              setState(() {
+                if (speed == -1) {
+                  vm.deleteSpeed();
+                  _speed = '无';
+                }
+                else {
+                  vm.addOrUpdateSpeed(speed);
+                  _speed = '$speed km/h';
+                }
+              });
             });
           },
         ),

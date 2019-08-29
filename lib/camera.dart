@@ -18,14 +18,17 @@ class _CameraPageState extends State<CameraPage> {
     vm = ViewModel.get();
   }
 
-  Offset offset1 = Offset(140, 120);
-  Offset offset2 = Offset(100, 180);
-  Offset offset3 = Offset(200, 120);
-  Offset offset4 = Offset(240, 180);
+  Offset offset1 = Offset(140, 100);
+  Offset offset2 = Offset(100, 160);
+  Offset offset3 = Offset(180, 100);
+  Offset offset4 = Offset(220, 160);
 
   int pointSelected;
 
   LanePainter curvePainter;
+
+  double _height = 720 / 4;
+  double _width = 1280 / 4;
 
   @override
   Widget build(BuildContext context) {
@@ -55,15 +58,18 @@ class _CameraPageState extends State<CameraPage> {
                 });
               })),
           Container(
-              padding: EdgeInsets.all(8.0),
-              height: 250,
-              alignment: Alignment.center,
+              alignment: Alignment.topCenter,
               child: Stack(
                 children: <Widget>[
-                  Center(
+                  Container(
+                    height: _height,
+                    width: _width,
+                    alignment: Alignment.topCenter,
                     child: _adasImage ?? Text(''),
                   ),
-                  Center(
+                  Container(
+                    height: _height,
+                    width: _width,
                     child: CustomPaint(
                       painter: curvePainter,
                       child: Center(
@@ -101,7 +107,7 @@ class _CameraPageState extends State<CameraPage> {
                             b.sort();
                             var r = b[0];
                             pointSelected = -1;
-                            if (r < 1000)
+                            if (r < 8000)
                               for (var i = 0; i < 4; i++) {
                                 if (r == offsets[i]) {
                                   pointSelected = i + 1;
@@ -144,7 +150,7 @@ class _CameraPageState extends State<CameraPage> {
                   })),
           Container(
               padding: EdgeInsets.all(8.0),
-              height: 250,
+              height: 150,
               alignment: Alignment.center,
               child:
               _dmsImage ?? Text(''))
