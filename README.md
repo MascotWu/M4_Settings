@@ -129,20 +129,22 @@ LDW报警|		/sdcard/run/detect.flag|	enable_ldw
 stop adas;
 start adas;
 
-轻度闭眼			/sdcard/run/dms_setup.flag		alert_item_eyeclose1
-重度闭眼			/sdcard/run/dms_setup.flag		alert_item_eyeclose2
-低头				/sdcard/run/dms_setup.flag		alert_item_bow
-打电话			/sdcard/run/dms_setup.flag		alert_item_phone
-左顾右盼			/sdcard/run/dms_setup.flag		alert_item_lookaround
-打哈欠			/sdcard/run/dms_setup.flag		alert_item_yawn
-吸烟				/sdcard/run/dms_setup.flag		alert_item_smoking
-离岗				/sdcard/run/dms_setup.flag		alert_item_demobilized
-驾驶员变更		/sdcard/run/dms_setup.flag		alert_item_driverchange
-遮挡				/sdcard/run/dms_setup.flag		alert_item_occlusion
-抬头				/sdcard/run/dms_setup.flag		alert_item_lookup
-墨镜遮挡			/sdcard/run/dms_setup.flag		alert_item_eyeocclusion
-双手脱离方向盘	/sdcard/run/dms_setup.flag		alert_item_handsoff
-长时间驾驶		/sdcard/run/dms_setup.flag		alert_item_longtimedrive
+报警|配置文件|配置的键值
+:-:|:-:|:-:
+轻度闭眼		|	/sdcard/run/dms_setup.flag	|	alert_item_eyeclose1
+重度闭眼		|	/sdcard/run/dms_setup.flag	|	alert_item_eyeclose2
+低头			|	/sdcard/run/dms_setup.flag	|	alert_item_bow
+打电话		|	/sdcard/run/dms_setup.flag	|	alert_item_phone
+左顾右盼		|	/sdcard/run/dms_setup.flag	|	alert_item_lookaround
+打哈欠		|	/sdcard/run/dms_setup.flag	|	alert_item_yawn
+吸烟			|	/sdcard/run/dms_setup.flag	|	alert_item_smoking
+离岗			|	/sdcard/run/dms_setup.flag	|	alert_item_demobilized
+驾驶员变更	|	/sdcard/run/dms_setup.flag	|	alert_item_driverchange
+遮挡			|	/sdcard/run/dms_setup.flag	|	alert_item_occlusion
+抬头			|	/sdcard/run/dms_setup.flag	|	alert_item_lookup
+墨镜遮挡		|	/sdcard/run/dms_setup.flag	|	alert_item_eyeocclusion
+双手脱离方向盘	|/sdcard/run/dms_setup.flag		|alert_item_handsoff
+长时间驾驶	|	/sdcard/run/dms_setup.flag	|	alert_item_longtimedrive
 
 正常情况下配置完之后是需要执行这两条命令才能生效的，但是鉴于本项目是安装工具，设置完一定会重启，所以就不需要执行这两条命令。
 stop dms;

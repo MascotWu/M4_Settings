@@ -32,7 +32,7 @@ class MacrosConfigTextFile extends ConfigurationFile {
 
   @override
   setConfig(List<int> content) {
-    return config = gflagDecode(utf8.decode(content));
+    config = gflagDecode(utf8.decode(content));
   }
 }
 
@@ -64,6 +64,18 @@ class CanInputJsonFile extends ConfigurationFile {
   setConfig(List<int> content) {
     config = jsonDecode(utf8.decode(content));
     config['main'] ??= {};
+    config['main']['use_obd'] ??= false;
+    config['main']['baudrate'] ??= '250k';
+    config['main']['scenario'] ??= 0;
+    config['main']['enable_e1'] ??= false;
+
+    config['m4_analog'] ??= {};
+    config['m4_analog']['aspeed'] ??= {};
+    config['m4_analog']['aspeed']['ratio'] ??= 0;
+    config['m4_analog']['aspeed']['enable'] ??= false;
+    config['m4_analog']['aturnlamp'] ??= {};
+    config['m4_analog']['aturnlamp']['enable'] ??= false;
+    config['m4_analog']['aturnlamp']['polarity'] ??= 1;
   }
 }
 
@@ -78,7 +90,21 @@ class DmsSetupFlagFile extends ConfigurationFile {
 
   @override
   setConfig(List<int> content) {
-    return config = gflagDecode(utf8.decode(content));
+    config = gflagDecode(utf8.decode(content));
+    config['alert_item_eyeclose1'] ??= false;
+    config['alert_item_eyeclose2'] ??= false;
+    config['alert_item_bow'] ??= false;
+    config['alert_item_phone'] ??= false;
+    config['alert_item_lookaround'] ??= false;
+    config['alert_item_yawn'] ??= false;
+    config['alert_item_smoking'] ??= false;
+    config['alert_item_demobilized'] ??= false;
+    config['alert_item_driverchange'] ??= false;
+    config['alert_item_occlusion'] ??= false;
+    config['alert_item_lookup'] ??= false;
+    config['alert_item_eyeocclusion'] ??= false;
+    config['alert_item_handsoff'] ??= false;
+    config['alert_item_longtimedrive'] ??= false;
   }
 }
 
