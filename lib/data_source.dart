@@ -19,7 +19,7 @@ class DataSourceState extends State<DataSourcePage> {
           children: <Widget>[
             ListTile(
               leading: const Icon(Icons.timer),
-              title: Text("速度"),
+              title: Text("速度信号源选择"),
               trailing: Icon(Icons.navigate_next),
               onTap: () {
                 Navigator.push(
@@ -30,7 +30,7 @@ class DataSourceState extends State<DataSourcePage> {
             ),
             ListTile(
               leading: const Icon(Icons.shutter_speed),
-              title: Text("波特率"),
+              title: Text("信号源波特率设置"),
               onTap: () {
                 showDialog<String>(
                     context: context,
@@ -80,6 +80,7 @@ class _SpeedDataSource extends State<SpeedDataSourcePage> {
                     }).then((result) {
                   if (result != null) {
                     vm.addOrUpdate(vm.canInputJsonFile, result);
+                    vm.addOrUpdate(vm.canInputJsonFile, analogDisable);
                     Navigator.pop(context);
                   }
                 });
@@ -131,6 +132,11 @@ class _SpeedDataSource extends State<SpeedDataSourcePage> {
     }
   };
 
+  var analogDisable = {"m4_analog": {
+    "aspeed": {"ratio": 0, "enable": false},
+    "aturnlamp": {"enable": false, "polarity": 1}
+  }};
+
   var analogConfig = {
     'speed': {
       "can_id": "0x783",
@@ -163,7 +169,7 @@ class _SpeedDataSource extends State<SpeedDataSourcePage> {
       "offset": 0
     },
     "m4_analog": {
-      "aspeed": {"ratio": 0, "enable": false},
+      "aspeed": {"ratio": 0, "enable": true},
       "aturnlamp": {"enable": false, "polarity": 1}
     }
   };
