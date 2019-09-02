@@ -152,6 +152,12 @@ class _HomePageState extends State<HomePage> {
                 new MaterialPageRoute(builder: (context) => new CameraPage()));
           },
         ),
+        ListTile(
+          leading: const Icon(Icons.code),
+          title: Text('软件版本'),
+          subtitle: Text('0.2.1'),
+        ),
+
       ]),
     );
   }
