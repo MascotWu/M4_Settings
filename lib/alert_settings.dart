@@ -119,7 +119,7 @@ class AlertSettingsState extends State<AlertSettingsPage> {
                   _fcw = value;
                 });
                 vm.addOrUpdate(
-                    vm.macroConfigFile, {'enable_fcw': value ? '1' : '0'});
+                    vm.macroConfigFile, {'enable_fcw': value});
               },
               secondary: const Icon(Icons.warning),
             ),
@@ -131,7 +131,7 @@ class AlertSettingsState extends State<AlertSettingsPage> {
                   _hmw = value;
                 });
                 vm.addOrUpdate(
-                    vm.detectFlagFile, {'enable_hmw': value.toString()});
+                    vm.detectFlagFile, {'enable_hmw': value});
               },
               secondary: const Icon(Icons.warning),
             ),
@@ -143,7 +143,7 @@ class AlertSettingsState extends State<AlertSettingsPage> {
                   _ldw = value;
                 });
                 vm.addOrUpdate(
-                    vm.detectFlagFile, {'enable_ldw': value.toString()});
+                    vm.detectFlagFile, {'enable_ldw': value});
               },
               secondary: const Icon(Icons.warning),
             ),
@@ -155,7 +155,7 @@ class AlertSettingsState extends State<AlertSettingsPage> {
                   _tsr = value;
                 });
                 vm.addOrUpdate(
-                    vm.detectFlagFile, {'enable_tsr': value.toString()});
+                    vm.detectFlagFile, {'enable_tsr': value});
               },
               secondary: const Icon(Icons.warning),
             ),
@@ -167,7 +167,7 @@ class AlertSettingsState extends State<AlertSettingsPage> {
                   _pcw = value;
                 });
                 vm.addOrUpdate(
-                    vm.detectFlagFile, {'enable_ped': value.toString()});
+                    vm.detectFlagFile, {'enable_ped': value});
               },
               secondary: const Icon(Icons.warning),
             ),
@@ -179,7 +179,7 @@ class AlertSettingsState extends State<AlertSettingsPage> {
                   _alertItemEyeclose1 = value;
                 });
                 vm.addOrUpdate(vm.dmsSetupFlagFile,
-                    {'alert_item_eyeclose1': value.toString()});
+                    {'alert_item_eyeclose1': value});
               },
               secondary: const Icon(Icons.warning),
             ),
@@ -191,7 +191,7 @@ class AlertSettingsState extends State<AlertSettingsPage> {
                   _alertItemEyeclose2 = value;
                 });
                 vm.addOrUpdate(vm.dmsSetupFlagFile,
-                    {'alert_item_eyeclose2': value.toString()});
+                    {'alert_item_eyeclose2': value});
               },
               secondary: const Icon(Icons.warning),
             ),
@@ -203,7 +203,7 @@ class AlertSettingsState extends State<AlertSettingsPage> {
                   _alertItemBow = value;
                 });
                 vm.addOrUpdate(
-                    vm.dmsSetupFlagFile, {'alert_item_bow': value.toString()});
+                    vm.dmsSetupFlagFile, {'alert_item_bow': value});
               },
               secondary: const Icon(Icons.warning),
             ),
@@ -215,7 +215,7 @@ class AlertSettingsState extends State<AlertSettingsPage> {
                   _alertItemPhone = value;
                 });
                 vm.addOrUpdate(vm.dmsSetupFlagFile,
-                    {'alert_item_phone': value.toString()});
+                    {'alert_item_phone': value});
               },
               secondary: const Icon(Icons.warning),
             ),
@@ -227,7 +227,7 @@ class AlertSettingsState extends State<AlertSettingsPage> {
                   _alertItemLookaround = value;
                 });
                 vm.addOrUpdate(vm.dmsSetupFlagFile,
-                    {'alert_item_lookaround': value.toString()});
+                    {'alert_item_lookaround': value});
               },
               secondary: const Icon(Icons.warning),
             ),
@@ -239,7 +239,7 @@ class AlertSettingsState extends State<AlertSettingsPage> {
                   _alertItemYawn = value;
                 });
                 vm.addOrUpdate(
-                    vm.dmsSetupFlagFile, {'alert_item_yawn': value.toString()});
+                    vm.dmsSetupFlagFile, {'alert_item_yawn': value});
               },
               secondary: const Icon(Icons.warning),
             ),
@@ -251,7 +251,7 @@ class AlertSettingsState extends State<AlertSettingsPage> {
                   _alertItemSmoking = value;
                 });
                 vm.addOrUpdate(vm.dmsSetupFlagFile,
-                    {'alert_item_smoking': value.toString()});
+                    {'alert_item_smoking': value});
               },
               secondary: const Icon(Icons.warning),
             ),
@@ -263,7 +263,7 @@ class AlertSettingsState extends State<AlertSettingsPage> {
                   _alertItemDemobilized = value;
                 });
                 vm.addOrUpdate(vm.dmsSetupFlagFile,
-                    {'alert_item_demobilized': value.toString()});
+                    {'alert_item_demobilized': value});
               },
               secondary: const Icon(Icons.warning),
             ),
@@ -275,7 +275,7 @@ class AlertSettingsState extends State<AlertSettingsPage> {
                   _alertItemDriverchange = value;
                 });
                 vm.addOrUpdate(vm.dmsSetupFlagFile,
-                    {'alert_item_driverchange': value.toString()});
+                    {'alert_item_driverchange': value});
               },
               secondary: const Icon(Icons.warning),
             ),
@@ -287,7 +287,7 @@ class AlertSettingsState extends State<AlertSettingsPage> {
                   _alertItemOcclusion = value;
                 });
                 vm.addOrUpdate(vm.dmsSetupFlagFile,
-                    {'alert_item_occlusion': value.toString()});
+                    {'alert_item_occlusion': value});
               },
               secondary: const Icon(Icons.warning),
             ),
@@ -299,7 +299,7 @@ class AlertSettingsState extends State<AlertSettingsPage> {
                   _alertItemLookup = value;
                 });
                 vm.addOrUpdate(vm.dmsSetupFlagFile,
-                    {'alert_item_lookup': value.toString()});
+                    {'alert_item_lookup': value});
               },
               secondary: const Icon(Icons.warning),
             ),
@@ -312,7 +312,7 @@ class AlertSettingsState extends State<AlertSettingsPage> {
                 });
 
                 vm.addOrUpdate(vm.dmsSetupFlagFile,
-                    {'alert_item_eyeocclusion': value.toString()});
+                    {'alert_item_eyeocclusion': value});
               },
               secondary: const Icon(Icons.warning),
             ),
@@ -324,7 +324,7 @@ class AlertSettingsState extends State<AlertSettingsPage> {
                   _alertItemHandsoff = value;
                 });
                 vm.addOrUpdate(vm.dmsSetupFlagFile,
-                    {'alert_item_handsoff': value.toString()});
+                    {'alert_item_handsoff': value});
               },
               secondary: const Icon(Icons.warning),
             ),
@@ -337,7 +337,7 @@ class AlertSettingsState extends State<AlertSettingsPage> {
                 });
 
                 vm.addOrUpdate(vm.dmsSetupFlagFile,
-                    {'alert_item_longtimedrive': value.toString()});
+                    {'alert_item_longtimedrive': value});
               },
               secondary: const Icon(Icons.warning),
             ),
