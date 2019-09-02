@@ -11,60 +11,57 @@ class AlertSettingsState extends State<AlertSettingsPage> {
   AlertSettingsState() {
     vm = ViewModel.get();
 
-    _fcw = vm.macroConfigFile.config['enable_fcw'] == '1' ?? false;
+    _fcw = vm.macroConfigFile.config['enable_fcw'];
 
-    _hmw = vm.detectFlagFile.config['enable_hmw'] == 'true' ?? false;
+    _hmw = vm.detectFlagFile.config['enable_hmw'];
 
-    _ldw = vm.detectFlagFile.config['enable_ldw'] == 'true' ?? false;
+    _ldw = vm.detectFlagFile.config['enable_ldw'];
 
-    _tsr = vm.detectFlagFile.config['enable_tsr'] == 'true' ?? false;
+    _tsr = vm.detectFlagFile.config['enable_tsr'];
 
-    _pcw = vm.detectFlagFile.config['enable_ped'] == 'true' ?? false;
+    _pcw = vm.detectFlagFile.config['enable_ped'];
 
     _alertItemEyeclose1 =
-        vm.dmsSetupFlagFile.config['alert_item_eyeclose1'] == 'true' ?? false;
+    vm.dmsSetupFlagFile.config['alert_item_eyeclose1'];
 
     _alertItemEyeclose2 =
-        vm.dmsSetupFlagFile.config['alert_item_eyeclose2'] == 'true' ?? false;
+    vm.dmsSetupFlagFile.config['alert_item_eyeclose2'];
 
     _alertItemYawn =
-        vm.dmsSetupFlagFile.config['alert_item_yawn'] == 'true' ?? false;
+    vm.dmsSetupFlagFile.config['alert_item_yawn'];
 
     _alertItemLookaround =
-        vm.dmsSetupFlagFile.config['alert_item_lookaround'] == 'true' ?? false;
+    vm.dmsSetupFlagFile.config['alert_item_lookaround'];
 
     _alertItemBow =
-        vm.dmsSetupFlagFile.config['alert_item_bow'] == 'true' ?? false;
+    vm.dmsSetupFlagFile.config['alert_item_bow'];
 
     _alertItemPhone =
-        vm.dmsSetupFlagFile.config['alert_item_phone'] == 'true' ?? false;
+    vm.dmsSetupFlagFile.config['alert_item_phone'];
 
     _alertItemSmoking =
-        vm.dmsSetupFlagFile.config['alert_item_smoking'] == 'true' ?? false;
+    vm.dmsSetupFlagFile.config['alert_item_smoking'];
 
     _alertItemDemobilized =
-        vm.dmsSetupFlagFile.config['alert_item_demobilized'] == 'true' ?? false;
+    vm.dmsSetupFlagFile.config['alert_item_demobilized'];
 
     _alertItemDriverchange =
-        vm.dmsSetupFlagFile.config['alert_item_driverchange'] == 'true' ??
-            false;
+    vm.dmsSetupFlagFile.config['alert_item_driverchange'];
 
     _alertItemOcclusion =
-        vm.dmsSetupFlagFile.config['alert_item_occlusion'] == 'true' ?? false;
+    vm.dmsSetupFlagFile.config['alert_item_occlusion'];
 
     _alertItemLookup =
-        vm.dmsSetupFlagFile.config['alert_item_lookup'] == 'true' ?? false;
+    vm.dmsSetupFlagFile.config['alert_item_lookup'];
 
     _alertItemEyeocclusion =
-        vm.dmsSetupFlagFile.config['alert_item_eyeocclusion'] == 'true' ??
-            false;
+    vm.dmsSetupFlagFile.config['alert_item_eyeocclusion'];
 
     _alertItemHandsoff =
-        vm.dmsSetupFlagFile.config['alert_item_handsoff'] == 'true' ?? false;
+    vm.dmsSetupFlagFile.config['alert_item_handsoff'];
 
     _alertItemLongtimedrive =
-        vm.dmsSetupFlagFile.config['alert_item_longtimedrive'] == 'true' ??
-            false;
+    vm.dmsSetupFlagFile.config['alert_item_longtimedrive'];
   }
 
   bool _fcw;

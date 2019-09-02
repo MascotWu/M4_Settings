@@ -38,6 +38,7 @@ class MacrosConfigTextFile extends ConfigurationFile {
   @override
   setConfig(List<int> content) {
     config = gflagDecode(content == null ? "" : utf8.decode(content));
+    config['enable_fcw'] ??= true;
   }
 }
 
@@ -53,6 +54,10 @@ class DetectFlagFile extends ConfigurationFile {
   @override
   setConfig(List<int> content) {
     config = gflagDecode(content == null ? "" : utf8.decode(content));
+    config['enable_hmw'] ??= true;
+    config['enable_ldw'] ??= true;
+    config['enable_tsr'] ??= true;
+    config['enable_ped'] ??= true;
   }
 }
 
