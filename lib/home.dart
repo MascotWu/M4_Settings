@@ -119,7 +119,6 @@ class _HomePageState extends State<HomePage> {
         ListTile(
           leading: const Icon(Icons.timer),
           title: Text('假速度设置'),
-          subtitle: Text(_speed),
           onTap: () {
             return showDialog<int>(
                 context: context,
