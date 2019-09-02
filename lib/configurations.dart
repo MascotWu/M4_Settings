@@ -14,9 +14,14 @@ abstract class ConfigurationFile {
   generateFileContent();
 
   void handle(socketMessage) {
-    if (socketMessage['result']['path'] == path) {
-      setConfig(
-          base64Decode(socketMessage['result']['data']));
+    if (socketMessage['type'] == "read_file_ok") {
+      if (socketMessage['result']['path'] == path) {
+        setConfig(base64Decode(socketMessage['result']['data']));
+      }
+    } else if (socketMessage['type'] == "read_file_error") {
+      List<String> errorMessage = socketMessage['error'].split(':');
+      if (errorMessage.length == 2 && errorMessage[0] == path)
+        setConfig(null);
     }
   }
 }
@@ -32,7 +37,7 @@ class MacrosConfigTextFile extends ConfigurationFile {
 
   @override
   setConfig(List<int> content) {
-    config = gflagDecode(utf8.decode(content));
+    config = gflagDecode(content == null ? "" : utf8.decode(content));
   }
 }
 
@@ -47,7 +52,7 @@ class DetectFlagFile extends ConfigurationFile {
 
   @override
   setConfig(List<int> content) {
-    return config = gflagDecode(utf8.decode(content));
+    config = gflagDecode(content == null ? "" : utf8.decode(content));
   }
 }
 
@@ -62,7 +67,7 @@ class CanInputJsonFile extends ConfigurationFile {
 
   @override
   setConfig(List<int> content) {
-    config = jsonDecode(utf8.decode(content));
+    config = jsonDecode(content == null ? '{}' : utf8.decode(content));
     config['main'] ??= {};
     config['main']['use_obd'] ??= false;
     config['main']['baudrate'] ??= '250k';
@@ -90,7 +95,7 @@ class DmsSetupFlagFile extends ConfigurationFile {
 
   @override
   setConfig(List<int> content) {
-    config = gflagDecode(utf8.decode(content));
+    config = gflagDecode(content == null ? "" : utf8.decode(content));
     config['alert_item_eyeclose1'] ??= false;
     config['alert_item_eyeclose2'] ??= false;
     config['alert_item_bow'] ??= false;
@@ -119,7 +124,7 @@ class MProtocolJsonFile extends ConfigurationFile {
 
   @override
   setConfig(List<int> content) {
-    return config = jsonDecode(utf8.decode(content));
+    config = jsonDecode(content == null ? '{}' : utf8.decode(content));
   }
 }
 
@@ -134,6 +139,6 @@ class MProtocolConfigJsonFile extends ConfigurationFile {
 
   @override
   setConfig(List<int> content) {
-    config = jsonDecode(gbk.decode(content));
+    config = jsonDecode(content == null ? '{}' : gbk.decode(content));
   }
 }

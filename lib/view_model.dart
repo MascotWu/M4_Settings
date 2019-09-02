@@ -327,13 +327,20 @@ class ViewModel {
     var socketMessage = jsonDecode(command);
 
     print(socketMessage['type']);
-    if (socketMessage['type'] == 'read_file_ok') {
+    if (socketMessage['type'] == 'read_file_ok' ||
+        socketMessage['type'] == 'read_file_error') {
       macroConfigFile.handle(socketMessage);
       detectFlagFile.handle(socketMessage);
       canInputJsonFile.handle(socketMessage);
       dmsSetupFlagFile.handle(socketMessage);
       mProtocolConfigJsonFile.handle(socketMessage);
       mProtocolJsonFile.handle(socketMessage);
+      push(macroConfigFile);
+      push(detectFlagFile);
+      push(canInputJsonFile);
+      push(dmsSetupFlagFile);
+      push(mProtocolConfigJsonFile);
+      push(mProtocolJsonFile);
     } else if (socketMessage['type'] == 'get_camera_image_ok') {
       if (socketMessage['result']['camera'] == 'adas') {
         _adasPicture.add(base64Decode(socketMessage['result']['image']));
