@@ -320,7 +320,7 @@ class ViewModel {
   }
 
   OpticalParam opticalParam = OpticalParam();
-  OpticalParam OriginalOpticalParam = OpticalParam();
+  OpticalParam originalOpticalParam = OpticalParam();
   bool hasBeenCalculated = false;
 
   onCommand(String command) {
@@ -351,12 +351,12 @@ class ViewModel {
       opticalParam.width = socketMessage['result']['width'].toDouble();
       opticalParam.height = socketMessage['result']['height'].toDouble();
 
-      OriginalOpticalParam.cu = socketMessage['result']['cu'];
-      OriginalOpticalParam.cv = socketMessage['result']['cv'];
-      OriginalOpticalParam.fu = socketMessage['result']['fu'];
-      OriginalOpticalParam.fv = socketMessage['result']['fv'];
-      OriginalOpticalParam.width = socketMessage['result']['width'].toDouble();
-      OriginalOpticalParam.height =
+      originalOpticalParam.cu = socketMessage['result']['cu'];
+      originalOpticalParam.cv = socketMessage['result']['cv'];
+      originalOpticalParam.fu = socketMessage['result']['fu'];
+      originalOpticalParam.fv = socketMessage['result']['fv'];
+      originalOpticalParam.width = socketMessage['result']['width'].toDouble();
+      originalOpticalParam.height =
           socketMessage['result']['height'].toDouble();
     }
   }

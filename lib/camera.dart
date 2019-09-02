@@ -163,7 +163,7 @@ class _CameraPageState extends State<CameraPage> {
   void _setConfig() {
     OpticalParam opticalParam = ViewModel
         .get()
-        .OriginalOpticalParam;
+        .originalOpticalParam;
     vm.addOrUpdate(vm.macroConfigFile, {
       'camera_pitch': ViewModel
           .get()
