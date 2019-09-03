@@ -40,6 +40,10 @@ class MacrosConfigTextFile extends ConfigurationFile {
     config = gflagDecode(content == null ? "" : utf8.decode(content));
     config['enable_fcw'] ??= 1;
   }
+
+  get fcw => config['enable_fcw'] == 1;
+
+  set fcw(bool enabled) => config['enable_fcw'] = enabled ? 1 : 0;
 }
 
 class DetectFlagFile extends ConfigurationFile {
@@ -54,11 +58,20 @@ class DetectFlagFile extends ConfigurationFile {
   @override
   setConfig(List<int> content) {
     config = gflagDecode(content == null ? "" : utf8.decode(content));
-    config['enable_hmw'] ??= true;
+    config['headway_warning_level_1'] ??= -1.0;
+    config['enable_ped'] ??= true;
     config['enable_ldw'] ??= true;
     config['enable_tsr'] ??= true;
-    config['enable_ped'] ??= true;
   }
+
+  get hmw => config['headway_warning_level_1'].round() != -1;
+
+  set hmw(bool enabled) =>
+      config['headway_warning_level_1'] = enabled ? 1.0 : -1.0;
+
+  get pcw => config['enable_ped'];
+
+  set pcw(bool enabled) => config['enable_ped'] = enabled;
 }
 
 class CanInputJsonFile extends ConfigurationFile {

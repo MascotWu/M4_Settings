@@ -11,15 +11,15 @@ class AlertSettingsState extends State<AlertSettingsPage> {
   AlertSettingsState() {
     vm = ViewModel.get();
 
-    _fcw = vm.macroConfigFile.config['enable_fcw'] == 1;
+    _fcw = vm.macroConfigFile.fcw;
 
-    _hmw = vm.detectFlagFile.config['enable_hmw'];
+    _hmw = vm.detectFlagFile.hmw;
 
     _ldw = vm.detectFlagFile.config['enable_ldw'];
 
     _tsr = vm.detectFlagFile.config['enable_tsr'];
 
-    _pcw = vm.detectFlagFile.config['enable_ped'];
+    _pcw = vm.detectFlagFile.pcw;
 
     _alertItemEyeclose1 =
     vm.dmsSetupFlagFile.config['alert_item_eyeclose1'];
@@ -118,8 +118,8 @@ class AlertSettingsState extends State<AlertSettingsPage> {
                 setState(() {
                   _fcw = value;
                 });
-                vm.addOrUpdate(
-                    vm.macroConfigFile, {'enable_fcw': value ? 1 : 0});
+                vm.macroConfigFile.fcw = value;
+                vm.push(vm.macroConfigFile);
               },
               secondary: const Icon(Icons.warning),
             ),
@@ -166,8 +166,8 @@ class AlertSettingsState extends State<AlertSettingsPage> {
                 setState(() {
                   _pcw = value;
                 });
-                vm.addOrUpdate(
-                    vm.detectFlagFile, {'enable_ped': value});
+                vm.detectFlagFile.pcw = value;
+                vm.push(vm.detectFlagFile);
               },
               secondary: const Icon(Icons.warning),
             ),
