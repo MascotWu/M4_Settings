@@ -26,6 +26,7 @@ abstract class ConfigurationFile {
   }
 }
 
+// 车辆配置文件
 class MacrosConfigTextFile extends ConfigurationFile {
   @override
   final path = '/sdcard/run/macros_config.txt';
@@ -39,13 +40,20 @@ class MacrosConfigTextFile extends ConfigurationFile {
   setConfig(List<int> content) {
     config = gflagDecode(content == null ? "" : utf8.decode(content));
     config['enable_fcw'] ??= 1;
+    config['headway_warning_level_1'] ??= -1.0;
   }
 
   get fcw => config['enable_fcw'] == 1;
 
   set fcw(bool enabled) => config['enable_fcw'] = enabled ? 1 : 0;
+
+  get hmw => config['headway_warning_level_1'].round() != -1;
+
+  set hmw(bool enabled) =>
+      config['headway_warning_level_1'] = enabled ? 1.0 : -1.0;
 }
 
+// 车道配置文件
 class DetectFlagFile extends ConfigurationFile {
   @override
   String get path => '/sdcard/run/detect.flag';
@@ -60,20 +68,20 @@ class DetectFlagFile extends ConfigurationFile {
   @override
   setConfig(List<int> content) {
     config = gflagDecode(content == null ? "" : utf8.decode(content));
-    config['headway_warning_level_1'] ??= -1.0;
-    config['enable_ped'] ??= true;
-    config['enable_ldw'] ??= true;
+    pcw ??= true;
+    ldw ??= true;
     config['enable_tsr'] ??= true;
   }
 
-  get hmw => config['headway_warning_level_1'].round() != -1;
-
-  set hmw(bool enabled) =>
-      config['headway_warning_level_1'] = enabled ? 1.0 : -1.0;
-
+  // PCW 通过 enable_ped 控制,变量类型为 bool 型.
   get pcw => config['enable_ped'];
 
   set pcw(bool enabled) => config['enable_ped'] = enabled;
+
+  // LDW 通过 ldw_speed_thresh 控制，设置为10000时关闭，设置为55时开启.
+  get ldw => config['ldw_speed_thresh'] == 55;
+
+  set ldw(bool enabled) => config['ldw_speed_thresh'] = enabled ? 55 : 10000;
 }
 
 class CanInputJsonFile extends ConfigurationFile {

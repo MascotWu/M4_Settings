@@ -14,7 +14,7 @@ class AlertSettingsState extends State<AlertSettingsPage> {
     _fcw = vm.fcw;
     _hmw = vm.hmw;
 
-    _ldw = vm.detectFlagFile.config['enable_ldw'];
+    _ldw = vm.detectFlagFile.ldw;
 
     _tsr = vm.detectFlagFile.config['enable_tsr'];
 
@@ -141,8 +141,8 @@ class AlertSettingsState extends State<AlertSettingsPage> {
                 setState(() {
                   _ldw = value;
                 });
-                vm.addOrUpdate(
-                    vm.detectFlagFile, {'enable_ldw': value});
+                vm.detectFlagFile.ldw = value;
+                vm.push(vm.detectFlagFile);
               },
               secondary: const Icon(Icons.warning),
             ),

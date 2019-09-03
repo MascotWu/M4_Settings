@@ -118,9 +118,6 @@ front_vehicle_edge_dist 摄像头到车头
 报警开关|配置文件|配置的key
 :-:|:-:|:-:
 FCW报警|/sdcard/run/detect.flag|	enable_fcw
-HMW报警|/sdcard/run/detect.flag|	enable_hmw
-LDW报警|/sdcard/run/detect.flag|	enable_ldw
-行人预警|/sdcard/run/detect.flag| enable_ped
 超速预警|/sdcard/run/detect.flag| enable_tsr
 
 正常情况下配置完之后是需要执行这两条命令才能生效的，但是鉴于本项目是安装工具，设置完一定会重启，所以就不需要执行这两条命令。
