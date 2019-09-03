@@ -11,7 +11,7 @@ class AlertSettingsState extends State<AlertSettingsPage> {
   AlertSettingsState() {
     vm = ViewModel.get();
 
-    _fcw = vm.macroConfigFile.config['enable_fcw'];
+    _fcw = vm.macroConfigFile.config['enable_fcw'] == 1;
 
     _hmw = vm.detectFlagFile.config['enable_hmw'];
 
@@ -119,7 +119,7 @@ class AlertSettingsState extends State<AlertSettingsPage> {
                   _fcw = value;
                 });
                 vm.addOrUpdate(
-                    vm.macroConfigFile, {'enable_fcw': value});
+                    vm.macroConfigFile, {'enable_fcw': value ? 1 : 0});
               },
               secondary: const Icon(Icons.warning),
             ),

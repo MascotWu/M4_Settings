@@ -38,7 +38,7 @@ class MacrosConfigTextFile extends ConfigurationFile {
   @override
   setConfig(List<int> content) {
     config = gflagDecode(content == null ? "" : utf8.decode(content));
-    config['enable_fcw'] ??= true;
+    config['enable_fcw'] ??= 1;
   }
 }
 
