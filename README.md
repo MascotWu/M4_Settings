@@ -1,5 +1,6 @@
-### 信号选择
-#### 选择速度信号的来源
+### 1 信号源设置
+信号选择分成两步，第一步是选择信号的来源，第二步是选择车型。
+#### 1.1 选择速度信号源
 信号源有三种
 * CAN信号
 * 模拟
@@ -81,7 +82,7 @@
 类型：字符串
 可能的值：500k 250k
 
-### 摄像头
+### 3.摄像头
 
 #### 3.1 设置参数
 参数 | 默认值 
@@ -109,21 +110,18 @@ right_vehicle_edge_dist
 front_wheel_camera_dist 摄像头到车头 - 车前轮轴到车头
 front_vehicle_edge_dist 摄像头到车头
 
-3.2标定
-标定方式：灭点标定
-拖动绿色的线，使它和车道线重合
-计算角度
-实现方式：
+#### 3.2标定 
+标定方式：灭点标定 拖动绿色的线，使它和车道线重合 计算角度 实现方式：
 
-4.报警和通知（功能开关）
+### 4.报警和通知（功能开关）
 
 报警开关|配置文件|配置的key
 :-:|:-:|:-:
-FCW报警|		/sdcard/run/detect.flag|	enable_fcw
-HMW报警|      /sdcard/run/detect.flag|	enable_hmw
-LDW报警|		/sdcard/run/detect.flag|	enable_ldw
-行人预警|		/sdcard/run/detect.flag|	enable_ped
-超速预警|		/sdcard/run/detect.flag|	enable_tsr
+FCW报警|/sdcard/run/detect.flag|	enable_fcw
+HMW报警|/sdcard/run/detect.flag|	enable_hmw
+LDW报警|/sdcard/run/detect.flag|	enable_ldw
+行人预警|/sdcard/run/detect.flag| enable_ped
+超速预警|/sdcard/run/detect.flag| enable_tsr
 
 正常情况下配置完之后是需要执行这两条命令才能生效的，但是鉴于本项目是安装工具，设置完一定会重启，所以就不需要执行这两条命令。
 stop adas;
@@ -131,28 +129,28 @@ start adas;
 
 报警|配置文件|配置的键值
 :-:|:-:|:-:
-轻度闭眼		|	/sdcard/run/dms_setup.flag	|	alert_item_eyeclose1
-重度闭眼		|	/sdcard/run/dms_setup.flag	|	alert_item_eyeclose2
-低头			|	/sdcard/run/dms_setup.flag	|	alert_item_bow
-打电话		|	/sdcard/run/dms_setup.flag	|	alert_item_phone
-左顾右盼		|	/sdcard/run/dms_setup.flag	|	alert_item_lookaround
-打哈欠		|	/sdcard/run/dms_setup.flag	|	alert_item_yawn
-吸烟			|	/sdcard/run/dms_setup.flag	|	alert_item_smoking
-离岗			|	/sdcard/run/dms_setup.flag	|	alert_item_demobilized
-驾驶员变更	|	/sdcard/run/dms_setup.flag	|	alert_item_driverchange
-遮挡			|	/sdcard/run/dms_setup.flag	|	alert_item_occlusion
-抬头			|	/sdcard/run/dms_setup.flag	|	alert_item_lookup
-墨镜遮挡		|	/sdcard/run/dms_setup.flag	|	alert_item_eyeocclusion
-双手脱离方向盘	|/sdcard/run/dms_setup.flag		|alert_item_handsoff
-长时间驾驶	|	/sdcard/run/dms_setup.flag	|	alert_item_longtimedrive
+轻度闭眼		    |	/sdcard/run/dms_setup.flag	|	alert_item_eyeclose1
+重度闭眼		    |	/sdcard/run/dms_setup.flag	|	alert_item_eyeclose2
+低头			    |	/sdcard/run/dms_setup.flag	|	alert_item_bow
+打电话		    |	/sdcard/run/dms_setup.flag	|	alert_item_phone
+左顾右盼		    |	/sdcard/run/dms_setup.flag	|	alert_item_lookaround
+打哈欠		    |	/sdcard/run/dms_setup.flag	|	alert_item_yawn
+吸烟			    |	/sdcard/run/dms_setup.flag	|	alert_item_smoking
+离岗			    |	/sdcard/run/dms_setup.flag	|	alert_item_demobilized
+驾驶员变更	    |	/sdcard/run/dms_setup.flag	|	alert_item_driverchange
+遮挡			    |	/sdcard/run/dms_setup.flag	|	alert_item_occlusion
+抬头			    |	/sdcard/run/dms_setup.flag	|	alert_item_lookup
+墨镜遮挡		    |	/sdcard/run/dms_setup.flag	|	alert_item_eyeocclusion
+双手脱离方向盘	    |   /sdcard/run/dms_setup.flag	|   alert_item_handsoff
+长时间驾驶	    |	/sdcard/run/dms_setup.flag	|	alert_item_longtimedrive
 
 正常情况下配置完之后是需要执行这两条命令才能生效的，但是鉴于本项目是安装工具，设置完一定会重启，所以就不需要执行这两条命令。
 stop dms;
 start dms;
 
-5.设置协议
-实现方式：向/data/mprot/mprot.json 写入配置指定协议
-{      'protocol': proto    };
+### 5.设置协议 
+实现方式：向/data/mprot/mprot.json 写入配置指定协议 { 'protocol':
+proto };
 
 天迈协议
 JT808协议
@@ -222,8 +220,7 @@ JT808协议
 	}
 }
 
-6.设置音量
-0-3
+### 6.设置音量 0-3
 
 设置音量的接口：
 get_system_volume(): 获取系统音量
@@ -238,36 +235,16 @@ set_system_volume(volume): 设置系统音量。
    成功时返回: {"type": "set_system_volume_ok", "result": volume}
    返回的volume一般就是你设置的volume。但是系统会自动修正非法音量值，所以有时候返回的volume不一定等于设置的volume。
 
-7.设置假速度
-	无 20km/h 40km/h 60km/h
-实现方式
-/sdcard/run/can_input.json
-修改.main.fake_speed
-类型：整数
-取值：不限
-当设置成无的时候，删除这一项配置。
+### 7.设置假速度
+无 20km/h 40km/h 60km/h 实现方式 /sdcard/run/can_input.json
+修改.main.fake_speed 类型：整数 取值：不限 当设置成无的时候，删除这一项配置。
 
-8.拍照
-实现方式：
-请求体
-{
-	"type": "get_camera_image",
-	"data": {
-		"camera": "adas"
-	}
-}
-camera: adas, driver
-返回值
-{
-	"type": "get_camera_image_ok",
-	"data": {
-		"format": "jpeg",
-		"size": 123123,
-			"image": "base64 string"
-	}
-}
+### 8.拍照
+实现方式： 请求体 {	"type": "get_camera_image",	"data": {	"camera":
+"adas"	}	}	camera: adas, driver 返回值 {	"type": "get_camera_image_ok",
+"data": {	"format": "jpeg",	"size": 123123,	"image": "base64 string"	}	}
 
-9.调试命令
+### 9.调试命令
 
 start adas
 stop adas
@@ -286,10 +263,12 @@ rm /sdcard/run/detect.flag
 rm /sdcard/run/dms_setup.flag
 rm /sdcard/run/macros_config.txt
 
-10.附件
-can_input.json
-{
+### 10.附件
+#### CAN输入配置文件 can_input.json
+ 
+ ```
 
+ {
     "main": {
         "use_obd": false,
         "baudrate": "250K",
@@ -352,7 +331,17 @@ can_input.json
         "byte_order": 0
     }
 }
-can车型表
+
+```
+##### 参数说明
+ 
+ 参数|说明|必填项 
+ :-:|:-:|:-:
+
+#### can车型表
+
+```
+
 {
     "黄海 | 纯电动 | 2019": {
         "speed": {
@@ -1220,3 +1209,5 @@ can车型表
         }
     }
 }
+
+```
