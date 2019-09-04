@@ -72,7 +72,7 @@ class ViewModel {
     push(dmsSetupFlagFile);
   }
 
-  get makePhoneCall => null;
+  get makePhoneCall => dmsSetupFlagFile.makePhoneCall;
 
   set makePhoneCall(enabled) {
     dmsSetupFlagFile.makePhoneCall = enabled;

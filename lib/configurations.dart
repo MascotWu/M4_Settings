@@ -190,20 +190,20 @@ class DmsSetupFlagFile extends ConfigurationFile {
   @override
   setConfig(List<int> content) {
     config = gflagDecode(content == null ? "" : utf8.decode(content));
-    config['alert_item_eyeclose1'] ??= false;
-    config['alert_item_eyeclose2'] ??= false;
-    config['alert_item_bow'] ??= false;
-    config['alert_item_phone'] ??= false;
-    config['alert_item_lookaround'] ??= false;
-    config['alert_item_yawn'] ??= false;
-    config['alert_item_smoking'] ??= false;
-    config['alert_item_demobilized'] ??= false;
-    config['alert_item_driverchange'] ??= false;
-    config['alert_item_occlusion'] ??= false;
-    config['alert_item_lookup'] ??= false;
-    config['alert_item_eyeocclusion'] ??= false;
-    config['alert_item_handsoff'] ??= false;
-    config['alert_item_longtimedrive'] ??= false;
+    tired ??= true;
+    fatigue ??= true;
+    lookDown ??= true;
+    makePhoneCall ??= true;
+    lookAround ??= true;
+    yawn ??= true;
+    smoking ??= true;
+    absence ??= true;
+    substitute ??= true;
+    occlusion ??= true;
+    lookUp ??= true;
+    wearingSunglasses ??= true;
+    handsOff ??= true;
+    longtimeDriving ??= true;
   }
 }
 
