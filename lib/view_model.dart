@@ -45,6 +45,13 @@ class ViewModel {
     push(dmsSetupFlagFile);
   }
 
+  get smoking => dmsSetupFlagFile.smoking;
+
+  set smoking(enabled) {
+    dmsSetupFlagFile.smoking = enabled;
+    push(dmsSetupFlagFile);
+  }
+
   bool get fatigue => dmsSetupFlagFile.fatigue;
 
   set fatigue(bool enabled) {

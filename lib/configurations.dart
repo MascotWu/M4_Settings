@@ -123,6 +123,10 @@ class DmsSetupFlagFile extends ConfigurationFile {
 
   set makePhoneCall(enabled) => config['alert_item_phone'] = enabled;
 
+  get smoking => config['alert_item_smoking'];
+
+  set smoking(enabled) => config['alert_item_smoking'] = enabled;
+
   get lookAround => config['alert_item_lookaround'];
 
   set lookAround(enabled) => config['alert_item_lookaround'] = enabled;

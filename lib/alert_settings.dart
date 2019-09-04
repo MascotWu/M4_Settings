@@ -36,8 +36,6 @@ class AlertSettingsState extends State<AlertSettingsPage> {
     vm.dmsSetupFlagFile.config['alert_item_longtimedrive'];
   }
 
-  bool _alertItemSmoking;
-
   bool _alertItemDemobilized;
 
   bool _alertItemDriverchange;
@@ -173,13 +171,11 @@ class AlertSettingsState extends State<AlertSettingsPage> {
             ),
             SwitchListTile(
               title: const Text('吸烟'),
-              value: _alertItemSmoking,
+              value: vm.smoking,
               onChanged: (bool value) {
                 setState(() {
-                  _alertItemSmoking = value;
+                  vm.smoking = value;
                 });
-                vm.addOrUpdate(vm.dmsSetupFlagFile,
-                    {'alert_item_smoking': value});
               },
               secondary: const Icon(Icons.warning),
             ),
