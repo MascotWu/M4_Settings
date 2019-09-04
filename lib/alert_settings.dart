@@ -11,9 +11,6 @@ class AlertSettingsState extends State<AlertSettingsPage> {
   AlertSettingsState() {
     vm = ViewModel.get();
 
-    _alertItemPhone =
-    vm.dmsSetupFlagFile.config['alert_item_phone'];
-
     _alertItemSmoking =
     vm.dmsSetupFlagFile.config['alert_item_smoking'];
 
@@ -38,8 +35,6 @@ class AlertSettingsState extends State<AlertSettingsPage> {
     _alertItemLongtimedrive =
     vm.dmsSetupFlagFile.config['alert_item_longtimedrive'];
   }
-
-  bool _alertItemPhone;
 
   bool _alertItemSmoking;
 
@@ -148,13 +143,11 @@ class AlertSettingsState extends State<AlertSettingsPage> {
             ),
             SwitchListTile(
               title: const Text('打电话'),
-              value: _alertItemPhone,
+              value: vm.makePhoneCall,
               onChanged: (bool value) {
                 setState(() {
-                  _alertItemPhone = value;
+                  vm.makePhoneCall = value;
                 });
-                vm.addOrUpdate(vm.dmsSetupFlagFile,
-                    {'alert_item_phone': value});
               },
               secondary: const Icon(Icons.warning),
             ),

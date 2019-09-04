@@ -38,6 +38,13 @@ class ViewModel {
     push(dmsSetupFlagFile);
   }
 
+  get makePhoneCall => null;
+
+  set makePhoneCall(enabled) {
+    dmsSetupFlagFile.makePhoneCall = enabled;
+    push(dmsSetupFlagFile);
+  }
+
   bool get fatigue => dmsSetupFlagFile.fatigue;
 
   set fatigue(bool enabled) {

@@ -119,6 +119,10 @@ class CanInputJsonFile extends ConfigurationFile {
 }
 
 class DmsSetupFlagFile extends ConfigurationFile {
+  get makePhoneCall => config['alert_item_phone'];
+
+  set makePhoneCall(enabled) => config['alert_item_phone'] = enabled;
+
   get lookAround => config['alert_item_lookaround'];
 
   set lookAround(enabled) => config['alert_item_lookaround'] = enabled;
