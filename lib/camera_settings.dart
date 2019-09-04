@@ -47,7 +47,7 @@ class _CameraSettingsPageState extends State<CameraSettingsPage> {
     var leftDist = coordinate.cameraLeftDist + glassMargin;
     var rightDist = coordinate.cameraRightDist + glassMargin;
 
-    vm.addOrUpdate(vm.detectFlagFile, {
+    vm.addOrUpdate(vm.laneConfigFile, {
       "camera_height": cameraHeightController.text,
       "left_vehicle_edge_dist": leftDist.toString(),
       "right_vehicle_edge_dist": rightDist.toString(),
@@ -55,7 +55,7 @@ class _CameraSettingsPageState extends State<CameraSettingsPage> {
       "front_wheel_camera_dist": cameraFrontDist - frontWheelFrontDist
     });
 
-    vm.addOrUpdate(vm.macroConfigFile, {
+    vm.addOrUpdate(vm.carConfigFile, {
       "camera_height": cameraHeightController.text,
       "left_dist_to_camera": leftDist.toString(),
       "right_dist_to_camera": rightDist.toString(),

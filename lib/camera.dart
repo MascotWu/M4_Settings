@@ -164,7 +164,7 @@ class _CameraPageState extends State<CameraPage> {
     OpticalParam opticalParam = ViewModel
         .get()
         .originalOpticalParam;
-    vm.addOrUpdate(vm.macroConfigFile, {
+    vm.addOrUpdate(vm.carConfigFile, {
       'camera_pitch': ViewModel
           .get()
           .pitch,
@@ -180,7 +180,7 @@ class _CameraPageState extends State<CameraPage> {
       'roi_height': opticalParam.height.round(),
     });
 
-    vm.addOrUpdate(vm.detectFlagFile, {
+    vm.addOrUpdate(vm.laneConfigFile, {
       'pitch': ViewModel
           .get()
           .pitch,

@@ -24,25 +24,32 @@ class ViewModel {
     });
   }
 
-  bool get ldw => detectFlagFile.ldw;
+  bool get ldw => laneConfigFile.ldw;
+
+  get tsr => laneConfigFile.tsr;
+
+  set tsr(bool enabled) {
+    laneConfigFile.tsr = enabled;
+    push(laneConfigFile);
+  }
 
   set ldw(bool enabled) {
-    detectFlagFile.ldw = enabled;
-    push(detectFlagFile);
+    laneConfigFile.ldw = enabled;
+    push(laneConfigFile);
   }
 
-  bool get fcw => macroConfigFile.fcw;
+  bool get fcw => carConfigFile.fcw;
 
   set fcw(bool enabled) {
-    macroConfigFile.fcw = enabled;
-    push(macroConfigFile);
+    carConfigFile.fcw = enabled;
+    push(carConfigFile);
   }
 
-  bool get hmw => macroConfigFile.hmw;
+  bool get hmw => carConfigFile.hmw;
 
   set hmw(bool enabled) {
-    macroConfigFile.hmw = enabled;
-    push(macroConfigFile);
+    carConfigFile.hmw = enabled;
+    push(carConfigFile);
   }
 
   static ViewModel get() {
@@ -139,8 +146,8 @@ class ViewModel {
 
   Socket sock;
 
-  MacrosConfigTextFile macroConfigFile = new MacrosConfigTextFile();
-  DetectFlagFile detectFlagFile = new DetectFlagFile();
+  MacrosConfigTextFile carConfigFile = new MacrosConfigTextFile();
+  DetectFlagFile laneConfigFile = new DetectFlagFile();
   DmsSetupFlagFile dmsSetupFlagFile = new DmsSetupFlagFile();
   CanInputJsonFile canInputJsonFile = new CanInputJsonFile();
   MProtocolConfigJsonFile mProtocolConfigJsonFile =
@@ -320,8 +327,8 @@ class ViewModel {
       _connectionStatus.add(false);
     });
 
-    getFiles(socket, macroConfigFile);
-    getFiles(socket, detectFlagFile);
+    getFiles(socket, carConfigFile);
+    getFiles(socket, laneConfigFile);
     getFiles(socket, dmsSetupFlagFile);
     getFiles(socket, canInputJsonFile);
     getFiles(socket, mProtocolConfigJsonFile);
@@ -350,14 +357,14 @@ class ViewModel {
     print(socketMessage['type']);
     if (socketMessage['type'] == 'read_file_ok' ||
         socketMessage['type'] == 'read_file_error') {
-      macroConfigFile.handle(socketMessage);
-      detectFlagFile.handle(socketMessage);
+      carConfigFile.handle(socketMessage);
+      laneConfigFile.handle(socketMessage);
       canInputJsonFile.handle(socketMessage);
       dmsSetupFlagFile.handle(socketMessage);
       mProtocolConfigJsonFile.handle(socketMessage);
       mProtocolJsonFile.handle(socketMessage);
-      push(macroConfigFile);
-      push(detectFlagFile);
+      push(carConfigFile);
+      push(laneConfigFile);
       push(canInputJsonFile);
       push(dmsSetupFlagFile);
       push(mProtocolConfigJsonFile);

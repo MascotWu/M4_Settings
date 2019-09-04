@@ -60,6 +60,10 @@ class DetectFlagFile extends ConfigurationFile {
   @override
   String get path => '/sdcard/run/detect.flag';
 
+  get tsr => config['enable_tsr'];
+
+  set tsr(bool enabled) => config['enable_tsr'] = enabled;
+
   @override
   generateFileContent() {
     return utf8.encode(gflagEncode(config));
@@ -70,7 +74,7 @@ class DetectFlagFile extends ConfigurationFile {
     config = gflagDecode(content == null ? "" : utf8.decode(content));
     pcw ??= true;
     ldw ??= true;
-    config['enable_tsr'] ??= true;
+    tsr ??= true;
   }
 
   // PCW 通过 enable_ped 控制,变量类型为 bool 型.
@@ -79,7 +83,9 @@ class DetectFlagFile extends ConfigurationFile {
   set pcw(bool enabled) => config['enable_ped'] = enabled;
 
   // LDW 通过 ldw_speed_thresh 控制，设置为10000时关闭，设置为55时开启.
-  get ldw => config['ldw_speed_thresh'] == 55;
+  get ldw =>
+      config['ldw_speed_thresh'] == null ? null : config['ldw_speed_thresh'] ==
+          55;
 
   set ldw(bool enabled) => config['ldw_speed_thresh'] = enabled ? 55 : 10000;
 }

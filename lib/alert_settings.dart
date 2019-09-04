@@ -11,9 +11,7 @@ class AlertSettingsState extends State<AlertSettingsPage> {
   AlertSettingsState() {
     vm = ViewModel.get();
 
-    _tsr = vm.detectFlagFile.config['enable_tsr'];
-
-    _pcw = vm.detectFlagFile.pcw;
+    _pcw = vm.laneConfigFile.pcw;
 
     _alertItemEyeclose1 =
     vm.dmsSetupFlagFile.config['alert_item_eyeclose1'];
@@ -57,8 +55,6 @@ class AlertSettingsState extends State<AlertSettingsPage> {
     _alertItemLongtimedrive =
     vm.dmsSetupFlagFile.config['alert_item_longtimedrive'];
   }
-
-  bool _tsr;
 
   bool _pcw;
 
@@ -131,13 +127,11 @@ class AlertSettingsState extends State<AlertSettingsPage> {
             ),
             SwitchListTile(
               title: const Text('超速预警(TSR)'),
-              value: _tsr,
+              value: vm.tsr,
               onChanged: (bool value) {
                 setState(() {
-                  _tsr = value;
+                  vm.tsr = value;
                 });
-                vm.addOrUpdate(
-                    vm.detectFlagFile, {'enable_tsr': value});
               },
               secondary: const Icon(Icons.warning),
             ),
@@ -148,8 +142,8 @@ class AlertSettingsState extends State<AlertSettingsPage> {
                 setState(() {
                   _pcw = value;
                 });
-                vm.detectFlagFile.pcw = value;
-                vm.push(vm.detectFlagFile);
+                vm.laneConfigFile.pcw = value;
+                vm.push(vm.laneConfigFile);
               },
               secondary: const Icon(Icons.warning),
             ),
