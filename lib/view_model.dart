@@ -24,14 +24,21 @@ class ViewModel {
     });
   }
 
-  bool get fatigue => dmsSetupFlagFile.fatigue;
-
   get lookDown => dmsSetupFlagFile.lookDown;
 
   set lookDown(enabled) {
     dmsSetupFlagFile.lookDown = enabled;
     push(dmsSetupFlagFile);
   }
+
+  get lookAround => dmsSetupFlagFile.lookAround;
+
+  set lookAround(enabled) {
+    dmsSetupFlagFile.lookAround = enabled;
+    push(dmsSetupFlagFile);
+  }
+
+  bool get fatigue => dmsSetupFlagFile.fatigue;
 
   set fatigue(bool enabled) {
     dmsSetupFlagFile.fatigue = enabled;

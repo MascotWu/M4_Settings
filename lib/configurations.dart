@@ -119,6 +119,10 @@ class CanInputJsonFile extends ConfigurationFile {
 }
 
 class DmsSetupFlagFile extends ConfigurationFile {
+  get lookAround => config['alert_item_lookaround'];
+
+  set lookAround(enabled) => config['alert_item_lookaround'] = enabled;
+
   get lookDown => config['alert_item_bow'];
 
   set lookDown(enabled) => config['alert_item_bow'] = enabled;

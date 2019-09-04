@@ -11,9 +11,6 @@ class AlertSettingsState extends State<AlertSettingsPage> {
   AlertSettingsState() {
     vm = ViewModel.get();
 
-    _alertItemLookaround =
-    vm.dmsSetupFlagFile.config['alert_item_lookaround'];
-
     _alertItemPhone =
     vm.dmsSetupFlagFile.config['alert_item_phone'];
 
@@ -41,8 +38,6 @@ class AlertSettingsState extends State<AlertSettingsPage> {
     _alertItemLongtimedrive =
     vm.dmsSetupFlagFile.config['alert_item_longtimedrive'];
   }
-
-  bool _alertItemLookaround;
 
   bool _alertItemPhone;
 
@@ -165,13 +160,11 @@ class AlertSettingsState extends State<AlertSettingsPage> {
             ),
             SwitchListTile(
               title: const Text('左顾右盼'),
-              value: _alertItemLookaround,
+              value: vm.lookAround,
               onChanged: (bool value) {
                 setState(() {
-                  _alertItemLookaround = value;
+                  vm.lookAround = value;
                 });
-                vm.addOrUpdate(vm.dmsSetupFlagFile,
-                    {'alert_item_lookaround': value});
               },
               secondary: const Icon(Icons.warning),
             ),
