@@ -26,7 +26,17 @@ class ViewModel {
 
   bool get fcw => macroConfigFile.fcw;
 
-  bool get hmw => detectFlagFile.hmw;
+  set fcw(bool enabled) {
+    macroConfigFile.fcw = enabled;
+    push(macroConfigFile);
+  }
+
+  bool get hmw => macroConfigFile.hmw;
+
+  set hmw(bool enabled) {
+    macroConfigFile.hmw = enabled;
+    push(macroConfigFile);
+  }
 
   static ViewModel get() {
     return vm;

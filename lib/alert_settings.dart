@@ -11,9 +11,6 @@ class AlertSettingsState extends State<AlertSettingsPage> {
   AlertSettingsState() {
     vm = ViewModel.get();
 
-    _fcw = vm.fcw;
-    _hmw = vm.hmw;
-
     _ldw = vm.detectFlagFile.ldw;
 
     _tsr = vm.detectFlagFile.config['enable_tsr'];
@@ -63,10 +60,6 @@ class AlertSettingsState extends State<AlertSettingsPage> {
     vm.dmsSetupFlagFile.config['alert_item_longtimedrive'];
   }
 
-  bool _fcw;
-
-  bool _hmw;
-
   bool _ldw;
 
   bool _tsr;
@@ -112,25 +105,21 @@ class AlertSettingsState extends State<AlertSettingsPage> {
           children: <Widget>[
             SwitchListTile(
               title: const Text('FCW报警'),
-              value: _fcw,
+              value: vm.fcw,
               onChanged: (bool value) {
                 setState(() {
-                  _fcw = value;
+                  vm.fcw = value;
                 });
-                vm.macroConfigFile.fcw = value;
-                vm.push(vm.macroConfigFile);
               },
               secondary: const Icon(Icons.warning),
             ),
             SwitchListTile(
               title: const Text('HMW报警'),
-              value: _hmw,
+              value: vm.hmw,
               onChanged: (bool value) {
                 setState(() {
-                  _hmw = value;
+                  vm.hmw = value;
                 });
-                vm.addOrUpdate(
-                    vm.detectFlagFile, {'enable_hmw': value});
               },
               secondary: const Icon(Icons.warning),
             ),

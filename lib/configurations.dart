@@ -45,7 +45,9 @@ class MacrosConfigTextFile extends ConfigurationFile {
 
   get fcw => config['enable_fcw'] == 1;
 
-  set fcw(bool enabled) => config['enable_fcw'] = enabled ? 1 : 0;
+  set fcw(bool enabled) {
+    config['enable_fcw'] = enabled ? 1 : 0;
+  }
 
   get hmw => config['headway_warning_level_1'].round() != -1;
 
@@ -57,8 +59,6 @@ class MacrosConfigTextFile extends ConfigurationFile {
 class DetectFlagFile extends ConfigurationFile {
   @override
   String get path => '/sdcard/run/detect.flag';
-
-  get hmw => null;
 
   @override
   generateFileContent() {
