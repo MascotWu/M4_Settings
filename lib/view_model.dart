@@ -100,6 +100,13 @@ class ViewModel {
     push(laneConfigFile);
   }
 
+  get wearingSunglasses => dmsSetupFlagFile.wearingSunglasses;
+
+  set wearingSunglasses(enabled) {
+    dmsSetupFlagFile.wearingSunglasses = enabled;
+    push(dmsSetupFlagFile);
+  }
+
   get yawn => dmsSetupFlagFile.yawn;
 
   set yawn(bool enabled) {

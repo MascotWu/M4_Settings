@@ -11,17 +11,12 @@ class AlertSettingsState extends State<AlertSettingsPage> {
   AlertSettingsState() {
     vm = ViewModel.get();
 
-    _alertItemEyeocclusion =
-    vm.dmsSetupFlagFile.config['alert_item_eyeocclusion'];
-
     _alertItemHandsoff =
     vm.dmsSetupFlagFile.config['alert_item_handsoff'];
 
     _alertItemLongtimedrive =
     vm.dmsSetupFlagFile.config['alert_item_longtimedrive'];
   }
-
-  bool _alertItemEyeocclusion;
 
   bool _alertItemHandsoff;
 
@@ -198,14 +193,11 @@ class AlertSettingsState extends State<AlertSettingsPage> {
             ),
             SwitchListTile(
               title: const Text('墨镜遮挡'),
-              value: _alertItemEyeocclusion,
+              value: vm.wearingSunglasses,
               onChanged: (bool value) {
                 setState(() {
-                  _alertItemEyeocclusion = value;
+                  vm.wearingSunglasses = value;
                 });
-
-                vm.addOrUpdate(vm.dmsSetupFlagFile,
-                    {'alert_item_eyeocclusion': value});
               },
               secondary: const Icon(Icons.warning),
             ),

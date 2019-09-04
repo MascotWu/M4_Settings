@@ -159,6 +159,11 @@ class DmsSetupFlagFile extends ConfigurationFile {
 
   set fatigue(bool enabled) => config['alert_item_eyeclose2'] = enabled;
 
+  get wearingSunglasses => config['alert_item_eyeocclusion_enable'];
+
+  set wearingSunglasses(enabled) =>
+      config['alert_item_eyeocclusion_enable'] = enabled;
+
   get yawn => config['alert_item_yawn'];
 
   set yawn(bool enabled) => config['alert_item_yawn'] = enabled;
