@@ -24,6 +24,13 @@ class ViewModel {
     });
   }
 
+  bool get ldw => detectFlagFile.ldw;
+
+  set ldw(bool enabled) {
+    detectFlagFile.ldw = enabled;
+    push(detectFlagFile);
+  }
+
   bool get fcw => macroConfigFile.fcw;
 
   set fcw(bool enabled) {

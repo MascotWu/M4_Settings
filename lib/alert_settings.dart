@@ -11,8 +11,6 @@ class AlertSettingsState extends State<AlertSettingsPage> {
   AlertSettingsState() {
     vm = ViewModel.get();
 
-    _ldw = vm.detectFlagFile.ldw;
-
     _tsr = vm.detectFlagFile.config['enable_tsr'];
 
     _pcw = vm.detectFlagFile.pcw;
@@ -59,8 +57,6 @@ class AlertSettingsState extends State<AlertSettingsPage> {
     _alertItemLongtimedrive =
     vm.dmsSetupFlagFile.config['alert_item_longtimedrive'];
   }
-
-  bool _ldw;
 
   bool _tsr;
 
@@ -125,13 +121,11 @@ class AlertSettingsState extends State<AlertSettingsPage> {
             ),
             SwitchListTile(
               title: const Text('LDW报警'),
-              value: _ldw,
+              value: vm.ldw,
               onChanged: (bool value) {
                 setState(() {
-                  _ldw = value;
+                  vm.ldw = value;
                 });
-                vm.detectFlagFile.ldw = value;
-                vm.push(vm.detectFlagFile);
               },
               secondary: const Icon(Icons.warning),
             ),
