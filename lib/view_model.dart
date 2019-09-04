@@ -51,6 +51,13 @@ class ViewModel {
     push(dmsSetupFlagFile);
   }
 
+  get longtimeDriving => dmsSetupFlagFile.longtimeDriving;
+
+  set longtimeDriving(enabled) {
+    dmsSetupFlagFile.longtimeDriving = enabled;
+    push(dmsSetupFlagFile);
+  }
+
   get occlusion => dmsSetupFlagFile.occlusion;
 
   set occlusion(enabled) {

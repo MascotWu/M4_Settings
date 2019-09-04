@@ -10,12 +10,7 @@ class AlertSettingsState extends State<AlertSettingsPage> {
 
   AlertSettingsState() {
     vm = ViewModel.get();
-
-    _alertItemLongtimedrive =
-    vm.dmsSetupFlagFile.config['alert_item_longtimedrive'];
   }
-
-  bool _alertItemLongtimedrive;
 
   @override
   Widget build(BuildContext context) {
@@ -208,14 +203,11 @@ class AlertSettingsState extends State<AlertSettingsPage> {
             ),
             SwitchListTile(
               title: const Text('长时间驾驶'),
-              value: _alertItemLongtimedrive,
+              value: vm.longtimeDriving,
               onChanged: (bool value) {
                 setState(() {
-                  _alertItemLongtimedrive = value;
+                  vm.longtimeDriving = value;
                 });
-
-                vm.addOrUpdate(vm.dmsSetupFlagFile,
-                    {'alert_item_longtimedrive': value});
               },
               secondary: const Icon(Icons.warning),
             ),

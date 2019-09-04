@@ -156,6 +156,10 @@ class DmsSetupFlagFile extends ConfigurationFile {
 
   set lookDown(enabled) => config['alert_item_bow'] = enabled;
 
+  get longtimeDriving => config['alert_item_longtimedrive'];
+
+  set longtimeDriving(enabled) => config['alert_item_longtimedrive'] = enabled;
+
   @override
   get path => '/sdcard/run/dms_setup.flag';
 
