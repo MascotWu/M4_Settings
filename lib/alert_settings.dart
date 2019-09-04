@@ -11,9 +11,6 @@ class AlertSettingsState extends State<AlertSettingsPage> {
   AlertSettingsState() {
     vm = ViewModel.get();
 
-    _alertItemOcclusion =
-    vm.dmsSetupFlagFile.config['alert_item_occlusion'];
-
     _alertItemLookup =
     vm.dmsSetupFlagFile.config['alert_item_lookup'];
 
@@ -26,8 +23,6 @@ class AlertSettingsState extends State<AlertSettingsPage> {
     _alertItemLongtimedrive =
     vm.dmsSetupFlagFile.config['alert_item_longtimedrive'];
   }
-
-  bool _alertItemOcclusion;
 
   bool _alertItemLookup;
 
@@ -188,13 +183,11 @@ class AlertSettingsState extends State<AlertSettingsPage> {
             ),
             SwitchListTile(
               title: const Text('遮挡'),
-              value: _alertItemOcclusion,
+              value: vm.occlusion,
               onChanged: (bool value) {
                 setState(() {
-                  _alertItemOcclusion = value;
+                  vm.occlusion = value;
                 });
-                vm.addOrUpdate(vm.dmsSetupFlagFile,
-                    {'alert_item_occlusion': value});
               },
               secondary: const Icon(Icons.warning),
             ),

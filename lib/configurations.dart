@@ -128,6 +128,10 @@ class DmsSetupFlagFile extends ConfigurationFile {
 
   set makePhoneCall(enabled) => config['alert_item_phone'] = enabled;
 
+  get occlusion => config['alert_item_occlusion'];
+
+  set occlusion(enabled) => config['alert_item_occlusion'] = enabled;
+
   get smoking => config['alert_item_smoking'];
 
   set smoking(enabled) => config['alert_item_smoking'] = enabled;
