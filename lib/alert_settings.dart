@@ -11,12 +11,6 @@ class AlertSettingsState extends State<AlertSettingsPage> {
   AlertSettingsState() {
     vm = ViewModel.get();
 
-    _alertItemSmoking =
-    vm.dmsSetupFlagFile.config['alert_item_smoking'];
-
-    _alertItemDemobilized =
-    vm.dmsSetupFlagFile.config['alert_item_demobilized'];
-
     _alertItemDriverchange =
     vm.dmsSetupFlagFile.config['alert_item_driverchange'];
 
@@ -35,8 +29,6 @@ class AlertSettingsState extends State<AlertSettingsPage> {
     _alertItemLongtimedrive =
     vm.dmsSetupFlagFile.config['alert_item_longtimedrive'];
   }
-
-  bool _alertItemDemobilized;
 
   bool _alertItemDriverchange;
 
@@ -181,13 +173,11 @@ class AlertSettingsState extends State<AlertSettingsPage> {
             ),
             SwitchListTile(
               title: const Text('离岗'),
-              value: _alertItemDemobilized,
+              value: vm.absence,
               onChanged: (bool value) {
                 setState(() {
-                  _alertItemDemobilized = value;
+                  vm.absence = value;
                 });
-                vm.addOrUpdate(vm.dmsSetupFlagFile,
-                    {'alert_item_demobilized': value});
               },
               secondary: const Icon(Icons.warning),
             ),

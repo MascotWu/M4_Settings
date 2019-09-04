@@ -24,6 +24,12 @@ class ViewModel {
     });
   }
 
+  get absence => dmsSetupFlagFile.absence;
+
+  set absence(enabled) {
+    dmsSetupFlagFile.absence = enabled;
+  }
+
   get lookDown => dmsSetupFlagFile.lookDown;
 
   set lookDown(enabled) {

@@ -119,6 +119,11 @@ class CanInputJsonFile extends ConfigurationFile {
 }
 
 class DmsSetupFlagFile extends ConfigurationFile {
+
+  get absence => config['alert_item_demobilized'];
+
+  set absence(enabled) => config['alert_item_demobilized'] = enabled;
+
   get makePhoneCall => config['alert_item_phone'];
 
   set makePhoneCall(enabled) => config['alert_item_phone'] = enabled;
