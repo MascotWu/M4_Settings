@@ -17,9 +17,6 @@ class AlertSettingsState extends State<AlertSettingsPage> {
     _alertItemEyeclose2 =
     vm.dmsSetupFlagFile.config['alert_item_eyeclose2'];
 
-    _alertItemYawn =
-    vm.dmsSetupFlagFile.config['alert_item_yawn'];
-
     _alertItemLookaround =
     vm.dmsSetupFlagFile.config['alert_item_lookaround'];
 
@@ -57,8 +54,6 @@ class AlertSettingsState extends State<AlertSettingsPage> {
   bool _alertItemEyeclose1;
 
   bool _alertItemEyeclose2;
-
-  bool _alertItemYawn;
 
   bool _alertItemLookaround;
 
@@ -203,13 +198,11 @@ class AlertSettingsState extends State<AlertSettingsPage> {
             ),
             SwitchListTile(
               title: const Text('打哈欠'),
-              value: _alertItemYawn,
+              value: vm.yawn,
               onChanged: (bool value) {
                 setState(() {
-                  _alertItemYawn = value;
+                  vm.yawn = value;
                 });
-                vm.addOrUpdate(
-                    vm.dmsSetupFlagFile, {'alert_item_yawn': value});
               },
               secondary: const Icon(Icons.warning),
             ),

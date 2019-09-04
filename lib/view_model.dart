@@ -31,6 +31,13 @@ class ViewModel {
     push(laneConfigFile);
   }
 
+  get yawn => dmsSetupFlagFile.yawn;
+
+  set yawn(bool enabled) {
+    dmsSetupFlagFile.yawn = enabled;
+    push(dmsSetupFlagFile);
+  }
+
   bool get pcw => laneConfigFile.pcw;
 
   set pcw(bool enabled) {

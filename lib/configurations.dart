@@ -122,6 +122,10 @@ class DmsSetupFlagFile extends ConfigurationFile {
   @override
   get path => '/sdcard/run/dms_setup.flag';
 
+  get yawn => config['alert_item_yawn'];
+
+  set yawn(bool enabled) => config['alert_item_yawn'] = enabled;
+
   @override
   generateFileContent() {
     return utf8.encode(gflagEncode(config));
