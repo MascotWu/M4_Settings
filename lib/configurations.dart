@@ -132,6 +132,10 @@ class DmsSetupFlagFile extends ConfigurationFile {
 
   set smoking(enabled) => config['alert_item_smoking'] = enabled;
 
+  get substitute => config['alert_item_driverchange'];
+
+  set substitute(enabled) => config['alert_item_driverchange'] = enabled;
+
   get lookAround => config['alert_item_lookaround'];
 
   set lookAround(enabled) => config['alert_item_lookaround'] = enabled;

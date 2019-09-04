@@ -58,6 +58,13 @@ class ViewModel {
     push(dmsSetupFlagFile);
   }
 
+  get substitute => dmsSetupFlagFile.substitute;
+
+  set substitute(enabled) {
+    dmsSetupFlagFile.substitute = enabled;
+    push(dmsSetupFlagFile);
+  }
+
   bool get fatigue => dmsSetupFlagFile.fatigue;
 
   set fatigue(bool enabled) {

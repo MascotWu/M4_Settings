@@ -11,9 +11,6 @@ class AlertSettingsState extends State<AlertSettingsPage> {
   AlertSettingsState() {
     vm = ViewModel.get();
 
-    _alertItemDriverchange =
-    vm.dmsSetupFlagFile.config['alert_item_driverchange'];
-
     _alertItemOcclusion =
     vm.dmsSetupFlagFile.config['alert_item_occlusion'];
 
@@ -29,8 +26,6 @@ class AlertSettingsState extends State<AlertSettingsPage> {
     _alertItemLongtimedrive =
     vm.dmsSetupFlagFile.config['alert_item_longtimedrive'];
   }
-
-  bool _alertItemDriverchange;
 
   bool _alertItemOcclusion;
 
@@ -183,13 +178,11 @@ class AlertSettingsState extends State<AlertSettingsPage> {
             ),
             SwitchListTile(
               title: const Text('驾驶员变更'),
-              value: _alertItemDriverchange,
+              value: vm.substitute,
               onChanged: (bool value) {
                 setState(() {
-                  _alertItemDriverchange = value;
+                  vm.substitute = value;
                 });
-                vm.addOrUpdate(vm.dmsSetupFlagFile,
-                    {'alert_item_driverchange': value});
               },
               secondary: const Icon(Icons.warning),
             ),
