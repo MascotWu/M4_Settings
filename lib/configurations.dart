@@ -122,9 +122,19 @@ class DmsSetupFlagFile extends ConfigurationFile {
   @override
   get path => '/sdcard/run/dms_setup.flag';
 
+  get fatigue => config['alert_item_eyeclose2'];
+
+  set fatigue(bool enabled) => config['alert_item_eyeclose2'] = enabled;
+
   get yawn => config['alert_item_yawn'];
 
   set yawn(bool enabled) => config['alert_item_yawn'] = enabled;
+
+  get tired => config['alert_item_eyeclose1'];
+
+  set tired(bool enabled) {
+    config['alert_item_eyeclose1'] = enabled;
+  }
 
   @override
   generateFileContent() {

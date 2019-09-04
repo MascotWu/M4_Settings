@@ -11,12 +11,6 @@ class AlertSettingsState extends State<AlertSettingsPage> {
   AlertSettingsState() {
     vm = ViewModel.get();
 
-    _alertItemEyeclose1 =
-    vm.dmsSetupFlagFile.config['alert_item_eyeclose1'];
-
-    _alertItemEyeclose2 =
-    vm.dmsSetupFlagFile.config['alert_item_eyeclose2'];
-
     _alertItemLookaround =
     vm.dmsSetupFlagFile.config['alert_item_lookaround'];
 
@@ -50,10 +44,6 @@ class AlertSettingsState extends State<AlertSettingsPage> {
     _alertItemLongtimedrive =
     vm.dmsSetupFlagFile.config['alert_item_longtimedrive'];
   }
-
-  bool _alertItemEyeclose1;
-
-  bool _alertItemEyeclose2;
 
   bool _alertItemLookaround;
 
@@ -138,25 +128,21 @@ class AlertSettingsState extends State<AlertSettingsPage> {
             ),
             SwitchListTile(
               title: const Text('轻度闭眼'),
-              value: _alertItemEyeclose1,
+              value: vm.tired,
               onChanged: (bool value) {
                 setState(() {
-                  _alertItemEyeclose1 = value;
+                  vm.tired = value;
                 });
-                vm.addOrUpdate(vm.dmsSetupFlagFile,
-                    {'alert_item_eyeclose1': value});
               },
               secondary: const Icon(Icons.warning),
             ),
             SwitchListTile(
               title: const Text('重度闭眼'),
-              value: _alertItemEyeclose2,
+              value: vm.fatigue,
               onChanged: (bool value) {
                 setState(() {
-                  _alertItemEyeclose2 = value;
+                  vm.fatigue = value;
                 });
-                vm.addOrUpdate(vm.dmsSetupFlagFile,
-                    {'alert_item_eyeclose2': value});
               },
               secondary: const Icon(Icons.warning),
             ),

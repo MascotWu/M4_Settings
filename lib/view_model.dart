@@ -24,6 +24,20 @@ class ViewModel {
     });
   }
 
+  bool get fatigue => dmsSetupFlagFile.fatigue;
+
+  set fatigue(bool enabled) {
+    dmsSetupFlagFile.fatigue = enabled;
+    push(dmsSetupFlagFile);
+  }
+
+  bool get tired => dmsSetupFlagFile.tired;
+
+  set tired(bool enabled) {
+    dmsSetupFlagFile.tired = enabled;
+    push(dmsSetupFlagFile);
+  }
+
   bool get ldw => laneConfigFile.ldw;
 
   set ldw(bool enabled) {
