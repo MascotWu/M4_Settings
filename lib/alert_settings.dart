@@ -14,9 +14,6 @@ class AlertSettingsState extends State<AlertSettingsPage> {
     _alertItemLookaround =
     vm.dmsSetupFlagFile.config['alert_item_lookaround'];
 
-    _alertItemBow =
-    vm.dmsSetupFlagFile.config['alert_item_bow'];
-
     _alertItemPhone =
     vm.dmsSetupFlagFile.config['alert_item_phone'];
 
@@ -46,8 +43,6 @@ class AlertSettingsState extends State<AlertSettingsPage> {
   }
 
   bool _alertItemLookaround;
-
-  bool _alertItemBow;
 
   bool _alertItemPhone;
 
@@ -148,13 +143,11 @@ class AlertSettingsState extends State<AlertSettingsPage> {
             ),
             SwitchListTile(
               title: const Text('低头'),
-              value: _alertItemBow,
+              value: vm.lookDown,
               onChanged: (bool value) {
                 setState(() {
-                  _alertItemBow = value;
+                  vm.lookDown = value;
                 });
-                vm.addOrUpdate(
-                    vm.dmsSetupFlagFile, {'alert_item_bow': value});
               },
               secondary: const Icon(Icons.warning),
             ),

@@ -26,6 +26,13 @@ class ViewModel {
 
   bool get fatigue => dmsSetupFlagFile.fatigue;
 
+  get lookDown => dmsSetupFlagFile.lookDown;
+
+  set lookDown(enabled) {
+    dmsSetupFlagFile.lookDown = enabled;
+    push(dmsSetupFlagFile);
+  }
+
   set fatigue(bool enabled) {
     dmsSetupFlagFile.fatigue = enabled;
     push(dmsSetupFlagFile);

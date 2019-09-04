@@ -119,6 +119,10 @@ class CanInputJsonFile extends ConfigurationFile {
 }
 
 class DmsSetupFlagFile extends ConfigurationFile {
+  get lookDown => config['alert_item_bow'];
+
+  set lookDown(enabled) => config['alert_item_bow'] = enabled;
+
   @override
   get path => '/sdcard/run/dms_setup.flag';
 
