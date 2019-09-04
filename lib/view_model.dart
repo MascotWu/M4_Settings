@@ -24,87 +24,87 @@ class ViewModel {
     });
   }
 
-  get absence => dmsSetupFlagFile.absence;
+  get absence => _dmsSetupFlagFile.absence;
 
   set absence(enabled) {
-    dmsSetupFlagFile.absence = enabled;
+    _dmsSetupFlagFile.absence = enabled;
   }
 
-  get handsOff => dmsSetupFlagFile.handsOff;
+  get handsOff => _dmsSetupFlagFile.handsOff;
 
   set handsOff(enabled) {
-    dmsSetupFlagFile.handsOff = enabled;
-    push(dmsSetupFlagFile);
+    _dmsSetupFlagFile.handsOff = enabled;
+    push(_dmsSetupFlagFile);
   }
 
-  get lookDown => dmsSetupFlagFile.lookDown;
+  get lookDown => _dmsSetupFlagFile.lookDown;
 
   set lookDown(enabled) {
-    dmsSetupFlagFile.lookDown = enabled;
-    push(dmsSetupFlagFile);
+    _dmsSetupFlagFile.lookDown = enabled;
+    push(_dmsSetupFlagFile);
   }
 
-  get lookUp => dmsSetupFlagFile.lookUp;
+  get lookUp => _dmsSetupFlagFile.lookUp;
 
   set lookUp(enabled) {
-    dmsSetupFlagFile.lookUp = enabled;
-    push(dmsSetupFlagFile);
+    _dmsSetupFlagFile.lookUp = enabled;
+    push(_dmsSetupFlagFile);
   }
 
-  get longtimeDriving => dmsSetupFlagFile.longtimeDriving;
+  get longtimeDriving => _dmsSetupFlagFile.longtimeDriving;
 
   set longtimeDriving(enabled) {
-    dmsSetupFlagFile.longtimeDriving = enabled;
-    push(dmsSetupFlagFile);
+    _dmsSetupFlagFile.longtimeDriving = enabled;
+    push(_dmsSetupFlagFile);
   }
 
-  get occlusion => dmsSetupFlagFile.occlusion;
+  get occlusion => _dmsSetupFlagFile.occlusion;
 
   set occlusion(enabled) {
-    dmsSetupFlagFile.occlusion = enabled;
-    push(dmsSetupFlagFile);
+    _dmsSetupFlagFile.occlusion = enabled;
+    push(_dmsSetupFlagFile);
   }
 
-  get lookAround => dmsSetupFlagFile.lookAround;
+  get lookAround => _dmsSetupFlagFile.lookAround;
 
   set lookAround(enabled) {
-    dmsSetupFlagFile.lookAround = enabled;
-    push(dmsSetupFlagFile);
+    _dmsSetupFlagFile.lookAround = enabled;
+    push(_dmsSetupFlagFile);
   }
 
-  get makePhoneCall => dmsSetupFlagFile.makePhoneCall;
+  get makePhoneCall => _dmsSetupFlagFile.makePhoneCall;
 
   set makePhoneCall(enabled) {
-    dmsSetupFlagFile.makePhoneCall = enabled;
-    push(dmsSetupFlagFile);
+    _dmsSetupFlagFile.makePhoneCall = enabled;
+    push(_dmsSetupFlagFile);
   }
 
-  get smoking => dmsSetupFlagFile.smoking;
+  get smoking => _dmsSetupFlagFile.smoking;
 
   set smoking(enabled) {
-    dmsSetupFlagFile.smoking = enabled;
-    push(dmsSetupFlagFile);
+    _dmsSetupFlagFile.smoking = enabled;
+    push(_dmsSetupFlagFile);
   }
 
-  get substitute => dmsSetupFlagFile.substitute;
+  get substitute => _dmsSetupFlagFile.substitute;
 
   set substitute(enabled) {
-    dmsSetupFlagFile.substitute = enabled;
-    push(dmsSetupFlagFile);
+    _dmsSetupFlagFile.substitute = enabled;
+    push(_dmsSetupFlagFile);
   }
 
-  bool get fatigue => dmsSetupFlagFile.fatigue;
+  bool get fatigue => _dmsSetupFlagFile.fatigue;
 
   set fatigue(bool enabled) {
-    dmsSetupFlagFile.fatigue = enabled;
-    push(dmsSetupFlagFile);
+    _dmsSetupFlagFile.fatigue = enabled;
+    push(_dmsSetupFlagFile);
   }
 
-  bool get tired => dmsSetupFlagFile.tired;
+  bool get tired => _dmsSetupFlagFile.tired;
 
   set tired(bool enabled) {
-    dmsSetupFlagFile.tired = enabled;
-    push(dmsSetupFlagFile);
+    _dmsSetupFlagFile.tired = enabled;
+    push(_dmsSetupFlagFile);
   }
 
   bool get ldw => laneConfigFile.ldw;
@@ -114,18 +114,18 @@ class ViewModel {
     push(laneConfigFile);
   }
 
-  get wearingSunglasses => dmsSetupFlagFile.wearingSunglasses;
+  get wearingSunglasses => _dmsSetupFlagFile.wearingSunglasses;
 
   set wearingSunglasses(enabled) {
-    dmsSetupFlagFile.wearingSunglasses = enabled;
-    push(dmsSetupFlagFile);
+    _dmsSetupFlagFile.wearingSunglasses = enabled;
+    push(_dmsSetupFlagFile);
   }
 
-  get yawn => dmsSetupFlagFile.yawn;
+  get yawn => _dmsSetupFlagFile.yawn;
 
   set yawn(bool enabled) {
-    dmsSetupFlagFile.yawn = enabled;
-    push(dmsSetupFlagFile);
+    _dmsSetupFlagFile.yawn = enabled;
+    push(_dmsSetupFlagFile);
   }
 
   bool get pcw => laneConfigFile.pcw;
@@ -252,7 +252,7 @@ class ViewModel {
 
   MacrosConfigTextFile carConfigFile = new MacrosConfigTextFile();
   DetectFlagFile laneConfigFile = new DetectFlagFile();
-  DmsSetupFlagFile dmsSetupFlagFile = new DmsSetupFlagFile();
+  DmsSetupFlagFile _dmsSetupFlagFile = new DmsSetupFlagFile();
   CanInputJsonFile canInputJsonFile = new CanInputJsonFile();
   MProtocolConfigJsonFile mProtocolConfigJsonFile =
       new MProtocolConfigJsonFile();
@@ -433,7 +433,7 @@ class ViewModel {
 
     getFiles(socket, carConfigFile);
     getFiles(socket, laneConfigFile);
-    getFiles(socket, dmsSetupFlagFile);
+    getFiles(socket, _dmsSetupFlagFile);
     getFiles(socket, canInputJsonFile);
     getFiles(socket, mProtocolConfigJsonFile);
     getFiles(socket, mProtocolJsonFile);
@@ -464,13 +464,13 @@ class ViewModel {
       carConfigFile.handle(socketMessage);
       laneConfigFile.handle(socketMessage);
       canInputJsonFile.handle(socketMessage);
-      dmsSetupFlagFile.handle(socketMessage);
+      _dmsSetupFlagFile.handle(socketMessage);
       mProtocolConfigJsonFile.handle(socketMessage);
       mProtocolJsonFile.handle(socketMessage);
       push(carConfigFile);
       push(laneConfigFile);
       push(canInputJsonFile);
-      push(dmsSetupFlagFile);
+      push(_dmsSetupFlagFile);
       push(mProtocolConfigJsonFile);
       push(mProtocolJsonFile);
     } else if (socketMessage['type'] == 'get_camera_image_ok') {
