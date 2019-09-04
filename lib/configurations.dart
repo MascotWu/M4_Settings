@@ -120,67 +120,66 @@ class CanInputJsonFile extends ConfigurationFile {
 
 class DmsSetupFlagFile extends ConfigurationFile {
 
-  get absence => config['alert_item_demobilized'];
-
-  set absence(enabled) => config['alert_item_demobilized'] = enabled;
-
-  get handsOff => config['alert_item_handsoff'];
-
-  set handsOff(enabled) => config['alert_item_handsoff'] = enabled;
-
-  get makePhoneCall => config['alert_item_phone'];
-
-  set makePhoneCall(enabled) => config['alert_item_phone'] = enabled;
-
-  get occlusion => config['alert_item_occlusion'];
-
-  set occlusion(enabled) => config['alert_item_occlusion'] = enabled;
-
-  get smoking => config['alert_item_smoking'];
-
-  set smoking(enabled) => config['alert_item_smoking'] = enabled;
-
-  get substitute => config['alert_item_driverchange'];
-
-  set substitute(enabled) => config['alert_item_driverchange'] = enabled;
-
-  get lookAround => config['alert_item_lookaround'];
-
-  set lookAround(enabled) => config['alert_item_lookaround'] = enabled;
-
-  get lookUp => config['alert_item_lookup'];
-
-  set lookUp(enabled) => config['alert_item_lookup'] = enabled;
-
-  get lookDown => config['alert_item_bow'];
-
-  set lookDown(enabled) => config['alert_item_bow'] = enabled;
-
-  get longtimeDriving => config['alert_item_longtimedrive'];
-
-  set longtimeDriving(enabled) => config['alert_item_longtimedrive'] = enabled;
-
   @override
   get path => '/sdcard/run/dms_setup.flag';
 
-  get fatigue => config['alert_item_eyeclose2'];
+  get absence => config['alert_item_demobilized_enable'];
 
-  set fatigue(bool enabled) => config['alert_item_eyeclose2'] = enabled;
+  set absence(enabled) => config['alert_item_demobilized_enable'] = enabled;
+
+  get handsOff => config['alert_item_handsoff_enable'];
+
+  set handsOff(enabled) => config['alert_item_handsoff_enable'] = enabled;
+
+  get makePhoneCall => config['alert_item_phone_enable'];
+
+  set makePhoneCall(enabled) => config['alert_item_phone_enable'] = enabled;
+
+  get occlusion => config['alert_item_occlusion_enable'];
+
+  set occlusion(enabled) => config['alert_item_occlusion_enable'] = enabled;
+
+  get smoking => config['alert_item_smoking_enable'];
+
+  set smoking(enabled) => config['alert_item_smoking_enable'] = enabled;
+
+  get substitute => config['alert_item_driverchange_enable'];
+
+  set substitute(enabled) => config['alert_item_driverchange_enable'] = enabled;
+
+  get lookAround => config['alert_item_lookaround_enable'];
+
+  set lookAround(enabled) => config['alert_item_lookaround_enable'] = enabled;
+
+  get lookUp => config['alert_item_lookup_enable'];
+
+  set lookUp(enabled) => config['alert_item_lookup_enable'] = enabled;
+
+  get lookDown => config['alert_item_bow_enable'];
+
+  set lookDown(enabled) => config['alert_item_bow_enable'] = enabled;
+
+  get longtimeDriving => config['alert_item_longtimedrive_enable'];
+
+  set longtimeDriving(enabled) =>
+      config['alert_item_longtimedrive_enable'] = enabled;
+
+  get fatigue => config['alert_item_eyeclose2_enable'];
+
+  set fatigue(enabled) => config['alert_item_eyeclose2_enable'] = enabled;
 
   get wearingSunglasses => config['alert_item_eyeocclusion_enable'];
 
   set wearingSunglasses(enabled) =>
       config['alert_item_eyeocclusion_enable'] = enabled;
 
-  get yawn => config['alert_item_yawn'];
+  get yawn => config['alert_item_yawn_enable'];
 
-  set yawn(bool enabled) => config['alert_item_yawn'] = enabled;
+  set yawn(enabled) => config['alert_item_yawn_enable'] = enabled;
 
-  get tired => config['alert_item_eyeclose1'];
+  get tired => config['alert_item_eyeclose1_enable'];
 
-  set tired(bool enabled) {
-    config['alert_item_eyeclose1'] = enabled;
-  }
+  set tired(enabled) => config['alert_item_eyeclose1_enable'] = enabled;
 
   @override
   generateFileContent() {
