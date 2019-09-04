@@ -11,9 +11,6 @@ class AlertSettingsState extends State<AlertSettingsPage> {
   AlertSettingsState() {
     vm = ViewModel.get();
 
-    _alertItemLookup =
-    vm.dmsSetupFlagFile.config['alert_item_lookup'];
-
     _alertItemEyeocclusion =
     vm.dmsSetupFlagFile.config['alert_item_eyeocclusion'];
 
@@ -23,8 +20,6 @@ class AlertSettingsState extends State<AlertSettingsPage> {
     _alertItemLongtimedrive =
     vm.dmsSetupFlagFile.config['alert_item_longtimedrive'];
   }
-
-  bool _alertItemLookup;
 
   bool _alertItemEyeocclusion;
 
@@ -193,13 +188,11 @@ class AlertSettingsState extends State<AlertSettingsPage> {
             ),
             SwitchListTile(
               title: const Text('抬头'),
-              value: _alertItemLookup,
+              value: vm.lookUp,
               onChanged: (bool value) {
                 setState(() {
-                  _alertItemLookup = value;
+                  vm.lookUp = value;
                 });
-                vm.addOrUpdate(vm.dmsSetupFlagFile,
-                    {'alert_item_lookup': value});
               },
               secondary: const Icon(Icons.warning),
             ),

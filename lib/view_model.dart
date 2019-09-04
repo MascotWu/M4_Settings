@@ -37,6 +37,13 @@ class ViewModel {
     push(dmsSetupFlagFile);
   }
 
+  get lookUp => dmsSetupFlagFile.lookUp;
+
+  set lookUp(enabled) {
+    dmsSetupFlagFile.lookUp = enabled;
+    push(dmsSetupFlagFile);
+  }
+
   get occlusion => dmsSetupFlagFile.occlusion;
 
   set occlusion(enabled) {

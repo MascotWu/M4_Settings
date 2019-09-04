@@ -144,6 +144,10 @@ class DmsSetupFlagFile extends ConfigurationFile {
 
   set lookAround(enabled) => config['alert_item_lookaround'] = enabled;
 
+  get lookUp => config['alert_item_lookup'];
+
+  set lookUp(enabled) => config['alert_item_lookup'] = enabled;
+
   get lookDown => config['alert_item_bow'];
 
   set lookDown(enabled) => config['alert_item_bow'] = enabled;
