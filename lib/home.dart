@@ -155,9 +155,17 @@ class _HomePageState extends State<HomePage> {
         ListTile(
           leading: const Icon(Icons.code),
           title: Text('软件版本'),
-          subtitle: Text('0.2.1'),
+          subtitle: Text('0.2.2'),
+          onTap: () {
+            return showDialog<double>(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    content: Text('请帮忙测试一下:报警设置里面的各项报警配置项是否正常'),
+                  );
+                });
+          },
         ),
-
       ]),
     );
   }
