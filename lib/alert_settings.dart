@@ -11,9 +11,8 @@ class AlertSettingsState extends State<AlertSettingsPage> {
   AlertSettingsState() {
     vm = ViewModel.get();
 
-    _fcw = vm.macroConfigFile.fcw;
-
-    _hmw = vm.detectFlagFile.hmw;
+    _fcw = vm.fcw;
+    _hmw = vm.hmw;
 
     _ldw = vm.detectFlagFile.config['enable_ldw'];
 

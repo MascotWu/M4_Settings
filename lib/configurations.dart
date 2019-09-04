@@ -50,6 +50,8 @@ class DetectFlagFile extends ConfigurationFile {
   @override
   String get path => '/sdcard/run/detect.flag';
 
+  get hmw => null;
+
   @override
   generateFileContent() {
     return utf8.encode(gflagEncode(config));

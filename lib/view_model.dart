@@ -24,6 +24,10 @@ class ViewModel {
     });
   }
 
+  bool get fcw => macroConfigFile.fcw;
+
+  bool get hmw => detectFlagFile.hmw;
+
   static ViewModel get() {
     return vm;
   }
