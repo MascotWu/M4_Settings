@@ -11,14 +11,9 @@ class AlertSettingsState extends State<AlertSettingsPage> {
   AlertSettingsState() {
     vm = ViewModel.get();
 
-    _alertItemHandsoff =
-    vm.dmsSetupFlagFile.config['alert_item_handsoff'];
-
     _alertItemLongtimedrive =
     vm.dmsSetupFlagFile.config['alert_item_longtimedrive'];
   }
-
-  bool _alertItemHandsoff;
 
   bool _alertItemLongtimedrive;
 
@@ -203,13 +198,11 @@ class AlertSettingsState extends State<AlertSettingsPage> {
             ),
             SwitchListTile(
               title: const Text('双手脱离方向盘'),
-              value: _alertItemHandsoff,
+              value: vm.handsOff,
               onChanged: (bool value) {
                 setState(() {
-                  _alertItemHandsoff = value;
+                  vm.handsOff = value;
                 });
-                vm.addOrUpdate(vm.dmsSetupFlagFile,
-                    {'alert_item_handsoff': value});
               },
               secondary: const Icon(Icons.warning),
             ),

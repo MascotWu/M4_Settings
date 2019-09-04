@@ -124,6 +124,10 @@ class DmsSetupFlagFile extends ConfigurationFile {
 
   set absence(enabled) => config['alert_item_demobilized'] = enabled;
 
+  get handsOff => config['alert_item_handsoff'];
+
+  set handsOff(enabled) => config['alert_item_handsoff'] = enabled;
+
   get makePhoneCall => config['alert_item_phone'];
 
   set makePhoneCall(enabled) => config['alert_item_phone'] = enabled;

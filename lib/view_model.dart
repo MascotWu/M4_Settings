@@ -30,6 +30,13 @@ class ViewModel {
     dmsSetupFlagFile.absence = enabled;
   }
 
+  get handsOff => dmsSetupFlagFile.handsOff;
+
+  set handsOff(enabled) {
+    dmsSetupFlagFile.handsOff = enabled;
+    push(dmsSetupFlagFile);
+  }
+
   get lookDown => dmsSetupFlagFile.lookDown;
 
   set lookDown(enabled) {
