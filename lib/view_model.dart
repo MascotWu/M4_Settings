@@ -26,15 +26,22 @@ class ViewModel {
 
   bool get ldw => laneConfigFile.ldw;
 
+  set ldw(bool enabled) {
+    laneConfigFile.ldw = enabled;
+    push(laneConfigFile);
+  }
+
+  bool get pcw => laneConfigFile.pcw;
+
+  set pcw(bool enabled) {
+    laneConfigFile.pcw = enabled;
+    push(laneConfigFile);
+  }
+
   get tsr => laneConfigFile.tsr;
 
   set tsr(bool enabled) {
     laneConfigFile.tsr = enabled;
-    push(laneConfigFile);
-  }
-
-  set ldw(bool enabled) {
-    laneConfigFile.ldw = enabled;
     push(laneConfigFile);
   }
 

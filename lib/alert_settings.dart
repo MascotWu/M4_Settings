@@ -11,8 +11,6 @@ class AlertSettingsState extends State<AlertSettingsPage> {
   AlertSettingsState() {
     vm = ViewModel.get();
 
-    _pcw = vm.laneConfigFile.pcw;
-
     _alertItemEyeclose1 =
     vm.dmsSetupFlagFile.config['alert_item_eyeclose1'];
 
@@ -55,8 +53,6 @@ class AlertSettingsState extends State<AlertSettingsPage> {
     _alertItemLongtimedrive =
     vm.dmsSetupFlagFile.config['alert_item_longtimedrive'];
   }
-
-  bool _pcw;
 
   bool _alertItemEyeclose1;
 
@@ -137,13 +133,11 @@ class AlertSettingsState extends State<AlertSettingsPage> {
             ),
             SwitchListTile(
               title: const Text('行人预警'),
-              value: _pcw,
+              value: vm.pcw,
               onChanged: (bool value) {
                 setState(() {
-                  _pcw = value;
+                  vm.pcw = value;
                 });
-                vm.laneConfigFile.pcw = value;
-                vm.push(vm.laneConfigFile);
               },
               secondary: const Icon(Icons.warning),
             ),
