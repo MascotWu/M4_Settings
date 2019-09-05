@@ -99,17 +99,17 @@ class _HomePageState extends State<HomePage> {
             return showDialog<double>(
                 context: context,
                 builder: (BuildContext context) {
+                  const volumes = [0.0, 0.2, 0.5, 0.8];
                   return SliderDialog(
-                    value: _volume,
-                    max: 0.8,
-                    onChange: (volume) {
-                      print({'volume': volume});
+                    value: volumes.indexOf(vm.volume).roundToDouble(),
+                    max: 3,
+                    divisions: 3,
+                    onChange: (double volume) {
                       if (volume != null) {
-                        vm.setVolume(volume);
-                        vm.volume = volume;
                         setState(() {
-                          _volume = volume;
+                          vm.volume = volumes[volume.round()];
                         });
+                        print({'volume': vm.volume});
                       }
                     },
                   );
