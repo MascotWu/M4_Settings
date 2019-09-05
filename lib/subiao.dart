@@ -107,7 +107,6 @@ class _SuBiaoConfigState extends State<SuBiaoConfigPage> {
 
   void _setConfig() {
     if (vm.mProtocolJsonFile.config['protocol'] != 'subiao') {
-      vm.resetMProtocolConfigJsonFile('subiao');
       vm.addOrUpdate(vm.mProtocolJsonFile, {'protocol': 'subiao'});
       vm.push(vm.mProtocolJsonFile);
     }

@@ -27,7 +27,7 @@ class ViewModel {
   String get plateNumber => mProtocolConfigJsonFile.plateNumber;
 
   set plateNumber(number) {
-    mProtocolConfigJsonFile.plateNumber;
+    mProtocolConfigJsonFile.plateNumber = number;
     push(mProtocolConfigJsonFile);
   }
 
@@ -396,17 +396,6 @@ class ViewModel {
     mProtocolConfigJsonFile.config['resolution']['dms_video'] = resolution;
     mProtocolConfigJsonFile.config['resolution']['dms_image'] = resolution;
     push(mProtocolConfigJsonFile);
-  }
-
-  resetMProtocolConfigJsonFile(String protocol) {
-    if (protocol == 'jt808')
-      mProtocolConfigJsonFile.config = {
-        "server": {},
-        "reg_param": {},
-        "resolution": {}
-      };
-    else if (protocol == 'subiao')
-      mProtocolConfigJsonFile.config = {'protocol': {}, 'resolution': {}};
   }
 
   String yaw;
