@@ -24,10 +24,74 @@ class ViewModel {
     });
   }
 
+  String get plateNumber => mProtocolConfigJsonFile.plateNumber;
+
+  set plateNumber(number) {
+    mProtocolConfigJsonFile.plateNumber;
+    push(mProtocolConfigJsonFile);
+  }
+
+  bool get associatedWithVideo => mProtocolConfigJsonFile.associatedWithVideo;
+
+  set associatedWithVideo(enabled) {
+    mProtocolConfigJsonFile.associatedWithVideo = enabled;
+    push(mProtocolConfigJsonFile);
+  }
+
+  String get resolution => mProtocolConfigJsonFile.resolution;
+
+  set resolution(resolution) {
+    mProtocolConfigJsonFile.resolution = resolution;
+    push(mProtocolConfigJsonFile);
+  }
+
+  bool get ignoreSpeedLimitation =>
+      mProtocolConfigJsonFile.ignoreSpeedLimitation;
+
+  set ignoreSpeedLimitation(enabled) {
+    mProtocolConfigJsonFile.ignoreSpeedLimitation = enabled;
+    push(mProtocolConfigJsonFile);
+  }
+
+  String get terminalId => mProtocolConfigJsonFile.terminalId;
+
+  set terminalId(id) {
+    mProtocolConfigJsonFile.terminalId = id;
+    push(mProtocolConfigJsonFile);
+  }
+
+  int get plateColor => mProtocolConfigJsonFile.plateColor;
+
+  set plateColor(color) {
+    mProtocolConfigJsonFile.plateColor = color;
+    push(mProtocolConfigJsonFile);
+  }
+
+  String get deviceIdOfJT808 => mProtocolConfigJsonFile.deviceIdOfJT808;
+
+  set deviceIdOfJT808(id) {
+    mProtocolConfigJsonFile.deviceIdOfJT808 = id;
+    push(mProtocolConfigJsonFile);
+  }
+
+  int get port => mProtocolConfigJsonFile.port;
+
+  set port(port) {
+    mProtocolConfigJsonFile.port = port;
+    push(mProtocolConfigJsonFile);
+  }
+
   get absence => _dmsSetupFlagFile.absence;
 
   set absence(enabled) {
     _dmsSetupFlagFile.absence = enabled;
+  }
+
+  String get ip => mProtocolConfigJsonFile.ip;
+
+  set ip(ip) {
+    mProtocolConfigJsonFile.ip = ip;
+    push(mProtocolConfigJsonFile);
   }
 
   get handsOff => _dmsSetupFlagFile.handsOff;

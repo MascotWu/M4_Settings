@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -13,23 +11,23 @@ class Jt808ConfigPage extends StatefulWidget {
 class _Jt808ConfigState extends State<Jt808ConfigPage> {
   ViewModel vm;
 
-  TextEditingController ipController =
+  TextEditingController _ipController =
   new TextEditingController();
 
-  TextEditingController portController =
+  TextEditingController _portController =
   new TextEditingController();
 
-  TextEditingController deviceIdOfJT808Controller =
+  TextEditingController _deviceIdOfJT808Controller =
   new TextEditingController();
 
-  TextEditingController terminalIdController =
+  TextEditingController _terminalIdController =
   new TextEditingController();
 
   bool _associatedWithVideo = false;
 
   TextEditingController ignoreSpeedLimitedController;
 
-  TextEditingController plateNumberController =
+  TextEditingController _plateNumberController =
   new TextEditingController();
 
   bool _ignoreSpeedLimitation;
@@ -61,46 +59,23 @@ class _Jt808ConfigState extends State<Jt808ConfigPage> {
   _Jt808ConfigState() {
     vm = ViewModel.get();
 
-    _ignoreSpeedLimitation =
-        vm.mProtocolConfigJsonFile.config['ignore_spdth'] ?? false;
+    _ipController.text = vm.ip;
 
-    vm.mProtocolConfigJsonFile.config['reg_param'] ??= {};
-    vm.mProtocolConfigJsonFile.config['server'] ??= {};
-    vm.mProtocolConfigJsonFile.config['resolution'] ??= {};
+    _portController.text = vm.port.toString();
 
-    ipController.text = vm.mProtocolConfigJsonFile.config['server']['ipaddr'];
-    portController.text =
-        vm.mProtocolConfigJsonFile.config['server']['port'].toString();
+    _deviceIdOfJT808Controller.text = vm.deviceIdOfJT808;
 
-    vm.mProtocolConfigJsonFile.config['server']['heartbeat_period'] ??= 30;
+    _associatedWithVideo = vm.associatedWithVideo;
 
-    vm.mProtocolConfigJsonFile.config['reg_param']['province_id'] ??= 0;
-    vm.mProtocolConfigJsonFile.config['reg_param']['city_id'] ??= 0;
-    vm.mProtocolConfigJsonFile.config['reg_param']['vendor'] ??= 'MNEYE';
-    vm.mProtocolConfigJsonFile.config['reg_param']['product'] ??=
-    "MINIEYE_ADAS/DSM";
-    var random = Random(DateTime
-        .now()
-        .millisecondsSinceEpoch);
+    _ignoreSpeedLimitation = vm.ignoreSpeedLimitation;
 
-    vm.mProtocolConfigJsonFile.config['reg_param']['dev_id'] ??=
-        random.nextInt(pow(36, 3)).toRadixString(36).toUpperCase() +
-            random.nextInt(pow(36, 4)).toRadixString(36).toUpperCase();
+    _plateNumberController.text = vm.plateNumber;
 
-    terminalIdController.text =
-    vm.mProtocolConfigJsonFile.config['reg_param']['dev_id'];
+    _color = vm.plateColor;
 
-    deviceIdOfJT808Controller.text =
-    vm.mProtocolConfigJsonFile.config['reg_param']['reg_id'];
+    _terminalIdController.text = vm.terminalId;
 
-    _color = vm.mProtocolConfigJsonFile.config['reg_param']['plate_color'];
-    plateNumberController.text =
-    vm.mProtocolConfigJsonFile.config['reg_param']['car_num'];
-
-    _associatedWithVideo = vm.mProtocolConfigJsonFile.config['reg_param']
-    ['associated_video'] ?? false;
-    _color = vm.mProtocolConfigJsonFile.config['reg_param']['plate_color'];
-    _resolution = vm.mProtocolConfigJsonFile.config['resolution']['adas_video'];
+    _resolution = vm.resolution;
   }
 
   @override
@@ -117,73 +92,73 @@ class _Jt808ConfigState extends State<Jt808ConfigPage> {
         ),
       ]),
       body: ListView(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 24.0),
         children: <Widget>[
           Container(
-            padding: EdgeInsets.all(8.0),
-            alignment: Alignment.center,
+            padding: EdgeInsets.symmetric(vertical: 8.0),
             child: TextField(
               decoration: InputDecoration(
-                border: OutlineInputBorder(),
                 labelText: '服务器地址',
               ),
-              controller: ipController,
+              controller: _ipController,
             ),
           ),
           Container(
-            padding: EdgeInsets.all(8.0),
-            alignment: Alignment.center,
+            padding: EdgeInsets.symmetric(vertical: 8.0),
             child: TextField(
               decoration: InputDecoration(
-                border: OutlineInputBorder(),
                 labelText: '服务器端口号',
               ),
-              controller: portController,
+              controller: _portController,
             ),
           ),
           Container(
-            padding: EdgeInsets.all(8.0),
-            alignment: Alignment.center,
+            padding: EdgeInsets.symmetric(vertical: 8.0),
             child: TextField(
               decoration: InputDecoration(
-                border: OutlineInputBorder(),
                 labelText: '设备id',
               ),
-              controller: deviceIdOfJT808Controller,
+              controller: _deviceIdOfJT808Controller,
             ),
-          ),
-          SwitchListTile(
-            title: const Text('关联视频'),
-            value: _associatedWithVideo,
-            onChanged: (bool associated) {
-              setState(() {
-                _associatedWithVideo = associated;
-              });
-            },
-            secondary: const Icon(Icons.ondemand_video),
-          ),
-          SwitchListTile(
-            title: const Text('忽略速度限制'),
-            value: _ignoreSpeedLimitation,
-            onChanged: (bool ignore) {
-              setState(() {
-                _ignoreSpeedLimitation = ignore;
-              });
-            },
-            secondary: const Icon(Icons.block),
           ),
           Container(
-            padding: EdgeInsets.all(8.0),
-            alignment: Alignment.center,
-            child: TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: '车牌号',
-              ),
-              controller: plateNumberController,
+            padding: EdgeInsets.symmetric(vertical: 8.0),
+            child: SwitchListTile(
+              title: const Text('关联视频'),
+              value: _associatedWithVideo,
+              onChanged: (bool associated) {
+                setState(() {
+                  _associatedWithVideo = associated;
+                });
+              },
+              secondary: const Icon(Icons.ondemand_video),
             ),
           ),
-          ListTile(
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 8.0),
+            child: SwitchListTile(
+              title: const Text('忽略速度限制'),
+              value: _ignoreSpeedLimitation,
+              onChanged: (bool ignore) {
+                setState(() {
+                  _ignoreSpeedLimitation = ignore;
+                });
+              },
+              secondary: const Icon(Icons.block),
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 8.0),
+            child: TextField(
+              decoration: InputDecoration(
+                labelText: '车牌号',
+              ),
+              controller: _plateNumberController,
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 8.0),
+            child: ListTile(
             leading: const Icon(Icons.color_lens),
             title: Text('车牌颜色'),
             subtitle: Text(_colorName),
@@ -203,20 +178,21 @@ class _Jt808ConfigState extends State<Jt808ConfigPage> {
                   });
                 }
               });
-            },
-          ),
-          Container(
-            padding: EdgeInsets.all(8.0),
-            alignment: Alignment.center,
-            child: TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: '终端ID',
-              ),
-              controller: terminalIdController,
+            }
             ),
           ),
-          ListTile(
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 8.0),
+            child: TextField(
+              decoration: InputDecoration(
+                labelText: '终端ID',
+              ),
+              controller: _terminalIdController,
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 8.0),
+            child: ListTile(
             leading: const Icon(Icons.attach_file),
             title: Text('附件分辨率'),
             onTap: () {
@@ -229,11 +205,10 @@ class _Jt808ConfigState extends State<Jt808ConfigPage> {
                     );
                   }).then((resolution) {
                 print({'resolution': resolution});
-                if (resolution != null) {
+                if (resolution != null)
                   _resolution = resolution;
-                }
               });
-            },
+            }),
           ),
         ],
       ),
@@ -251,7 +226,7 @@ class _Jt808ConfigState extends State<Jt808ConfigPage> {
       return;
     }
 
-    if (_color == null || plateNumberController.text.isEmpty) {
+    if (_color == null || _plateNumberController.text.isEmpty) {
       Fluttertoast.showToast(
         msg: "请填写车牌号并选择车牌颜色",
         toastLength: Toast.LENGTH_SHORT,
@@ -260,7 +235,7 @@ class _Jt808ConfigState extends State<Jt808ConfigPage> {
       return;
     }
 
-    if (ipController.text.isEmpty || portController.text.isEmpty) {
+    if (_ipController.text.isEmpty || _portController.text.isEmpty) {
       Fluttertoast.showToast(
         msg: "请填写ip地址以及端口号",
         toastLength: Toast.LENGTH_SHORT,
@@ -269,7 +244,16 @@ class _Jt808ConfigState extends State<Jt808ConfigPage> {
       return;
     }
 
-    if (terminalIdController.text.isEmpty) {
+    if (int.tryParse(_portController.text) == null) {
+      Fluttertoast.showToast(
+        msg: "端口号不合法",
+        toastLength: Toast.LENGTH_SHORT,
+        timeInSecForIos: 1,
+      );
+      return;
+    }
+
+    if (_terminalIdController.text.isEmpty) {
       Fluttertoast.showToast(
         msg: "请填写终端id",
         toastLength: Toast.LENGTH_SHORT,
@@ -284,15 +268,15 @@ class _Jt808ConfigState extends State<Jt808ConfigPage> {
       vm.push(vm.mProtocolJsonFile);
     }
 
-    vm.addOrUpdatePlateColor(_color);
-    if (_resolution != null) vm.addOrUpdateResolutionForJt808(_resolution);
-    vm.addOrUpdateAssociatedWithVideoOfJT808(_associatedWithVideo);
-    vm.addOrUpdateIgnoreSpeedLimited(_ignoreSpeedLimitation);
-    vm.addOrUpdateServerIp(ipController.text);
-    vm.addOrUpdateServerPort(portController.text);
-    vm.addOrUpdateDeviceIdOfJT808(deviceIdOfJT808Controller.text);
-    vm.addOrUpdatePlateNumber(plateNumberController.text);
-    vm.addOrUpdateTerminalId(terminalIdController.text);
+    vm.plateColor = _color;
+    if (_resolution != null) vm.resolution = _resolution;
+    vm.associatedWithVideo = _associatedWithVideo;
+    vm.ignoreSpeedLimitation = _ignoreSpeedLimitation;
+    vm.ip = _ipController.text;
+    vm.port = int.parse(_portController.text);
+    vm.deviceIdOfJT808 = _deviceIdOfJT808Controller.text;
+    vm.plateNumber = _plateNumberController.text;
+    vm.terminalId = _terminalIdController.text;
 
     Navigator.pop(context);
   }

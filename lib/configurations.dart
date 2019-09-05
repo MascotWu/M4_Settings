@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:gbk2utf8/gbk2utf8.dart';
 
@@ -218,6 +219,7 @@ class MProtocolJsonFile extends ConfigurationFile {
   @override
   setConfig(List<int> content) {
     config = jsonDecode(content == null ? '{}' : utf8.decode(content));
+    print("当前协议: ${config['protocol']}");
   }
 }
 
@@ -233,5 +235,76 @@ class MProtocolConfigJsonFile extends ConfigurationFile {
   @override
   setConfig(List<int> content) {
     config = jsonDecode(content == null ? '{}' : gbk.decode(content));
+    config['server'] ??= {};
+    config['server']['ipaddr'] ??= '';
+    config['server']['port'] ??= 0;
+    config['server']['heartbeat_period'] ??= 30;
+
+    config['reg_param'] ??= {};
+    config['reg_param']['associated_video'] ??= false;
+    config['reg_param']['car_num'] ??= '';
+    config['reg_param']['city_id'] ??= 0;
+    config['reg_param']['product'] ??= "MINIEYE_ADAS/DSM";
+    config['reg_param']['province_id'] ??= 0;
+    config['reg_param']['plate_color'] ??= 2;
+    config['reg_param']['vendor'] ??= "MNEYE";
+
+    var random = Random(DateTime
+        .now()
+        .millisecondsSinceEpoch);
+
+    config['reg_param']['dev_id'] ??=
+        random.nextInt(pow(36, 3)).toRadixString(36).toUpperCase() +
+            random.nextInt(pow(36, 4)).toRadixString(36).toUpperCase();
+
+    config['resolution'] ??= {};
+    config['resolution']['adas_video'] ??= "720P";
+    config['resolution']['adas_image'] ??= "720P";
+    config['resolution']['dms_video'] ??= "720P";
+    config['resolution']['dms_image'] ??= "720P";
+
+    config["ignore_spdth"] ??= true;
   }
+
+  String get ip => config['server']['ipaddr'];
+
+  set ip(ip) => config['server']['ipaddr'] = ip;
+
+  int get port => config['server']['port'];
+
+  set port(port) => config['server']['port'] = port;
+
+  String get resolution => config['resolution']['adas_video'];
+
+  set resolution(resolution) {
+    config['resolution']['adas_video'] = resolution;
+    config['resolution']['adas_image'] = resolution;
+    config['resolution']['dms_video'] = resolution;
+    config['resolution']['dms_image'] = resolution;
+  }
+
+  int get plateColor => config['reg_param']['plate_color'];
+
+  set plateColor(color) => config['reg_param']['plate_color'] = color;
+
+  String get plateNumber => config['reg_param']['car_num'];
+
+  set plateNumber(number) => config['reg_param']['car_num'] = number;
+
+  String get terminalId => config['reg_param']['dev_id'];
+
+  set terminalId(id) => config['reg_param']['dev_id'] = id;
+
+  String get deviceIdOfJT808 => config['reg_param']['reg_id'];
+
+  set deviceIdOfJT808(id) => config['reg_param']['reg_id'] = id;
+
+  bool get associatedWithVideo => config['reg_param']['associated_video'];
+
+  set associatedWithVideo(enabled) =>
+      config['reg_param']['associated_video'] = enabled;
+
+  bool get ignoreSpeedLimitation => config["ignore_spdth"];
+
+  set ignoreSpeedLimitation(enabled) => config["ignore_spdth"] = enabled;
 }
