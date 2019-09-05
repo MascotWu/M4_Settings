@@ -52,6 +52,10 @@ class _Jt808ConfigState extends State<Jt808ConfigPage> {
   ];
 
   int _color;
+
+  get _colorName =>
+      colors.firstWhere((color) => color['value'] == _color)['title'];
+
   String _resolution;
 
   _Jt808ConfigState() {
@@ -65,7 +69,8 @@ class _Jt808ConfigState extends State<Jt808ConfigPage> {
     vm.mProtocolConfigJsonFile.config['resolution'] ??= {};
 
     ipController.text = vm.mProtocolConfigJsonFile.config['server']['ipaddr'];
-    portController.text = vm.mProtocolConfigJsonFile.config['server']['port'];
+    portController.text =
+        vm.mProtocolConfigJsonFile.config['server']['port'].toString();
 
     vm.mProtocolConfigJsonFile.config['server']['heartbeat_period'] ??= 30;
 
@@ -95,7 +100,6 @@ class _Jt808ConfigState extends State<Jt808ConfigPage> {
     _associatedWithVideo = vm.mProtocolConfigJsonFile.config['reg_param']
     ['associated_video'] ?? false;
     _color = vm.mProtocolConfigJsonFile.config['reg_param']['plate_color'];
-
     _resolution = vm.mProtocolConfigJsonFile.config['resolution']['adas_video'];
   }
 
@@ -182,6 +186,7 @@ class _Jt808ConfigState extends State<Jt808ConfigPage> {
           ListTile(
             leading: const Icon(Icons.color_lens),
             title: Text('车牌颜色'),
+            subtitle: Text(_colorName),
             onTap: () {
               return showDialog<int>(
                   context: context,
@@ -193,7 +198,9 @@ class _Jt808ConfigState extends State<Jt808ConfigPage> {
                   }).then((color) {
                 print({'color': color});
                 if (color != null) {
-                  _color = color;
+                  setState(() {
+                    _color = color;
+                  });
                 }
               });
             },
