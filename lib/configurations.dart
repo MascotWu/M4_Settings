@@ -266,7 +266,7 @@ class MProtocolConfigJsonFile extends ConfigurationFile {
     config["ignore_spdth"] ??= true;
   }
 
-  String get ip => config['server']['ipaddr'];
+  String get ip => config['server']['ipaddr'] ??= '';
 
   set ip(ip) => config['server']['ipaddr'] = ip;
 

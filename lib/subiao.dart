@@ -37,6 +37,8 @@ class _SuBiaoConfigState extends State<SuBiaoConfigPage> {
       _associatedWithVideo = vm.mProtocolConfigJsonFile.config['protocol']
               ['associated_video'] ??
           false;
+
+    _resolution = vm.resolution;
   }
 
   @override
@@ -78,6 +80,7 @@ class _SuBiaoConfigState extends State<SuBiaoConfigPage> {
           ListTile(
             leading: const Icon(Icons.attach_file),
             title: Text('附件分辨率'),
+            subtitle: Text(_resolution),
             onTap: () {
               return showDialog<String>(
                   context: context,
@@ -89,7 +92,9 @@ class _SuBiaoConfigState extends State<SuBiaoConfigPage> {
                   }).then((resolution) {
                 print({'resolution': resolution});
                 if (resolution != null) {
-                  _resolution = resolution;
+                  setState(() {
+                    _resolution = resolution;
+                  });
                 }
               });
             },
