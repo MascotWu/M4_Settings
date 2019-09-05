@@ -123,6 +123,24 @@ class _Jt808ConfigState extends State<Jt808ConfigPage> {
           ),
           Container(
             padding: EdgeInsets.symmetric(vertical: 8.0),
+            child: TextField(
+              decoration: InputDecoration(
+                labelText: '车牌号',
+              ),
+              controller: _plateNumberController,
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 8.0),
+            child: TextField(
+              decoration: InputDecoration(
+                labelText: '终端ID',
+              ),
+              controller: _terminalIdController,
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 8.0),
             child: SwitchListTile(
               title: const Text('关联视频'),
               value: _associatedWithVideo,
@@ -149,15 +167,6 @@ class _Jt808ConfigState extends State<Jt808ConfigPage> {
           ),
           Container(
             padding: EdgeInsets.symmetric(vertical: 8.0),
-            child: TextField(
-              decoration: InputDecoration(
-                labelText: '车牌号',
-              ),
-              controller: _plateNumberController,
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(vertical: 8.0),
             child: ListTile(
             leading: const Icon(Icons.color_lens),
             title: Text('车牌颜色'),
@@ -179,15 +188,6 @@ class _Jt808ConfigState extends State<Jt808ConfigPage> {
                 }
               });
             }
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(vertical: 8.0),
-            child: TextField(
-              decoration: InputDecoration(
-                labelText: '终端ID',
-              ),
-              controller: _terminalIdController,
             ),
           ),
           Container(
