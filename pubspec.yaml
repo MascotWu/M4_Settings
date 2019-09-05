@@ -21,10 +21,10 @@ dependencies:
     sdk: flutter
 
   rxdart:
-  mockito: ^4.1.0
-  fluttertoast: ^3.1.0
-  flutter_launcher_icons: ^0.7.2+1
-  gbk2utf8: ^1.0.1
+  mockito:
+  fluttertoast:
+  flutter_launcher_icons:
+  gbk2utf8:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
