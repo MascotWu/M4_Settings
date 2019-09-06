@@ -62,10 +62,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    getFakeSpeed().then((fakeSpeed) {
-      _fakeSpeed = fakeSpeed;
-    });
-
+    getFakeSpeed();
     getVolume();
     getProtocol();
 
@@ -198,13 +195,15 @@ class _HomePageState extends State<HomePage> {
         ListTile(
           leading: const Icon(Icons.code),
           title: Text('软件版本'),
-          subtitle: Text('0.3.2'),
+          subtitle: Text('0.3.5'),
           onTap: () {
             return showDialog<double>(
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    content: Text('修复:\n\n1. 音量设置不生效'),
+                    title: Text('新增'),
+                    content: Text(
+                        '1. 首页显示当前音量\n2. 首页显示当前协议\n3. 首页显示当前假速度'),
                   );
                 });
           },
