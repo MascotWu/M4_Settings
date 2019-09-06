@@ -14,7 +14,7 @@ abstract class ConfigurationFile {
 
   generateFileContent();
 
-  void handle(socketMessage) {
+  bool handle(socketMessage) {
     if (socketMessage['type'] == "read_file_ok") {
       if (socketMessage['result']['path'] == path) {
         setConfig(base64Decode(socketMessage['result']['data']));
@@ -23,7 +23,9 @@ abstract class ConfigurationFile {
       List<String> errorMessage = socketMessage['error'].split(':');
       if (errorMessage.length == 2 && errorMessage[0] == path)
         setConfig(null);
-    }
+    } else
+      return false;
+    return true;
   }
 }
 

@@ -26,11 +26,24 @@ class _HomePageState extends State<HomePage> {
 
   double _volume;
 
-  var _speed = '';
+  String _fakeSpeed = '';
+
+  getFakeSpeed() async {
+    await for (int fakeSpeed in vm.fakeSpeed) {
+      setState(() {
+        _fakeSpeed = FakeSpeed(fakeSpeed).toString();
+      });
+    }
+  }
 
   @override
   void initState() {
     _volume = vm.volume ?? 0.0;
+
+    getFakeSpeed().then((fakeSpeed) {
+      _fakeSpeed = fakeSpeed;
+    });
+
     super.initState();
   }
 
@@ -119,6 +132,7 @@ class _HomePageState extends State<HomePage> {
         ListTile(
           leading: const Icon(Icons.timer),
           title: Text('假速度设置'),
+          subtitle: Text(_fakeSpeed),
           onTap: () {
             return showDialog<int>(
                 context: context,
@@ -130,16 +144,15 @@ class _HomePageState extends State<HomePage> {
                 }).then((speed) {
               if (speed == null)
                 return;
+
               setState(() {
-                if (speed == -1) {
-                  vm.deleteSpeed();
-                  _speed = '无';
-                }
-                else {
-                  vm.addOrUpdateSpeed(speed);
-                  _speed = '$speed km/h';
-                }
+                _fakeSpeed = FakeSpeed(speed).toString();
               });
+
+              if (speed == -1)
+                vm.deleteSpeed();
+              else
+                vm.addOrUpdateSpeed(speed);
             });
           },
         ),
@@ -184,4 +197,15 @@ class _HomePageState extends State<HomePage> {
     {'title': '60km/h', 'value': 60},
     {'title': '120km/h', 'value': 120},
   ];
+}
+
+class FakeSpeed {
+  int speed;
+
+  FakeSpeed(this.speed);
+
+  @override
+  String toString() {
+    return speed < 0 ? '无' : '$speed km/h';
+  }
 }

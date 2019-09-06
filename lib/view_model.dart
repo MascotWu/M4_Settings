@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
@@ -25,6 +26,12 @@ class ViewModel {
   }
 
   String get plateNumber => mProtocolConfigJsonFile.plateNumber;
+
+  Stream<int> get fakeSpeed async* {
+    await for (var file in canInputJsonFileStream.stream) {
+      yield file.config['main']['fake_speed'];
+    }
+  }
 
   set plateNumber(number) {
     mProtocolConfigJsonFile.plateNumber = number;
@@ -245,7 +252,7 @@ class ViewModel {
     if (canInputJsonFile.config['main'].containsKey('fake_speed')) {
       canInputJsonFile.config['main'].remove('fake_speed');
     }
-      push(canInputJsonFile);
+    push(canInputJsonFile);
   }
 
   var _adasPicture = new BehaviorSubject<Uint8List>();
@@ -319,7 +326,7 @@ class ViewModel {
   DmsSetupFlagFile _dmsSetupFlagFile = new DmsSetupFlagFile();
   CanInputJsonFile canInputJsonFile = new CanInputJsonFile();
   MProtocolConfigJsonFile mProtocolConfigJsonFile =
-      new MProtocolConfigJsonFile();
+  new MProtocolConfigJsonFile();
   MProtocolJsonFile mProtocolJsonFile = new MProtocolJsonFile();
 
   getFiles(Socket socket, ConfigurationFile file) {
@@ -338,7 +345,9 @@ class ViewModel {
 
     while (_buffer.length >= 4) {
       var length =
-          ByteData.view(Uint8List.fromList(_buffer).buffer, 0, 4).getUint32(0);
+      ByteData.view(Uint8List
+          .fromList(_buffer)
+          .buffer, 0, 4).getUint32(0);
 
       if (_buffer.length < length + 4) break;
 
@@ -511,6 +520,9 @@ class ViewModel {
   OpticalParam originalOpticalParam = OpticalParam();
   bool hasBeenCalculated = false;
 
+  StreamController<
+      CanInputJsonFile> canInputJsonFileStream = StreamController();
+
   onCommand(String command) {
     var socketMessage = jsonDecode(command);
 
@@ -519,7 +531,8 @@ class ViewModel {
         socketMessage['type'] == 'read_file_error') {
       carConfigFile.handle(socketMessage);
       laneConfigFile.handle(socketMessage);
-      canInputJsonFile.handle(socketMessage);
+      if (canInputJsonFile.handle(socketMessage))
+        canInputJsonFileStream.add(canInputJsonFile);
       _dmsSetupFlagFile.handle(socketMessage);
       mProtocolConfigJsonFile.handle(socketMessage);
       mProtocolJsonFile.handle(socketMessage);
