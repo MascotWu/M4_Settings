@@ -197,15 +197,15 @@ class _HomePageState extends State<HomePage> {
         ListTile(
           leading: const Icon(Icons.code),
           title: Text('软件版本'),
-          subtitle: Text('0.3.5'),
+          subtitle: Text('0.3.7'),
           onTap: () {
             return showDialog<double>(
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    title: Text('新增'),
+                    title: Text('更新日志'),
                     content: Text(
-                        '1. 首页显示当前音量\n2. 首页显示当前协议\n3. 首页显示当前假速度'),
+                        '1. 修复重启设备后音量为null的问题\n2. 修复假速度设置不生效的问题'),
                   );
                 });
           },
