@@ -180,6 +180,8 @@ class _HomePageState extends State<HomePage> {
                 vm.deleteSpeed();
               else
                 vm.addOrUpdateSpeed(speed);
+
+              vm.stopAdasService();
             });
           },
         ),

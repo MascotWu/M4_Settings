@@ -527,6 +527,24 @@ class ViewModel {
   StreamController<double> volumeStream = StreamController();
   StreamController<String> protocolStream = StreamController();
 
+  stopAdasService() {
+    var message = Uint8List(4);
+    var byteData = ByteData.view(message.buffer);
+    var command = jsonEncode({"type": "stop_service", "data": "adas"});
+    byteData.setUint32(0, command.length);
+    sock.add(message);
+    sock.add(utf8.encode(command));
+  }
+
+  startAdasService() {
+    var message = Uint8List(4);
+    var byteData = ByteData.view(message.buffer);
+    var command = jsonEncode({"type": "start_service", "data": "adas"});
+    byteData.setUint32(0, command.length);
+    sock.add(message);
+    sock.add(utf8.encode(command));
+  }
+
   onCommand(String command) {
     var socketMessage = jsonDecode(command);
 
@@ -571,6 +589,9 @@ class ViewModel {
       originalOpticalParam.width = socketMessage['result']['width'].toDouble();
       originalOpticalParam.height =
           socketMessage['result']['height'].toDouble();
+    } else if (socketMessage['type'] == 'stop_service_ok' ||
+        socketMessage['type'] == 'stop_service_error') {
+      startAdasService();
     }
   }
 }
