@@ -34,7 +34,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  double _volume;
+  double _volume = 0.0;
 
   getVolume() async {
     await for (double volume in vm.volume) {

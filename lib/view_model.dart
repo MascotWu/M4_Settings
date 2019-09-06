@@ -572,6 +572,9 @@ class ViewModel {
         _dmsPicture.add(base64Decode(socketMessage['result']['image']));
       }
     } else if (socketMessage['type'] == 'get_system_volume_ok') {
+      if (socketMessage['result'] == null ||
+          socketMessage['result'].toDouble() == null)
+        socketMessage['result'] ??= 0.8;
       volumeStream.add(socketMessage['result'].toDouble());
     } else if (socketMessage['type'] == 'get_camera_params_ok') {
       hasBeenCalculated = false;
