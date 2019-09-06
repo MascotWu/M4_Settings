@@ -264,6 +264,7 @@ class _Jt808ConfigState extends State<Jt808ConfigPage> {
 
     if (vm.mProtocolJsonFile.config['protocol'] != 'jt808') {
       vm.addOrUpdate(vm.mProtocolJsonFile, {'protocol': 'jt808'});
+      vm.protocolStream.add('jt808');
       vm.push(vm.mProtocolJsonFile);
     }
 

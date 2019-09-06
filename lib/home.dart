@@ -44,6 +44,22 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  String _protocol = '';
+
+  getProtocol() async {
+    await for (String protocol in vm.protocolStream.stream) {
+      const map = {
+        'jt808': 'JT808',
+        'subiao': '苏标协议',
+        'tianmai': '天迈协议',
+        null: '未设置'
+      };
+      setState(() {
+        _protocol = map[protocol];
+      });
+    }
+  }
+
   @override
   void initState() {
     getFakeSpeed().then((fakeSpeed) {
@@ -51,6 +67,7 @@ class _HomePageState extends State<HomePage> {
     });
 
     getVolume();
+    getProtocol();
 
     super.initState();
   }
@@ -105,6 +122,7 @@ class _HomePageState extends State<HomePage> {
         ListTile(
           leading: const Icon(Icons.assignment),
           title: Text('协议设置'),
+          subtitle: Text(_protocol),
           trailing: Icon(Icons.navigate_next),
           onTap: () {
             Navigator.push(
@@ -218,7 +236,7 @@ class FakeSpeed {
 
   @override
   String toString() {
-    return speed < 0 ? '无' : '$speed km/h';
+    return speed == null ? '无' : '$speed km/h';
   }
 }
 

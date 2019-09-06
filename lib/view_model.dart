@@ -525,6 +525,7 @@ class ViewModel {
       CanInputJsonFile> canInputJsonFileStream = StreamController();
 
   StreamController<double> volumeStream = StreamController();
+  StreamController<String> protocolStream = StreamController();
 
   onCommand(String command) {
     var socketMessage = jsonDecode(command);
@@ -538,7 +539,8 @@ class ViewModel {
         canInputJsonFileStream.add(canInputJsonFile);
       _dmsSetupFlagFile.handle(socketMessage);
       mProtocolConfigJsonFile.handle(socketMessage);
-      mProtocolJsonFile.handle(socketMessage);
+      if (mProtocolJsonFile.handle(socketMessage))
+        protocolStream.add(mProtocolJsonFile.protocol);
       push(carConfigFile);
       push(laneConfigFile);
       push(canInputJsonFile);

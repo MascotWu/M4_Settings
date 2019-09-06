@@ -24,6 +24,7 @@ class _ProtocolPageState extends State<ProtocolPage> {
             title: Text('天迈协议'),
             onTap: () {
               vm.addOrUpdate(vm.mProtocolJsonFile, {'protocol': 'tianmai'});
+              vm.protocolStream.add('tianmai');
               Navigator.pop(context);
             },
           ),

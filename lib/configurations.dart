@@ -18,14 +18,17 @@ abstract class ConfigurationFile {
     if (socketMessage['type'] == "read_file_ok") {
       if (socketMessage['result']['path'] == path) {
         setConfig(base64Decode(socketMessage['result']['data']));
+        return true;
       }
     } else if (socketMessage['type'] == "read_file_error") {
       List<String> errorMessage = socketMessage['error'].split(':');
-      if (errorMessage.length == 2 && errorMessage[0] == path)
+      if (errorMessage.length == 2 && errorMessage[0] == path) {
         setConfig(null);
-    } else
-      return false;
-    return true;
+        return true;
+      }
+    }
+
+    return false;
   }
 }
 
@@ -212,6 +215,8 @@ class DmsSetupFlagFile extends ConfigurationFile {
 class MProtocolJsonFile extends ConfigurationFile {
   @override
   get path => '/data/mprot/mprot.json';
+
+  String get protocol => config['protocol'];
 
   @override
   generateFileContent() {
