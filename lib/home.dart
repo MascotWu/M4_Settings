@@ -24,8 +24,6 @@ class _HomePageState extends State<HomePage> {
 
   ViewModel vm = ViewModel.get();
 
-  double _volume;
-
   String _fakeSpeed = '';
 
   getFakeSpeed() async {
@@ -36,13 +34,23 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  double _volume;
+
+  getVolume() async {
+    await for (double volume in vm.volume) {
+      setState(() {
+        _volume = volume;
+      });
+    }
+  }
+
   @override
   void initState() {
-    _volume = vm.volume ?? 0.0;
-
     getFakeSpeed().then((fakeSpeed) {
       _fakeSpeed = fakeSpeed;
     });
+
+    getVolume();
 
     super.initState();
   }
@@ -108,21 +116,25 @@ class _HomePageState extends State<HomePage> {
         ListTile(
           leading: const Icon(Icons.volume_up),
           title: Text('音量设置'),
+          subtitle: Text('$_volume'),
           onTap: () {
             return showDialog<double>(
                 context: context,
                 builder: (BuildContext context) {
-                  const volumes = [0.0, 0.2, 0.5, 0.8];
                   return SliderDialog(
-                    value: volumes.indexOf(vm.volume).roundToDouble(),
+                    value: Volume
+                        .fromValue(_volume)
+                        .level
+                        .roundToDouble(),
                     max: 3,
                     divisions: 3,
-                    onChange: (double volume) {
-                      if (volume != null) {
+                    onChange: (double level) {
+                      if (level != null) {
                         setState(() {
-                          vm.volume = volumes[volume.round()];
+                          _volume = vm.volume = Volume
+                              .fromLevel(level.round())
+                              .value;
                         });
-                        print({'volume': vm.volume});
                       }
                     },
                   );
@@ -208,4 +220,23 @@ class FakeSpeed {
   String toString() {
     return speed < 0 ? '无' : '$speed km/h';
   }
+}
+
+class Volume {
+  /// There are four levels of volume, 0 represent mute while 3 represent max
+  /// volume.
+  final int level;
+
+  /// Actual value set to the device. There are four values corresponding to
+  /// each [level], which are 0.0, 0.2, 0.5 and 0.8.
+  final double value;
+
+//  double get value => [0.0, 0.2, 0.5, 0.8][level];
+
+  Volume.fromLevel(this.level)
+      :value=[0.0, 0.2, 0.5, 0.8][level];
+
+  Volume.fromValue(this.value)
+      :level=[0.0, 0.2, 0.5, 0.8].indexOf(value);
+
 }

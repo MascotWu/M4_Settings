@@ -431,15 +431,16 @@ class ViewModel {
     push(mProtocolConfigJsonFile);
   }
 
-  double _volume;
-
-  get volume => _volume;
+  Stream<double> get volume async* {
+    await for (double volume in volumeStream.stream) {
+      yield volume;
+    }
+  }
 
   set volume(v) {
-    _volume = v;
     var message = Uint8List(4);
     var byteData = ByteData.view(message.buffer);
-    var command = jsonEncode({"type": "set_system_volume", "data": _volume});
+    var command = jsonEncode({"type": "set_system_volume", "data": v});
     byteData.setUint32(0, command.length);
     sock.add(message);
     sock.add(utf8.encode(command));
@@ -523,6 +524,8 @@ class ViewModel {
   StreamController<
       CanInputJsonFile> canInputJsonFileStream = StreamController();
 
+  StreamController<double> volumeStream = StreamController();
+
   onCommand(String command) {
     var socketMessage = jsonDecode(command);
 
@@ -549,7 +552,7 @@ class ViewModel {
         _dmsPicture.add(base64Decode(socketMessage['result']['image']));
       }
     } else if (socketMessage['type'] == 'get_system_volume_ok') {
-      _volume = socketMessage['result'].toDouble();
+      volumeStream.add(socketMessage['result'].toDouble());
     } else if (socketMessage['type'] == 'get_camera_params_ok') {
       hasBeenCalculated = false;
       opticalParam.cu = socketMessage['result']['cu'];
