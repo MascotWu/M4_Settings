@@ -229,7 +229,7 @@ class _HomePageState extends State<HomePage> {
 }
 
 class FakeSpeed {
-  int speed;
+  final int speed;
 
   FakeSpeed(this.speed);
 
@@ -240,20 +240,17 @@ class FakeSpeed {
 }
 
 class Volume {
-  /// There are four levels of volume, 0 represent mute while 3 represent max
-  /// volume.
+  /// There are four levels of volume, from level 0 to level 4. Level 0 represents
+  /// mute while 3 represents max volume.
   final int level;
 
-  /// Actual value set to the device. There are four values corresponding to
-  /// each [level], which are 0.0, 0.2, 0.5 and 0.8.
+  /// [value] is the actual value to be set to the device. There are four values
+  /// corresponding to each [level], which are 0.0, 0.2, 0.5 and 0.8.
   final double value;
-
-//  double get value => [0.0, 0.2, 0.5, 0.8][level];
 
   Volume.fromLevel(this.level)
       :value=[0.0, 0.2, 0.5, 0.8][level];
 
   Volume.fromValue(this.value)
       :level=[0.0, 0.2, 0.5, 0.8].indexOf(value);
-
 }
