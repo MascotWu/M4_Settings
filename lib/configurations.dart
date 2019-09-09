@@ -100,6 +100,8 @@ class CanInputJsonFile extends ConfigurationFile {
   @override
   get path => '/sdcard/run/can_input.json';
 
+  int get fakeSpeed => config['main']['fake_speed'];
+
   @override
   generateFileContent() {
     return utf8.encode(JsonEncoder.withIndent('\t').convert(config));

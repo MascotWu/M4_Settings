@@ -27,12 +27,6 @@ class ViewModel {
 
   String get plateNumber => mProtocolConfigJsonFile.plateNumber;
 
-  Stream<int> get fakeSpeed async* {
-    await for (var file in canInputJsonFileStream.stream) {
-      yield file.config['main']['fake_speed'];
-    }
-  }
-
   set plateNumber(number) {
     mProtocolConfigJsonFile.plateNumber = number;
     push(mProtocolConfigJsonFile);
@@ -431,10 +425,26 @@ class ViewModel {
     push(mProtocolConfigJsonFile);
   }
 
-  Stream<double> get volume async* {
-    await for (double volume in volumeStream.stream) {
-      yield volume;
-    }
+  StreamSubscription fakeSpeedSubscription;
+
+  StreamSubscription<int> get fakeSpeed {
+    fakeSpeedSubscription ??= fakeSpeedStream.stream.listen(null);
+    return fakeSpeedSubscription;
+  }
+
+  StreamSubscription protocolSubscription;
+
+  StreamSubscription<String> get protocol {
+    protocolSubscription ??= protocolStream.stream.listen(null);
+
+    return protocolSubscription;
+  }
+
+  StreamSubscription volumeSubscription;
+
+  StreamSubscription<double> get volume {
+    volumeSubscription ??= volumeStream.stream.listen(null);
+    return volumeSubscription;
   }
 
   set volume(v) {
@@ -492,6 +502,7 @@ class ViewModel {
   deviceConnected(Socket socket) {
     print("连接建立");
     _connectionStatus.add(true);
+    _buffer = [];
     sock = socket;
 
     socket.listen(onData, onError: (e) {
@@ -523,9 +534,7 @@ class ViewModel {
   OpticalParam originalOpticalParam = OpticalParam();
   bool hasBeenCalculated = false;
 
-  StreamController<
-      CanInputJsonFile> canInputJsonFileStream = StreamController();
-
+  StreamController<int> fakeSpeedStream = StreamController();
   StreamController<double> volumeStream = StreamController();
   StreamController<String> protocolStream = StreamController();
 
@@ -556,7 +565,7 @@ class ViewModel {
       carConfigFile.handle(socketMessage);
       laneConfigFile.handle(socketMessage);
       if (canInputJsonFile.handle(socketMessage))
-        canInputJsonFileStream.add(canInputJsonFile);
+        fakeSpeedStream.add(canInputJsonFile.fakeSpeed);
       _dmsSetupFlagFile.handle(socketMessage);
       mProtocolConfigJsonFile.handle(socketMessage);
       if (mProtocolJsonFile.handle(socketMessage))

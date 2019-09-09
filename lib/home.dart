@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/data_source.dart';
@@ -30,28 +32,34 @@ class _HomePageState extends State<HomePage> {
 
   String _log = '';
 
-  getFakeSpeed() async {
-    await for (int fakeSpeed in vm.fakeSpeed) {
+  getFakeSpeed() {
+    vm.fakeSpeed.onData((fakeSpeed) {
       setState(() {
         _fakeSpeed = FakeSpeed(fakeSpeed).toString();
       });
-    }
+    });
+
+    if (vm.fakeSpeed.isPaused)
+      vm.fakeSpeed.resume();
   }
 
   double _volume = 0.0;
 
-  getVolume() async {
-    await for (double volume in vm.volume) {
+  getVolume() {
+    vm.volume.onData((volume) {
       setState(() {
         _volume = volume;
       });
-    }
+    });
+
+    if (vm.volume.isPaused)
+      vm.volume.resume();
   }
 
   String _protocol = '';
 
-  getProtocol() async {
-    await for (String protocol in vm.protocolStream.stream) {
+  getProtocol() {
+    vm.protocol.onData((protocol) {
       const map = {
         'jt808': 'JT808',
         'subiao': '苏标协议',
@@ -61,14 +69,29 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         _protocol = map[protocol];
       });
-    }
+    });
+
+    if (vm.protocol.isPaused)
+      vm.protocol.resume();
   }
+
+  StreamSubscription connectionSubscription;
 
   @override
   void initState() {
     getFakeSpeed();
     getVolume();
     getProtocol();
+
+    connectionSubscription ??= vm.connectionStatus.listen((isConnected) {
+      if (!isConnected)
+        Navigator.pushReplacement(context,
+            new MaterialPageRoute(builder: (context) => ConnectionPage()));
+    });
+
+    if (connectionSubscription.isPaused) {
+      connectionSubscription.resume();
+    }
 
     vm.logSubject.stream.listen((log) {
       setState(() {
@@ -81,31 +104,30 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    vm.connectionStatus.listen(onConnectionStatusChanged);
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-        actions: <Widget>[
-          FlatButton(
-            child: Text(_textOfConnectButton),
-            onPressed: () {},
-          )
-        ],
-      ),
+        appBar: AppBar(
+          title: Text(widget.title),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(_textOfConnectButton),
+              onPressed: () {},
+            )
+          ],
+        ),
         body:
         SingleChildScrollView(
           child: Column(children: <Widget>[
-        ListTile(
-          leading: const Icon(Icons.surround_sound),
-          title: Text('信号源设置'),
-          trailing: Icon(Icons.navigate_next),
-          onTap: () {
-            Navigator.push(
-                context,
-                new MaterialPageRoute(
-                    builder: (context) => new DataSourcePage()));
-          },
-        ),
+            ListTile(
+              leading: const Icon(Icons.surround_sound),
+              title: Text('信号源设置'),
+              trailing: Icon(Icons.navigate_next),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (context) => new DataSourcePage()));
+              },
+            ),
             ListTile(
               leading: const Icon(Icons.camera),
               title: Text('摄像头设置'),
@@ -244,10 +266,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void onConnectionStatusChanged(bool isConnected) {
-    if (!isConnected) {
-      Navigator.pushReplacement(context,
-          new MaterialPageRoute(builder: (context) => ConnectionPage()));
-    }
+
   }
 
   List<Map<String, dynamic>> speeds = [
@@ -256,6 +275,16 @@ class _HomePageState extends State<HomePage> {
     {'title': '40 km/h', 'value': 40},
     {'title': '60 km/h', 'value': 60},
   ];
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    vm.fakeSpeed.pause();
+    vm.protocol.pause();
+    vm.volume.pause();
+    connectionSubscription.pause();
+  }
 }
 
 class FakeSpeed {

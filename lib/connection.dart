@@ -14,13 +14,14 @@ class _ConnectionPageState extends State<ConnectionPage> {
   ViewModel vm = ViewModel.get();
   var connectionButtonText = '连接';
 
-  StreamSubscription subscription;
+  StreamSubscription connectionSubscription;
 
   @override
   void initState() {
     super.initState();
 
-    subscription = vm.connectionStatus.listen(onConnectionStatusChanged);
+    connectionSubscription =
+        vm.connectionStatus.listen(onConnectionStatusChanged);
   }
 
   @override
@@ -76,5 +77,12 @@ class _ConnectionPageState extends State<ConnectionPage> {
         connectionButtonText = '连接';
       });
     }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    connectionSubscription.cancel();
   }
 }
