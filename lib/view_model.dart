@@ -487,6 +487,8 @@ class ViewModel {
     });
   }
 
+  ReplaySubject logSubject = ReplaySubject();
+
   deviceConnected(Socket socket) {
     print("连接建立");
     _connectionStatus.add(true);
@@ -595,6 +597,10 @@ class ViewModel {
     } else if (socketMessage['type'] == 'stop_service_ok' ||
         socketMessage['type'] == 'stop_service_error') {
       startAdasService();
+    }
+
+    if (socketMessage['type'].endsWith('_error')) {
+      logSubject.add(socketMessage.toString());
     }
   }
 }

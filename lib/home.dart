@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_app/data_source.dart';
 import 'package:flutter_app/protocol.dart';
 import 'package:flutter_app/slider_dialog.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'alert_settings.dart';
 import 'camera.dart';
@@ -25,6 +27,8 @@ class _HomePageState extends State<HomePage> {
   ViewModel vm = ViewModel.get();
 
   String _fakeSpeed = '';
+
+  String _log = '';
 
   getFakeSpeed() async {
     await for (int fakeSpeed in vm.fakeSpeed) {
@@ -66,6 +70,12 @@ class _HomePageState extends State<HomePage> {
     getVolume();
     getProtocol();
 
+    vm.logSubject.stream.listen((log) {
+      setState(() {
+        _log += log += '\n\n';
+      });
+    });
+
     super.initState();
   }
 
@@ -82,7 +92,9 @@ class _HomePageState extends State<HomePage> {
           )
         ],
       ),
-      body: Column(children: <Widget>[
+        body:
+        SingleChildScrollView(
+          child: Column(children: <Widget>[
         ListTile(
           leading: const Icon(Icons.surround_sound),
           title: Text('信号源设置'),
@@ -94,124 +106,141 @@ class _HomePageState extends State<HomePage> {
                     builder: (context) => new DataSourcePage()));
           },
         ),
-        ListTile(
-          leading: const Icon(Icons.camera),
-          title: Text('摄像头设置'),
-          trailing: Icon(Icons.navigate_next),
-          onTap: () {
-            Navigator.push(
-                context,
-                new MaterialPageRoute(
-                    builder: (context) => new CameraSettingsPage()));
-          },
-        ),
-        ListTile(
-          leading: const Icon(Icons.warning),
-          title: Text('报警设置'),
-          trailing: Icon(Icons.navigate_next),
-          onTap: () {
-            Navigator.push(
-                context,
-                new MaterialPageRoute(
-                    builder: (context) => new AlertSettingsPage()));
-          },
-        ),
-        ListTile(
-          leading: const Icon(Icons.assignment),
-          title: Text('协议设置'),
-          subtitle: Text(_protocol),
-          trailing: Icon(Icons.navigate_next),
-          onTap: () {
-            Navigator.push(
-                context,
-                new MaterialPageRoute(
-                    builder: (context) => new ProtocolPage()));
-          },
-        ),
-        ListTile(
-          leading: const Icon(Icons.volume_up),
-          title: Text('音量设置'),
-          subtitle: Text('$_volume'),
-          onTap: () {
-            return showDialog<double>(
-                context: context,
-                builder: (BuildContext context) {
-                  return SliderDialog(
-                    value: Volume
-                        .fromValue(_volume)
-                        .level
-                        .roundToDouble(),
-                    max: 3,
-                    divisions: 3,
-                    onChange: (double level) {
-                      if (level != null) {
-                        setState(() {
-                          _volume = vm.volume = Volume
-                              .fromLevel(level.round())
-                              .value;
-                        });
-                      }
-                    },
-                  );
+            ListTile(
+              leading: const Icon(Icons.camera),
+              title: Text('摄像头设置'),
+              trailing: Icon(Icons.navigate_next),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (context) => new CameraSettingsPage()));
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.warning),
+              title: Text('报警设置'),
+              trailing: Icon(Icons.navigate_next),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (context) => new AlertSettingsPage()));
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.assignment),
+              title: Text('协议设置'),
+              subtitle: Text(_protocol),
+              trailing: Icon(Icons.navigate_next),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (context) => new ProtocolPage()));
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.volume_up),
+              title: Text('音量设置'),
+              subtitle: Text('$_volume'),
+              onTap: () {
+                return showDialog<double>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return SliderDialog(
+                        value: Volume
+                            .fromValue(_volume)
+                            .level
+                            .roundToDouble(),
+                        max: 3,
+                        divisions: 3,
+                        onChange: (double level) {
+                          if (level != null) {
+                            setState(() {
+                              _volume = vm.volume = Volume
+                                  .fromLevel(level.round())
+                                  .value;
+                            });
+                          }
+                        },
+                      );
+                    });
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.timer),
+              title: Text('假速度设置'),
+              subtitle: Text(_fakeSpeed),
+              onTap: () {
+                return showDialog<int>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Picker(
+                        title: '请选择速度',
+                        options: speeds,
+                      );
+                    }).then((speed) {
+                  if (speed == null)
+                    return;
+
+                  setState(() {
+                    _fakeSpeed = FakeSpeed(speed).toString();
+                  });
+
+                  if (speed == -1)
+                    vm.deleteSpeed();
+                  else
+                    vm.addOrUpdateSpeed(speed);
+
+                  vm.stopAdasService();
                 });
-          },
-        ),
-        ListTile(
-          leading: const Icon(Icons.timer),
-          title: Text('假速度设置'),
-          subtitle: Text(_fakeSpeed),
-          onTap: () {
-            return showDialog<int>(
-                context: context,
-                builder: (BuildContext context) {
-                  return Picker(
-                    title: '请选择速度',
-                    options: speeds,
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.camera_enhance),
+              title: Text('摄像头调校'),
+              trailing: Icon(Icons.navigate_next),
+              onTap: () {
+                Navigator.push(context,
+                    new MaterialPageRoute(
+                        builder: (context) => new CameraPage()));
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.code),
+              title: Text('软件版本'),
+              subtitle: Text('0.3.8'),
+              onTap: () {
+                return showDialog<double>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text('更新日志'),
+                        content: Text(
+                            '''1. 添加错误日志的显示'''),
+                      );
+                    });
+              },
+            ),
+            Container(
+              alignment: Alignment.topLeft,
+              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+              child: InkWell(
+                child: Text(_log),
+                onTap: () {
+                  Clipboard.setData(ClipboardData(text: _log));
+
+                  Fluttertoast.showToast(
+                    msg: "已复制到剪贴板",
+                    toastLength: Toast.LENGTH_SHORT,
+                    timeInSecForIos: 1,
                   );
-                }).then((speed) {
-              if (speed == null)
-                return;
-
-              setState(() {
-                _fakeSpeed = FakeSpeed(speed).toString();
-              });
-
-              if (speed == -1)
-                vm.deleteSpeed();
-              else
-                vm.addOrUpdateSpeed(speed);
-
-              vm.stopAdasService();
-            });
-          },
-        ),
-        ListTile(
-          leading: const Icon(Icons.camera_enhance),
-          title: Text('摄像头调校'),
-          trailing: Icon(Icons.navigate_next),
-          onTap: () {
-            Navigator.push(context,
-                new MaterialPageRoute(builder: (context) => new CameraPage()));
-          },
-        ),
-        ListTile(
-          leading: const Icon(Icons.code),
-          title: Text('软件版本'),
-          subtitle: Text('0.3.7'),
-          onTap: () {
-            return showDialog<double>(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: Text('更新日志'),
-                    content: Text(
-                        '1. 修复重启设备后音量为null的问题\n2. 修复假速度设置不生效的问题'),
-                  );
-                });
-          },
-        ),
-      ]),
-    );
+                },
+              ),
+            ),
+          ]),
+        ));
   }
 
   void onConnectionStatusChanged(bool isConnected) {
