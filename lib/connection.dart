@@ -65,7 +65,7 @@ class _ConnectionPageState extends State<ConnectionPage> {
       Navigator.pushReplacement(
           context,
           new MaterialPageRoute(
-              builder: (context) => HomePage(title: 'M4配置工具')));
+              builder: (context) => HomePage(title: 'ADAS配置工具')));
     } else {
       Fluttertoast.showToast(
         msg: "连接失败，请确定手机的WiFi连接上设备的热点上",
