@@ -149,11 +149,11 @@ class _CameraPageState extends State<CameraPage> {
                     });
                   })),
           Container(
-              padding: EdgeInsets.all(8.0),
-              height: 150,
-              alignment: Alignment.center,
-              child:
-              _dmsImage ?? Text(''))
+            height: _height,
+            width: _width,
+            alignment: Alignment.topCenter,
+            child: _dmsImage ?? Text(''),
+          ),
         ],
       )),
       resizeToAvoidBottomPadding: false,
