@@ -232,7 +232,7 @@ class _HomePageState extends State<HomePage> {
             ListTile(
               leading: const Icon(Icons.code),
               title: Text('软件版本'),
-              subtitle: Text('0.3.8'),
+              subtitle: Text('0.4.0'),
               onTap: () {
                 return showDialog<double>(
                     context: context,
@@ -240,7 +240,9 @@ class _HomePageState extends State<HomePage> {
                       return AlertDialog(
                         title: Text('更新日志'),
                         content: Text(
-                            '''1. 添加错误日志的显示'''),
+                            '1. 修复拍照失败的问题\n'
+                                '2. 修复hmw,ldw,fcw不生效的问题\n'
+                                '3. 修复假速度设置失效的问题\n'),
                       );
                     });
               },
