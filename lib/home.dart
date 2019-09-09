@@ -252,10 +252,9 @@ class _HomePageState extends State<HomePage> {
 
   List<Map<String, dynamic>> speeds = [
     {'title': '无', 'value': -1},
-    {'title': '20km/h', 'value': 20},
-    {'title': '40km/h', 'value': 40},
-    {'title': '60km/h', 'value': 60},
-    {'title': '120km/h', 'value': 120},
+    {'title': '20 km/h', 'value': 20},
+    {'title': '40 km/h', 'value': 40},
+    {'title': '60 km/h', 'value': 60},
   ];
 }
 
@@ -266,7 +265,7 @@ class FakeSpeed {
 
   @override
   String toString() {
-    return speed == null ? '无' : '$speed km/h';
+    return speed == null || speed < 0 ? '无' : '$speed km/h';
   }
 }
 
