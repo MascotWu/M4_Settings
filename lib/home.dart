@@ -28,20 +28,9 @@ class _HomePageState extends State<HomePage> {
 
   ViewModel vm = ViewModel.get();
 
-  String _fakeSpeed = '';
+  String _fakeSpeed = '未设置';
 
   String _log = '';
-
-  getFakeSpeed() {
-    vm.fakeSpeed.onData((fakeSpeed) {
-      setState(() {
-        _fakeSpeed = FakeSpeed(fakeSpeed).toString();
-      });
-    });
-
-    if (vm.fakeSpeed.isPaused)
-      vm.fakeSpeed.resume();
-  }
 
   double _volume = 0.0;
 
@@ -79,7 +68,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    getFakeSpeed();
     getVolume();
     getProtocol();
 
