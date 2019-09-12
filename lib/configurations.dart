@@ -49,7 +49,7 @@ class MacrosConfigTextFile extends ConfigurationFile {
     config['headway_warning_level_1'] ??= -1.0;
   }
 
-  get fcw => config['enable_fcw'] == 1;
+  get fcw => config['enable_fcw'] == 1 && config['enable_fcw_warning'] == 1;
 
   set fcw(bool enabled) {
     config['enable_fcw'] = enabled ? 1 : 0;
