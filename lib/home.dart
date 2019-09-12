@@ -215,7 +215,7 @@ class _HomePageState extends State<HomePage> {
             ListTile(
               leading: const Icon(Icons.code),
               title: Text('软件版本'),
-              subtitle: Text('0.4.1'),
+              subtitle: Text('0.4.2'),
               onTap: () {
                 return showDialog<double>(
                     context: context,
@@ -223,7 +223,7 @@ class _HomePageState extends State<HomePage> {
                       return AlertDialog(
                         title: Text('更新日志'),
                         content: Text(
-                            '1. 修复ldw不生效的问题\n'),
+                            '1. 修复fcw不生效的问题\n'),
                       );
                     });
               },
