@@ -13,7 +13,9 @@ class App extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: ConnectionPage(),
+        home: Scaffold(
+          body: ConnectionPage(),
+        )
     );
   }
 }

@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_app/data_source.dart';
 import 'package:flutter_app/protocol.dart';
 import 'package:flutter_app/slider_dialog.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import 'alert_settings.dart';
 import 'camera.dart';
@@ -24,7 +23,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  var _textOfConnectButton = "";
 
   ViewModel vm = ViewModel.get();
 
@@ -95,12 +93,6 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
-          actions: <Widget>[
-            FlatButton(
-              child: Text(_textOfConnectButton),
-              onPressed: () {},
-            )
-          ],
         ),
         body:
         SingleChildScrollView(
@@ -113,7 +105,8 @@ class _HomePageState extends State<HomePage> {
                 Navigator.push(
                     context,
                     new MaterialPageRoute(
-                        builder: (context) => new DataSourcePage()));
+                        builder: (context) =>
+                            Scaffold(body: DataSourcePage())));
               },
             ),
             ListTile(
@@ -124,7 +117,8 @@ class _HomePageState extends State<HomePage> {
                 Navigator.push(
                     context,
                     new MaterialPageRoute(
-                        builder: (context) => new CameraSettingsPage()));
+                        builder: (context) =>
+                            Scaffold(body: CameraSettingsPage())));
               },
             ),
             ListTile(
@@ -135,7 +129,8 @@ class _HomePageState extends State<HomePage> {
                 Navigator.push(
                     context,
                     new MaterialPageRoute(
-                        builder: (context) => new AlertSettingsPage()));
+                        builder: (context) =>
+                            Scaffold(body: AlertSettingsPage())));
               },
             ),
             ListTile(
@@ -147,7 +142,7 @@ class _HomePageState extends State<HomePage> {
                 Navigator.push(
                     context,
                     new MaterialPageRoute(
-                        builder: (context) => new ProtocolPage()));
+                        builder: (context) => Scaffold(body: ProtocolPage())));
               },
             ),
             ListTile(
@@ -214,7 +209,7 @@ class _HomePageState extends State<HomePage> {
               onTap: () {
                 Navigator.push(context,
                     new MaterialPageRoute(
-                        builder: (context) => new CameraPage()));
+                        builder: (context) => Scaffold(body: CameraPage())));
               },
             ),
             ListTile(
@@ -241,11 +236,11 @@ class _HomePageState extends State<HomePage> {
                 onTap: () {
                   Clipboard.setData(ClipboardData(text: _log));
 
-                  Fluttertoast.showToast(
-                    msg: "已复制到剪贴板",
-                    toastLength: Toast.LENGTH_SHORT,
-                    timeInSecForIos: 1,
-                  );
+                  Scaffold.of(context).showSnackBar(
+                      SnackBar(
+                          content: Text('已复制到剪贴板'),
+                          action: SnackBarAction(
+                              label: 'OK', onPressed: () {})));
                 },
               ),
             ),

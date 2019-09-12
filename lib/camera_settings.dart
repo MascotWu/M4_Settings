@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import 'view_model.dart';
 
@@ -29,11 +28,12 @@ class _CameraSettingsPageState extends State<CameraSettingsPage> {
         double.tryParse(cameraHeightController.text) == null ||
         double.tryParse(cameraFrontDistController.text) == null ||
         double.tryParse(frontWheelFrontDistController.text) == null) {
-      Fluttertoast.showToast(
-        msg: "所有数据必须是整数或者小数",
-        toastLength: Toast.LENGTH_SHORT,
-        timeInSecForIos: 1,
-      );
+      Scaffold.of(context).showSnackBar(
+          SnackBar(
+              content: Text('所有数据必须是整数或者小数'),
+              action: SnackBarAction(
+                  label: 'OK', onPressed: () {})));
+      return;
     }
 
     coordinate.carWidth = double.parse(carWidthController.text);

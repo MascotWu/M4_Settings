@@ -22,7 +22,6 @@ dependencies:
 
   rxdart:
   mockito:
-  fluttertoast:
   flutter_launcher_icons:
   gbk2utf8:
   # The following adds the Cupertino Icons font to your application.

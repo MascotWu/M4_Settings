@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import 'picker_dialog.dart';
 import 'view_model.dart';
@@ -216,49 +215,37 @@ class _Jt808ConfigState extends State<Jt808ConfigPage> {
     );
   }
 
+  showMessage(message) {
+    Scaffold.of(context).showSnackBar(
+        SnackBar(
+            content: Text(message),
+            action: SnackBarAction(
+                label: 'OK', onPressed: () {})));
+  }
+
   void _setConfig() {
     if (_associatedWithVideo && _resolution == null) {
-      Fluttertoast.showToast(
-        msg: "请选择附件分辨率",
-        toastLength: Toast.LENGTH_SHORT,
-        timeInSecForIos: 1,
-      );
+      showMessage("请选择附件分辨率");
       return;
     }
 
     if (_color == null || _plateNumberController.text.isEmpty) {
-      Fluttertoast.showToast(
-        msg: "请填写车牌号并选择车牌颜色",
-        toastLength: Toast.LENGTH_SHORT,
-        timeInSecForIos: 1,
-      );
+      showMessage("请填写车牌号并选择车牌颜色");
       return;
     }
 
     if (_ipController.text.isEmpty || _portController.text.isEmpty) {
-      Fluttertoast.showToast(
-        msg: "请填写ip地址以及端口号",
-        toastLength: Toast.LENGTH_SHORT,
-        timeInSecForIos: 1,
-      );
+      showMessage("请填写ip地址以及端口号");
       return;
     }
 
     if (int.tryParse(_portController.text) == null) {
-      Fluttertoast.showToast(
-        msg: "端口号不合法",
-        toastLength: Toast.LENGTH_SHORT,
-        timeInSecForIos: 1,
-      );
+      showMessage("端口号不合法");
       return;
     }
 
     if (_terminalIdController.text.isEmpty) {
-      Fluttertoast.showToast(
-        msg: "请填写终端id",
-        toastLength: Toast.LENGTH_SHORT,
-        timeInSecForIos: 1,
-      );
+      showMessage("请填写终端id");
       return;
     }
 

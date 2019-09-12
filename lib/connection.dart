@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import 'home.dart';
 import 'view_model.dart';
@@ -26,8 +25,7 @@ class _ConnectionPageState extends State<ConnectionPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Column(
+    return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
           Container(
@@ -58,7 +56,7 @@ class _ConnectionPageState extends State<ConnectionPage> {
               style: TextStyle(color: Colors.black26, height: 1.3),
             ),
           ),
-        ]));
+            ]);
   }
 
   onConnectionStatusChanged(bool isConnected) {
@@ -66,13 +64,13 @@ class _ConnectionPageState extends State<ConnectionPage> {
       Navigator.pushReplacement(
           context,
           new MaterialPageRoute(
-              builder: (context) => HomePage(title: 'ADAS配置工具')));
+              builder: (context) =>
+                  Scaffold(body: HomePage(title: 'ADAS配置工具'))));
     } else {
-      Fluttertoast.showToast(
-        msg: "连接失败，请确定手机的WiFi连接上设备的热点上",
-        toastLength: Toast.LENGTH_SHORT,
-        timeInSecForIos: 1,
-      );
+      Scaffold.of(context).showSnackBar(
+          SnackBar(content: Text('连接失败!'), action: SnackBarAction(
+            label: 'OK', onPressed: () {},)));
+
       setState(() {
         connectionButtonText = '连接';
       });

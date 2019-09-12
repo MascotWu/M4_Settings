@@ -25,7 +25,8 @@ class DataSourceState extends State<DataSourcePage> {
                 Navigator.push(
                     context,
                     new MaterialPageRoute(
-                        builder: (context) => SpeedDataSourcePage()));
+                        builder: (context) =>
+                            Scaffold(body: SpeedDataSourcePage())));
               },
             ),
             ListTile(
