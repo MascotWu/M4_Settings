@@ -88,12 +88,14 @@ class DetectFlagFile extends ConfigurationFile {
 
   set pcw(bool enabled) => config['enable_ped'] = enabled;
 
-  // LDW 通过 ldw_speed_thresh 控制，设置为10000时关闭，设置为55时开启.
   get ldw =>
-      config['ldw_speed_thresh'] == null ? null : config['ldw_speed_thresh'] ==
-          55;
+      config['enable_lane'] == true;
 
-  set ldw(bool enabled) => config['ldw_speed_thresh'] = enabled ? 55 : 10000;
+  set ldw(bool enabled) {
+    config['enable_lane'] = enabled;
+    config['ldw_speed_start'] = 55;
+    config['ldw_speed_exit'] = 50;
+  }
 }
 
 class CanInputJsonFile extends ConfigurationFile {
