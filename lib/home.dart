@@ -30,12 +30,14 @@ class _HomePageState extends State<HomePage> {
 
   String _log = '';
 
-  double _volume = 0.0;
+  int _volumeLevel = 4;
 
   getVolume() {
     vm.volume.onData((volume) {
       setState(() {
-        _volume = volume;
+        _volumeLevel = Volume
+            .fromValue(volume)
+            .level;
       });
     });
 
@@ -148,22 +150,20 @@ class _HomePageState extends State<HomePage> {
             ListTile(
               leading: const Icon(Icons.volume_up),
               title: Text('音量设置'),
-              subtitle: Text('$_volume'),
+              subtitle: Text('$_volumeLevel'),
               onTap: () {
                 return showDialog<double>(
                     context: context,
                     builder: (BuildContext context) {
                       return SliderDialog(
-                        value: Volume
-                            .fromValue(_volume)
-                            .level
-                            .roundToDouble(),
+                        value: _volumeLevel.toDouble(),
                         max: 3,
                         divisions: 3,
                         onChange: (double level) {
                           if (level != null) {
                             setState(() {
-                              _volume = vm.volume = Volume
+                              _volumeLevel = level.round();
+                              vm.volume = Volume
                                   .fromLevel(level.round())
                                   .value;
                             });
