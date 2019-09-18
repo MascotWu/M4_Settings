@@ -146,7 +146,7 @@ class LanePainter extends CustomPainter {
     TextPainter textPainter = TextPainter(
         textDirection: TextDirection.ltr,
         text: TextSpan(
-            text: "Yaw: $yaw\nPitch: $pitch",
+            text: "偏航角: $yaw\n俯仰角: $pitch",
             style: TextStyle(
               color: Colors.black,
               fontSize: 10,
