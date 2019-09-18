@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'lane_painter.dart';
+import 'outlet_painter.dart';
 import 'view_model.dart';
 
 class CameraPage extends StatefulWidget {
@@ -26,6 +27,7 @@ class _CameraPageState extends State<CameraPage> {
   int pointSelected;
 
   LanePainter curvePainter;
+  OutletPainter outletPainter = OutletPainter();
 
   double _height = 720 / 4;
   double _width = 1280 / 4;
@@ -148,11 +150,23 @@ class _CameraPageState extends State<CameraPage> {
                       });
                     });
                   })),
-          Container(
-            height: _height,
-            width: _width,
-            alignment: Alignment.topCenter,
-            child: _dmsImage ?? Text(''),
+          Stack(
+            children: <Widget>[
+              Container(
+                height: _height,
+                width: _width,
+                alignment: Alignment.topCenter,
+                child: _dmsImage ?? Text(''),
+              ),
+              Container(
+                height: _height,
+                width: _width,
+                child: CustomPaint(
+                  painter: outletPainter,
+                  child: Center(),
+                ),
+              ),
+            ],
           ),
         ],
       )),
@@ -199,3 +213,4 @@ class _CameraPageState extends State<CameraPage> {
     Navigator.pop(context);
   }
 }
+
