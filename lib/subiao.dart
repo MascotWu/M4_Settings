@@ -116,6 +116,8 @@ class _SuBiaoConfigState extends State<SuBiaoConfigPage> {
     vm.addOrUpdateAssociatedWithVideoOfSuBiao(_associatedWithVideo);
     vm.addOrUpdateUseRtData(_useRtData);
 
+    vm.push(vm.mProtocolConfigJsonFile);
+
     Navigator.pop(context);
   }
 }

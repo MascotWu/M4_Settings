@@ -265,6 +265,8 @@ class _Jt808ConfigState extends State<Jt808ConfigPage> {
     vm.plateNumber = _plateNumberController.text;
     vm.terminalId = _terminalIdController.text;
 
+    vm.push(vm.mProtocolConfigJsonFile);
+
     Navigator.pop(context);
   }
 }

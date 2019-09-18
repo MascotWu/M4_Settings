@@ -256,6 +256,7 @@ class MProtocolConfigJsonFile extends ConfigurationFile {
     config['reg_param']['associated_video'] ??= false;
     config['reg_param']['car_num'] ??= '';
     config['reg_param']['city_id'] ??= 0;
+    config['reg_param']['carIndex'] ??= 0;
     config['reg_param']['product'] ??= "MINIEYE_ADAS/DSM";
     config['reg_param']['province_id'] ??= 0;
     config['reg_param']['plate_color'] ??= 2;
@@ -274,6 +275,8 @@ class MProtocolConfigJsonFile extends ConfigurationFile {
     config['resolution']['adas_image'] ??= "720P";
     config['resolution']['dms_video'] ??= "720P";
     config['resolution']['dms_image'] ??= "720P";
+
+    config["ignore_spdth"] ??= true;
 
     config["ignore_spdth"] ??= true;
   }
@@ -313,10 +316,13 @@ class MProtocolConfigJsonFile extends ConfigurationFile {
 
   bool get associatedWithVideo => config['reg_param']['associated_video'];
 
-  set associatedWithVideo(enabled) =>
-      config['reg_param']['associated_video'] = enabled;
+  set associatedWithVideo(enabled) => config['reg_param']['associated_video'] = enabled;
 
   bool get ignoreSpeedLimitation => config["ignore_spdth"];
 
   set ignoreSpeedLimitation(enabled) => config["ignore_spdth"] = enabled;
+
+  int get carNumber => config['reg_param']['carIndex'];
+
+  set carNumber(number) => config['reg_param']['carIndex'] = number;
 }

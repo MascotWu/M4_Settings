@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/subiao.dart';
+import 'package:flutter_app/tianmai_directed.dart';
 import 'package:flutter_app/view_model.dart';
 
 import 'jt808.dart';
@@ -20,6 +21,15 @@ class _ProtocolPageState extends State<ProtocolPage> {
         padding: const EdgeInsets.all(8.0),
         children: <Widget>[
           ListTile(
+            leading: const Icon(Icons.assignment),
+            title: Text('天迈直连协议'),
+            trailing: Icon(Icons.navigate_next),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  new MaterialPageRoute(builder: (context) => TianMaiDirectConfigPage()));
+            },
+          ), ListTile(
             leading: const Icon(Icons.assignment),
             title: Text('天迈协议'),
             onTap: () {

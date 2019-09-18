@@ -32,6 +32,10 @@ class ViewModel {
     push(mProtocolConfigJsonFile);
   }
 
+  int get carNumber => mProtocolConfigJsonFile.carNumber;
+
+  set carNumber(number) => mProtocolConfigJsonFile.carNumber = number;
+
   bool get associatedWithVideo => mProtocolConfigJsonFile.associatedWithVideo;
 
   set associatedWithVideo(enabled) {

@@ -53,6 +53,7 @@ class _HomePageState extends State<HomePage> {
         'jt808': 'JT808',
         'subiao': '苏标协议',
         'tianmai': '天迈协议',
+        'tm_client': '天迈直连协议',
         null: '未设置'
       };
       setState(() {
@@ -74,7 +75,7 @@ class _HomePageState extends State<HomePage> {
     connectionSubscription ??= vm.connectionStatus.listen((isConnected) {
       if (!isConnected)
         Navigator.pushReplacement(context,
-            new MaterialPageRoute(builder: (context) => ConnectionPage()));
+            new MaterialPageRoute(builder: (context) => Scaffold(body: ConnectionPage())));
     });
 
     if (connectionSubscription.isPaused) {
