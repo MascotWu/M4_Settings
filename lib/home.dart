@@ -216,7 +216,7 @@ class _HomePageState extends State<HomePage> {
             ListTile(
               leading: const Icon(Icons.code),
               title: Text('软件版本'),
-              subtitle: Text('0.5.0'),
+              subtitle: Text('0.5.1'),
               onTap: () {
                 return showDialog<double>(
                     context: context,
@@ -224,10 +224,9 @@ class _HomePageState extends State<HomePage> {
                       return AlertDialog(
                         title: Text('更新日志'),
                         content: Text(
-                            '1. 新增天迈直连协议\n'
-                                '2. 新增DMS拍照的基准线\n'
-                                '3. 修改音量显示,从0.0 0.2 0.5 0.8修改为1 2 3 4\n'
-                                '4. 修改ADAS标定结果,把yaw和pitch改为中文的偏航角和俯仰角\n'
+                            '1. 修改摄像头拍照的界面\n'
+                                '2. 关闭调试信息\n'
+                                '3. 修复写dms_setup.flag文件的时候,缺少device_id导致DMS不生效的问题\n'
                         ),
                       );
                     });
