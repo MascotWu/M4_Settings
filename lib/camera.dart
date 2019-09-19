@@ -12,8 +12,8 @@ class CameraPage extends StatefulWidget {
 class _CameraPageState extends State<CameraPage> {
   ViewModel vm;
 
-  Image _adasImage;
-  Image _dmsImage;
+  Image _adasImage = Image.asset('assets/placeholder.jpg');
+  Image _dmsImage = Image.asset('assets/placeholder.jpg');
 
   _CameraPageState() {
     vm = ViewModel.get();
@@ -49,16 +49,19 @@ class _CameraPageState extends State<CameraPage> {
       ]),
       body: SingleChildScrollView(child: Column(
         children: <Widget>[
-          ListTile(title: Text('ADAS摄像头'),
-              trailing: FlatButton(
-                  child: Icon(Icons.camera_alt, color: Colors.blue),
-              onPressed: () {
-                vm.takePictureOfAdas().listen((picture) {
-                  setState(() {
-                    _adasImage = Image.memory(picture);
+          Container(
+            margin: EdgeInsets.only(top: 25, bottom: 10),
+            child: RaisedButton(
+                child: Text('ADAS摄像头拍照'),
+                onPressed: () {
+                  vm.takePictureOfAdas().listen((picture) {
+                    setState(() {
+                      _adasImage = Image.memory(picture);
+                    });
                   });
-                });
-              })),
+                }
+            ),
+          ),
           Container(
               alignment: Alignment.topCenter,
               child: Stack(
@@ -139,17 +142,21 @@ class _CameraPageState extends State<CameraPage> {
                     ),
                   ),
                 ],
-              )),
-          ListTile(title: Text("DMS摄像头拍照"),
-              trailing: FlatButton(
-                  child: Icon(Icons.camera_alt, color: Colors.blue,),
+              ),
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 25, bottom: 10),
+            child: RaisedButton(
+                child: Text('DMS摄像头拍照'),
                   onPressed: () {
                     vm.takePictureOfDms().listen((picture) {
                       setState(() {
                         _dmsImage = Image.memory(picture);
                       });
                     });
-                  })),
+                  }
+            ),
+          ),
           Stack(
             children: <Widget>[
               Container(

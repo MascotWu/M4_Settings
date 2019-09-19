@@ -77,7 +77,7 @@ class _TianMaiDirectedConfigState extends State<TianMaiDirectConfigPage> {
             padding: EdgeInsets.symmetric(vertical: 8.0),
             child: TextField(
               decoration: InputDecoration(
-                labelText: '设备id',
+                labelText: '车辆编号',
               ),
               controller: _carNumberController,
             ),
