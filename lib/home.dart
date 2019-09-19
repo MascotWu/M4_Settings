@@ -82,11 +82,11 @@ class _HomePageState extends State<HomePage> {
       connectionSubscription.resume();
     }
 
-    vm.logSubject.stream.listen((log) {
-      setState(() {
-        _log += log += '\n\n';
-      });
-    });
+//    vm.logSubject.stream.listen((log) {
+//      setState(() {
+//        _log += log += '\n\n';
+//      });
+//    });
 
     super.initState();
   }
