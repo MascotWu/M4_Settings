@@ -523,12 +523,22 @@ class ViewModel {
 
     getVolume();
     getCameraParams();
+    getDeviceId();
   }
 
   void getCameraParams() {
     var message = Uint8List(4);
     var byteData = ByteData.view(message.buffer);
     var command = jsonEncode({"type": "get_camera_params"});
+    byteData.setUint32(0, command.length);
+    sock.add(message);
+    sock.add(utf8.encode(command));
+  }
+
+  void getDeviceId() {
+    var message = Uint8List(4);
+    var byteData = ByteData.view(message.buffer);
+    var command = jsonEncode({"type": "get_device_id"});
     byteData.setUint32(0, command.length);
     sock.add(message);
     sock.add(utf8.encode(command));
@@ -610,6 +620,8 @@ class ViewModel {
     } else if (socketMessage['type'] == 'stop_service_ok' ||
         socketMessage['type'] == 'stop_service_error') {
       startAdasService();
+    } else if (socketMessage['type'] == 'get_device_id_ok') {
+      vm._dmsSetupFlagFile.config['device_id'] = socketMessage['result'];
     }
 
     if (socketMessage['type'].endsWith('_error')) {
