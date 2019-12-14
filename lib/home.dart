@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/data_source.dart';
+import 'package:flutter_app/package_manager.dart';
 import 'package:flutter_app/protocol.dart';
 import 'package:flutter_app/slider_dialog.dart';
 import 'package:http/http.dart' as http;
@@ -225,6 +226,16 @@ class _HomePageState extends State<HomePage> {
 
                   vm.stopAdasService();
                 });
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.inbox),
+              title: Text('设备软件包管理'),
+              trailing: Icon(Icons.navigate_next),
+              onTap: () {
+                Navigator.push(context,
+                    new MaterialPageRoute(
+                        builder: (context) => Scaffold(body: PackageManagerPage())));
               },
             ),
             ListTile(
