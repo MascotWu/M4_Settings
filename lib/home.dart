@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_app/data_source.dart';
 import 'package:flutter_app/protocol.dart';
 import 'package:flutter_app/slider_dialog.dart';
+import 'package:http/http.dart' as http;
 
 import 'alert_settings.dart';
 import 'camera.dart';
@@ -31,6 +32,8 @@ class _HomePageState extends State<HomePage> {
   String _log = '';
 
   int _volumeLevel = 4;
+
+  String _c4Version = "获取中……";
 
   getVolume() {
     vm.volume.onData((volume) {
@@ -69,6 +72,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    super.initState();
+
     getVolume();
     getProtocol();
 
@@ -82,13 +87,32 @@ class _HomePageState extends State<HomePage> {
       connectionSubscription.resume();
     }
 
-//    vm.logSubject.stream.listen((log) {
-//      setState(() {
-//        _log += log += '\n\n';
-//      });
-//    });
+    refreshC4Version();
+  }
 
-    super.initState();
+  refreshC4Version() async {
+    setState(() {
+      _c4Version = "获取中……";
+    });
+    getC4Version().timeout(Duration(seconds: 3)).then((version) {
+      setState(() {
+        _c4Version = version;
+      });
+    }).catchError((e) {
+      setState(() {
+        _c4Version = "获取失败，请点击重试";
+      });
+    });
+  }
+
+  Future<String> getC4Version() async {
+    var url = 'http://192.168.43.1:16402/api/v1/get_c4_version';
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      return response.body;
+    } else {
+      return Future.error("Response code should be 200.");
+    }
   }
 
   @override
@@ -215,7 +239,13 @@ class _HomePageState extends State<HomePage> {
             ),
             ListTile(
               leading: const Icon(Icons.code),
-              title: Text('软件版本'),
+              title: Text('C4软件包版本'),
+              subtitle: Text(_c4Version),
+              onTap: refreshC4Version,
+            ),
+            ListTile(
+              leading: const Icon(Icons.code),
+              title: Text('应用版本'),
               subtitle: Text('0.6.0'),
               onTap: () {
                 return showDialog<double>(

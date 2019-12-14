@@ -1,7 +1,6 @@
 
 import 'package:flutter/material.dart';
-
-import 'connection.dart';
+import 'package:flutter_app/home.dart';
 
 void main() => runApp(App());
 
@@ -14,7 +13,7 @@ class App extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
         home: Scaffold(
-          body: ConnectionPage(),
+          body: HomePage(title: 'ADAS配置工具'),
         )
     );
   }
