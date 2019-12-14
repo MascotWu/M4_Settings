@@ -86,7 +86,7 @@ class ViewModel {
     push(mProtocolConfigJsonFile);
   }
 
-  get absence => _dmsSetupFlagFile.absence;
+  get absence => _dmsSetupFlagFile.absence ?? false;
 
   set absence(enabled) {
     _dmsSetupFlagFile.absence = enabled;
@@ -99,77 +99,77 @@ class ViewModel {
     push(mProtocolConfigJsonFile);
   }
 
-  get handsOff => _dmsSetupFlagFile.handsOff;
+  get handsOff => _dmsSetupFlagFile.handsOff ?? false;
 
   set handsOff(enabled) {
     _dmsSetupFlagFile.handsOff = enabled;
     push(_dmsSetupFlagFile);
   }
 
-  get lookDown => _dmsSetupFlagFile.lookDown;
+  get lookDown => _dmsSetupFlagFile.lookDown ?? false;
 
   set lookDown(enabled) {
     _dmsSetupFlagFile.lookDown = enabled;
     push(_dmsSetupFlagFile);
   }
 
-  get lookUp => _dmsSetupFlagFile.lookUp;
+  get lookUp => _dmsSetupFlagFile.lookUp ?? false;
 
   set lookUp(enabled) {
     _dmsSetupFlagFile.lookUp = enabled;
     push(_dmsSetupFlagFile);
   }
 
-  get longtimeDriving => _dmsSetupFlagFile.longtimeDriving;
+  get longtimeDriving => _dmsSetupFlagFile.longtimeDriving ?? false;
 
   set longtimeDriving(enabled) {
     _dmsSetupFlagFile.longtimeDriving = enabled;
     push(_dmsSetupFlagFile);
   }
 
-  get occlusion => _dmsSetupFlagFile.occlusion;
+  get occlusion => _dmsSetupFlagFile.occlusion ?? false;
 
   set occlusion(enabled) {
     _dmsSetupFlagFile.occlusion = enabled;
     push(_dmsSetupFlagFile);
   }
 
-  get lookAround => _dmsSetupFlagFile.lookAround;
+  get lookAround => _dmsSetupFlagFile.lookAround ?? false;
 
   set lookAround(enabled) {
     _dmsSetupFlagFile.lookAround = enabled;
     push(_dmsSetupFlagFile);
   }
 
-  get makePhoneCall => _dmsSetupFlagFile.makePhoneCall;
+  get makePhoneCall => _dmsSetupFlagFile.makePhoneCall ?? false;
 
   set makePhoneCall(enabled) {
     _dmsSetupFlagFile.makePhoneCall = enabled;
     push(_dmsSetupFlagFile);
   }
 
-  get smoking => _dmsSetupFlagFile.smoking;
+  get smoking => _dmsSetupFlagFile.smoking ?? false;
 
   set smoking(enabled) {
     _dmsSetupFlagFile.smoking = enabled;
     push(_dmsSetupFlagFile);
   }
 
-  get substitute => _dmsSetupFlagFile.substitute;
+  get substitute => _dmsSetupFlagFile.substitute ?? false;
 
   set substitute(enabled) {
     _dmsSetupFlagFile.substitute = enabled;
     push(_dmsSetupFlagFile);
   }
 
-  bool get fatigue => _dmsSetupFlagFile.fatigue;
+  bool get fatigue => _dmsSetupFlagFile.fatigue ?? false;
 
   set fatigue(bool enabled) {
     _dmsSetupFlagFile.fatigue = enabled;
     push(_dmsSetupFlagFile);
   }
 
-  bool get tired => _dmsSetupFlagFile.tired;
+  bool get tired => _dmsSetupFlagFile.tired ?? false;
 
   set tired(bool enabled) {
     _dmsSetupFlagFile.tired = enabled;
@@ -183,28 +183,28 @@ class ViewModel {
     push(laneConfigFile);
   }
 
-  get wearingSunglasses => _dmsSetupFlagFile.wearingSunglasses;
+  get wearingSunglasses => _dmsSetupFlagFile.wearingSunglasses ?? false;
 
   set wearingSunglasses(enabled) {
     _dmsSetupFlagFile.wearingSunglasses = enabled;
     push(_dmsSetupFlagFile);
   }
 
-  get yawn => _dmsSetupFlagFile.yawn;
+  get yawn => _dmsSetupFlagFile.yawn ?? false;
 
   set yawn(bool enabled) {
     _dmsSetupFlagFile.yawn = enabled;
     push(_dmsSetupFlagFile);
   }
 
-  bool get pcw => laneConfigFile.pcw;
+  bool get pcw => laneConfigFile.pcw ?? false;
 
   set pcw(bool enabled) {
     laneConfigFile.pcw = enabled;
     push(laneConfigFile);
   }
 
-  get tsr => laneConfigFile.tsr;
+  get tsr => laneConfigFile.tsr ?? false;
 
   set tsr(bool enabled) {
     laneConfigFile.tsr = enabled;
@@ -218,7 +218,7 @@ class ViewModel {
     push(carConfigFile);
   }
 
-  bool get hmw => carConfigFile.hmw;
+  bool get hmw => carConfigFile.hmw ?? false;
 
   set hmw(bool enabled) {
     carConfigFile.hmw = enabled;

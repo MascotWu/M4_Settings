@@ -56,7 +56,7 @@ class MacrosConfigTextFile extends ConfigurationFile {
     config['enable_fcw_warning'] = enabled ? 1 : 0;
   }
 
-  get hmw => config['headway_warning_level_1'].round() != -1;
+  get hmw => config['headway_warning_level_1']?.round() != -1 ?? false;
 
   set hmw(bool enabled) =>
       config['headway_warning_level_1'] = enabled ? 1.0 : -1.0;
