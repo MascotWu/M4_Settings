@@ -32,8 +32,9 @@ class _ConnectionPageState extends State<ConnectionPage> {
               padding: EdgeInsets.only(bottom: 180),
               child: Center(
                 child: Text(
-                  '请将手机连接到目标设备的热点上\n然后点击"连接"按钮',
+                  '请将手机Wi-Fi连接至"M4_xxxxxxxxxxxxxxxx"\nWi-Fi默认密码为：minieye666\n\n然后点击"连接"按钮',
                   style: TextStyle(color: Colors.black54, height: 1.3),
+                  textAlign: TextAlign.center,
                 ),
               )),
           FlatButton(
@@ -45,7 +46,7 @@ class _ConnectionPageState extends State<ConnectionPage> {
               vm.tellDeviceTheIpOfPhone();
 
               setState(() {
-                connectionButtonText = '正在连接';
+                connectionButtonText = '正在连接...';
               });
             },
           ),

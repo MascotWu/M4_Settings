@@ -313,7 +313,7 @@ class ViewModel {
     sock.add(utf8.encode(command));
   }
 
-  Observable<bool> get connectionStatus => _connectionStatus;
+  get connectionStatus => _connectionStatus;
 
   clear() {}
 
