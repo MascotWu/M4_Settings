@@ -266,7 +266,6 @@ class ViewModel {
     });
 
     byteData.setUint32(0, command.length);
-
     sock.add(length);
     sock.add(utf8.encode(command));
 
@@ -324,7 +323,7 @@ class ViewModel {
   DmsSetupFlagFile _dmsSetupFlagFile = new DmsSetupFlagFile();
   CanInputJsonFile canInputJsonFile = new CanInputJsonFile();
   MProtocolConfigJsonFile mProtocolConfigJsonFile =
-  new MProtocolConfigJsonFile();
+      new MProtocolConfigJsonFile();
   MProtocolJsonFile mProtocolJsonFile = new MProtocolJsonFile();
 
   getFiles(Socket socket, ConfigurationFile file) {
@@ -343,9 +342,7 @@ class ViewModel {
 
     while (_buffer.length >= 4) {
       var length =
-      ByteData.view(Uint8List
-          .fromList(_buffer)
-          .buffer, 0, 4).getUint32(0);
+          ByteData.view(Uint8List.fromList(_buffer).buffer, 0, 4).getUint32(0);
 
       if (_buffer.length < length + 4) break;
 
@@ -578,12 +575,16 @@ class ViewModel {
         socketMessage['type'] == 'read_file_error') {
       carConfigFile.handle(socketMessage);
       laneConfigFile.handle(socketMessage);
-      if (canInputJsonFile.handle(socketMessage))
+      if (canInputJsonFile.handle(socketMessage)) {
         fakeSpeedStream.add(canInputJsonFile.fakeSpeed);
+      }
       _dmsSetupFlagFile.handle(socketMessage);
       mProtocolConfigJsonFile.handle(socketMessage);
-      if (mProtocolJsonFile.handle(socketMessage))
+
+      if (mProtocolJsonFile.handle(socketMessage)) {
         protocolStream.add(mProtocolJsonFile.protocol);
+      }
+
       push(carConfigFile);
       push(laneConfigFile);
       push(canInputJsonFile);
@@ -598,8 +599,10 @@ class ViewModel {
       }
     } else if (socketMessage['type'] == 'get_system_volume_ok') {
       if (socketMessage['result'] == null ||
-          socketMessage['result'].toDouble() == null)
+          socketMessage['result'].toDouble() == null) {
         socketMessage['result'] ??= 0.8;
+      }
+
       volumeStream.add(socketMessage['result'].toDouble());
     } else if (socketMessage['type'] == 'get_camera_params_ok') {
       hasBeenCalculated = false;

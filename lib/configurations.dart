@@ -30,6 +30,13 @@ abstract class ConfigurationFile {
 
     return false;
   }
+
+  handleJson(Map<String, dynamic> jsonData) {
+    this.config = jsonData;
+  }
+
+
+
 }
 
 // 车辆配置文件
@@ -127,6 +134,40 @@ class CanInputJsonFile extends ConfigurationFile {
     config['m4_analog']['aturnlamp']['enable'] ??= false;
     config['m4_analog']['aturnlamp']['polarity'] ??= 1;
   }
+
+  @override
+  handleJson(Map<String, dynamic> jsonData) {
+    config = jsonData == null ? {} : jsonData;
+    defaultConfig();
+  }
+
+  setFakeSpeed(int speed){
+    config['main']['fake_speed'] = speed;
+  }
+
+  deleteSpeed() {
+    if (config['main'].containsKey('fake_speed')) {
+      config['main'].remove('fake_speed');
+    }
+  }
+
+
+  defaultConfig(){
+    config['main'] ??= {};
+    config['main']['use_obd'] ??= false;
+    config['main']['baudrate'] ??= '250k';
+    config['main']['scenario'] ??= 0;
+    config['main']['enable_e1'] ??= false;
+
+    config['m4_analog'] ??= {};
+    config['m4_analog']['aspeed'] ??= {};
+    config['m4_analog']['aspeed']['ratio'] ??= 0;
+    config['m4_analog']['aspeed']['enable'] ??= false;
+    config['m4_analog']['aturnlamp'] ??= {};
+    config['m4_analog']['aturnlamp']['enable'] ??= false;
+    config['m4_analog']['aturnlamp']['polarity'] ??= 1;
+  }
+
 }
 
 class DmsSetupFlagFile extends ConfigurationFile {

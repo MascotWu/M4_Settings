@@ -52,33 +52,39 @@ class _CameraPageState extends State<CameraPage> {
       ]),
       body: SingleChildScrollView(
           child: Column(
-        children: <Widget>[
-          Container(
-            margin: EdgeInsets.only(top: 25, bottom: 10),
-            child: RaisedButton(
-                child: Text('ADAS摄像头拍照'),
-                onPressed: () {
-                  setState(() {
-                    _tipString = "正在获取ADAS照片";
-                  });
-                  HttpService.shared
-                      .getAdasPicture()
-                      .timeout(Duration(seconds: 3))
-                      .then((picture) {
-                    setState(() {
-                      _tipString = "";
-                      _adasImage = Image.memory(picture);
-                    });
-                  }).catchError((error) {
-                    _tipString = "获取ADAS照片失败，请重试";
-                  });
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.only(top: 10),
+                child: Center(
+                  child: Text(_tipString),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 25, bottom: 10),
+                child: RaisedButton(
+                    child: Text('ADAS摄像头拍照'),
+                    onPressed: () {
+                      setState(() {
+                        _tipString = "正在获取ADAS照片";
+                      });
+                      HttpService.shared
+                          .getAdasPicture()
+                          .timeout(Duration(seconds: 3))
+                          .then((picture) {
+                        setState(() {
+                          _tipString = "";
+                          _adasImage = Image.memory(picture);
+                        });
+                      }).catchError((error) {
+                        _tipString = "获取ADAS照片失败，请更新程序或者断电重启后再试";
+                      });
 //                  vm.takePictureOfAdas().listen((picture) {
 //                    setState(() {
 //                      _adasImage = Image.memory(picture);
 //                    });
 //                  });
-                }),
-          ),
+                    }),
+              ),
           Container(
             alignment: Alignment.topCenter,
             child: Stack(
@@ -178,7 +184,7 @@ class _CameraPageState extends State<CameraPage> {
                       _dmsImage = Image.memory(picture);
                     });
                   }).catchError((error) {
-                    _tipString = "获取DMS照片失败，请重试";
+                    _tipString = "获取DMS照片失败，请更新程序或者断电重启后再试";
                   });
 
 //                    vm.takePictureOfDms().listen((picture) {
@@ -205,12 +211,6 @@ class _CameraPageState extends State<CameraPage> {
                 ),
               ),
             ],
-          ),
-          Container(
-            margin: EdgeInsets.only(top: 10),
-            child: Center(
-              child: Text(_tipString),
-            ),
           )
         ],
       )),
