@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:android_intent/android_intent.dart';
 import 'package:flutter/material.dart';
 
 import 'home.dart';
@@ -23,6 +24,11 @@ class _ConnectionPageState extends State<ConnectionPage> {
         vm.connectionStatus.listen(onConnectionStatusChanged);
   }
 
+  _openWifiSetting() async {
+    AndroidIntent intent = AndroidIntent(action: 'android.settings.SETTINGS');
+    await intent.launch();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -32,7 +38,7 @@ class _ConnectionPageState extends State<ConnectionPage> {
               padding: EdgeInsets.only(bottom: 180),
               child: Center(
                 child: Text(
-                  '请将手机Wi-Fi连接至"M4_xxxxxxxxxxxxxxxx"\nWi-Fi默认密码为：minieye666\n\n然后点击"连接"按钮',
+                  '请将手机Wi-Fi连接至"M4_xxxxxxxxxxxxxxxx"\n\n然后点击"连接"按钮',
                   style: TextStyle(color: Colors.black54, height: 1.3),
                   textAlign: TextAlign.center,
                 ),

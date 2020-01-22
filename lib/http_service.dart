@@ -61,12 +61,17 @@ class ConfigManager {
   CanInputJsonFile canFile = CanInputJsonFile();
   DmsSetupFlagFile dmsFile = DmsSetupFlagFile();
   DetectFlagFile detectFile = DetectFlagFile();
+  MacrosConfigTextFile carFile = MacrosConfigTextFile();
+  MProtocolConfigJsonFile protocolConfigFile = MProtocolConfigJsonFile();
+  MProtocolJsonFile protocolFile = MProtocolJsonFile();
+
+
 
   static ConfigManager shared = ConfigManager();
 
 
 
-  Future<Map<String,dynamic>> getFile(ConfigurationFile file) {
+  Future<Uint8List> getFile(ConfigurationFile file) {
     return HttpService.shared.readFile(file.path)
         .timeout(httpTimeoutInterval);
   }
@@ -105,6 +110,7 @@ class ServiceManager {
   Future<bool> startService(ServiceType type) async {
     final service = nameOfService(type);
     var resp = await http.post(HttpService.host + startPath + service);
+    print("request " + resp.request.url.toString() + "\nresp.body " + resp.body);
     if (resp.statusCode == 200) {
       return resp.body == MResult.OK;
     } else {
@@ -115,6 +121,7 @@ class ServiceManager {
   Future<bool> stopService(ServiceType type) async {
     final service = nameOfService(type);
     var resp = await http.post(HttpService.host + stopPath + service);
+    print("request " + resp.request.url.toString() + "\nresp.body " + resp.body);
     if (resp.statusCode == 200) {
       return resp.body == MResult.OK;
     } else {
@@ -125,10 +132,11 @@ class ServiceManager {
   Future<String> getServiceStatus(ServiceType type) async {
     final service = nameOfService(type);
     var resp = await http.get(HttpService.host + statusPath + service);
+    print("request " + resp.request.url.toString() + "\nresp.body " + resp.body);
     if (resp.statusCode == 200) {
       return resp.body;
     } else {
-      return Future.error("Get Service Status" + service + " failed");
+      return Future.error("Get Service Status " + service + " failed");
     }
   }
 }
@@ -176,16 +184,17 @@ class HttpService {
     print("resp.statusCode " + resp.statusCode.toString());
     print("resp.body " + resp.body);
     if (resp.statusCode == 200) {
-      return resp.body;
+      return Utf8Decoder().convert(resp.bodyBytes);
     } else {
       return Future.error("write file " + path + " error");
     }
   }
 
-  Future<Map<String,dynamic>> readFile(String path) async {
+  Future<Uint8List> readFile(String path) async {
     var resp = await http.get(host+Path.readFile + path);
+    print("request " + resp.request.url.toString() + "\nresp.body " + resp.body);
     if (resp.statusCode == 200) {
-      return jsonDecode(resp.body);
+      return resp.bodyBytes;
     } else {
       return Future.error("read file " + path + " error");
     }
@@ -194,6 +203,7 @@ class HttpService {
 
   Future<String> getDeviceType() async {
     var resp = await http.get(host + Path.deviceType);
+    print("request " + resp.request.url.toString() + "\nresp.body " + resp.body);
     if (resp.statusCode == 200) {
       return resp.body;
     } else {

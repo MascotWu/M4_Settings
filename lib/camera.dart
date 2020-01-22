@@ -76,7 +76,9 @@ class _CameraPageState extends State<CameraPage> {
                           _adasImage = Image.memory(picture);
                         });
                       }).catchError((error) {
-                        _tipString = "获取ADAS照片失败，请更新程序或者断电重启后再试";
+                        setState(() {
+                          _tipString = "获取ADAS照片失败，请更新程序或者断电重启后再试";
+                        });
                       });
 //                  vm.takePictureOfAdas().listen((picture) {
 //                    setState(() {
@@ -85,57 +87,57 @@ class _CameraPageState extends State<CameraPage> {
 //                  });
                     }),
               ),
-          Container(
-            alignment: Alignment.topCenter,
-            child: Stack(
-              children: <Widget>[
-                Container(
-                  height: _height,
-                  width: _width,
-                  alignment: Alignment.topCenter,
-                  child: _adasImage ?? Text(''),
-                ),
-                Container(
-                  height: _height,
-                  width: _width,
-                  child: CustomPaint(
-                    painter: curvePainter,
-                    child: Center(
-                      child: GestureDetector(
-                        onPanStart: (detail) {
-                          var offsets = [
-                            (offset1 - detail.localPosition)
-                                .distanceSquared
-                                .round(),
-                            (offset2 - detail.localPosition)
-                                .distanceSquared
-                                .round(),
-                            (offset3 - detail.localPosition)
-                                .distanceSquared
-                                .round(),
-                            (offset4 - detail.localPosition)
-                                .distanceSquared
-                                .round()
-                          ];
+              Container(
+                alignment: Alignment.topCenter,
+                child: Stack(
+                  children: <Widget>[
+                    Container(
+                      height: _height,
+                      width: _width,
+                      alignment: Alignment.topCenter,
+                      child: _adasImage ?? Text(''),
+                    ),
+                    Container(
+                      height: _height,
+                      width: _width,
+                      child: CustomPaint(
+                        painter: curvePainter,
+                        child: Center(
+                          child: GestureDetector(
+                            onPanStart: (detail) {
+                              var offsets = [
+                                (offset1 - detail.localPosition)
+                                    .distanceSquared
+                                    .round(),
+                                (offset2 - detail.localPosition)
+                                    .distanceSquared
+                                    .round(),
+                                (offset3 - detail.localPosition)
+                                    .distanceSquared
+                                    .round(),
+                                (offset4 - detail.localPosition)
+                                    .distanceSquared
+                                    .round()
+                              ];
 
-                          var b = [
-                            (offset1 - detail.localPosition)
-                                .distanceSquared
-                                .round(),
-                            (offset2 - detail.localPosition)
-                                .distanceSquared
-                                .round(),
-                            (offset3 - detail.localPosition)
-                                .distanceSquared
-                                .round(),
-                            (offset4 - detail.localPosition)
-                                .distanceSquared
-                                .round()
-                          ];
-                          b.sort();
-                          var r = b[0];
-                          pointSelected = -1;
-                          if (r < 8000)
+                              var b = [
+                                (offset1 - detail.localPosition)
+                                    .distanceSquared
+                                    .round(),
+                                (offset2 - detail.localPosition)
+                                    .distanceSquared
+                                    .round(),
+                                (offset3 - detail.localPosition)
+                                    .distanceSquared
+                                    .round(),
+                                (offset4 - detail.localPosition)
+                                    .distanceSquared
+                                    .round()
+                              ];
+                              b.sort();
+                              var r = b[0];
+                              pointSelected = -1;
+                              if (r < 8000)
                             for (var i = 0; i < 4; i++) {
                               if (r == offsets[i]) {
                                 pointSelected = i + 1;
@@ -184,7 +186,9 @@ class _CameraPageState extends State<CameraPage> {
                       _dmsImage = Image.memory(picture);
                     });
                   }).catchError((error) {
-                    _tipString = "获取DMS照片失败，请更新程序或者断电重启后再试";
+                    setState(() {
+                      _tipString = "获取DMS照片失败，请更新程序或者断电重启后再试";
+                    });
                   });
 
 //                    vm.takePictureOfDms().listen((picture) {

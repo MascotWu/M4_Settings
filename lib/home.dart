@@ -102,8 +102,8 @@ class _HomePageState extends State<HomePage> {
 
   getCanFile() {
     var manager = ConfigManager.shared;
-    manager.getFile(manager.canFile).then((json) {
-      manager.canFile.handleJson(json);
+    manager.getFile(manager.canFile).then((data) {
+      manager.canFile.setConfig(data);
       setState(() {
         var speed = manager.canFile.fakeSpeed ?? -1;
         _fakeSpeed = FakeSpeed(speed).toString();
@@ -127,9 +127,10 @@ class _HomePageState extends State<HomePage> {
     });
     final tSpeed = FakeSpeed(speed).toString();
     HttpService.shared.writeToFile(manager.canFile.path, jsonEncode(manager.canFile.config))
-        .timeout(httpTimeoutInterval).then((result){
-          print(result);
+        .timeout(httpTimeoutInterval)
+        .then((result) {
       setState(() {
+        print(result == MResult.OK);
         if (result == MResult.OK) {
           _fakeSpeed = tSpeed;
           reStartAdasService();
@@ -143,6 +144,8 @@ class _HomePageState extends State<HomePage> {
         }
       });
     }).catchError((error){
+      print("set fake speed error");
+      print(error);
       setState(() {
         _fakeSpeed = "设置失败";
       });
@@ -151,17 +154,63 @@ class _HomePageState extends State<HomePage> {
   }
 
   reStartAdasService(){
-    ServiceManager.shared.stopService(ServiceType.adas).then((result){
-      ServiceManager.shared.startService(ServiceType.adas).then((result1){
-      });
-    }).catchError((){
+    Future.wait([
+      ServiceManager.shared.stopService(ServiceType.adas),
+      delayStartService(ServiceType.adas)
+    ]).then((results) {
+      print(results[0]);
+      print(results[1]);
+      print("重启ADAS算法成功");
+    }).catchError((e) {
+      print(e);
+      print("重启ADAS算法失败");
+    }).whenComplete((){
+      getServiceStatus(ServiceType.adas);
     });
   }
 
+  Future<bool> delayStartService(ServiceType type) async {
+    await Future.delayed(Duration(seconds: 5));
+    return ServiceManager.shared.startService(type);
+  }
 
   refreshState(){
 
   }
+
+  var _cameraState = "";
+  cameraSettingAction(){
+    var manager = ConfigManager.shared;
+    setState(() {
+      _cameraState = "获取数据中";
+    });
+    Future.wait([
+      manager.getFile(manager.detectFile),
+      manager.getFile(manager.carFile)
+    ]).then((results){
+      print(results);
+      setState(() {
+        _cameraState = "";
+      });
+
+      manager.detectFile.setConfig(results[0]);
+      manager.carFile.setConfig(results[1]);
+      Navigator.push(
+          context,
+          new MaterialPageRoute(
+              builder: (context) =>
+                  Scaffold(body: CameraSettingsPage())));
+    }).catchError((error) {
+      print("获取配置文件失败，请重试");
+      print(error);
+      setState(() {
+        _cameraState = "获取数据失败，请重试点击";
+      });
+
+    });
+
+  }
+
 
   refreshC4Version() async {
     setState(() {
@@ -212,7 +261,7 @@ class _HomePageState extends State<HomePage> {
         .timeout(httpTimeoutInterval)
         .then((status) {
       print("get service status: " +
-          ServiceManager.shared.nameOfService(type) +
+          ServiceManager.shared.nameOfService(type) + " " +
           status);
       setState(() {
         serviceData.isRunning = status == ServiceStatus.running;
@@ -227,51 +276,26 @@ class _HomePageState extends State<HomePage> {
 
   setService(ServiceType type, bool isStart) {
     ServiceModel serviceData = ServiceManager.shared.dmsData;
+    var method = isStart ? ServiceManager.shared.startService : ServiceManager.shared.stopService;
     if (type == ServiceType.adas) {
       serviceData = ServiceManager.shared.adasData;
     }
     setState(() {
       serviceData.status = "正在设置...";
     });
-    if (isStart == true) {
-      ServiceManager.shared
-          .startService(ServiceType.adas)
-          .timeout(httpTimeoutInterval)
-          .then((success) {
-        setState(() {
-          if (success == true) {
-            serviceData.isRunning = true;
-            serviceData.status = "设置成功";
-          } else {
-            serviceData.isRunning = false;
-            serviceData.status = "设置失败";
-          }
-        });
-      }).catchError((error) {
-        setState(() {
-          serviceData.status = "设置失败";
-        });
+    method(type)
+        .timeout(httpTimeoutInterval)
+        .then((success) {
+      setState(() {
+        serviceData.isRunning = isStart ? success : !success;
+        serviceData.status = success ? "设置成功" : "设置失败";
       });
-    } else {
-      ServiceManager.shared
-          .stopService(ServiceType.adas)
-          .timeout(httpTimeoutInterval)
-          .then((success) {
-        setState(() {
-          if (success == true) {
-            serviceData.isRunning = false;
-            serviceData.status = "设置成功";
-          } else {
-            serviceData.isRunning = false;
-            serviceData.status = "设置失败";
-          }
-        });
-      }).catchError((error) {
-        setState(() {
-          serviceData.status = "设置失败";
-        });
+    }).catchError((e) {
+      setState(() {
+        serviceData.isRunning = !isStart;
+        serviceData.status = "设置失败";
       });
-    }
+    });
   }
 
   @override
@@ -297,6 +321,7 @@ class _HomePageState extends State<HomePage> {
             ListTile(
               leading: const Icon(Icons.camera),
               title: Text('摄像头设置'),
+              subtitle: Text(_cameraState),
               trailing: Icon(Icons.navigate_next),
               onTap: () {
                 Navigator.push(
@@ -304,6 +329,8 @@ class _HomePageState extends State<HomePage> {
                     new MaterialPageRoute(
                         builder: (context) =>
                             Scaffold(body: CameraSettingsPage())));
+//                cameraSettingAction();
+
               },
             ),
             ListTile(
@@ -428,17 +455,7 @@ class _HomePageState extends State<HomePage> {
             ListTile(
               leading: const Icon(Icons.code),
               title: Text('应用版本'),
-              subtitle: Text('0.6.0'),
-              onTap: () {
-                return showDialog<double>(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: Text('更新日志'),
-                        content: Text('1. 删除天迈协议和天迈直连协议'),
-                      );
-                    });
-              },
+              subtitle: Text('0.7.0'),
             ),
             Container(
               alignment: Alignment.topLeft,
