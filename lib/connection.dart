@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:android_intent/android_intent.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'home.dart';
 import 'view_model.dart';
@@ -19,6 +20,8 @@ class _ConnectionPageState extends State<ConnectionPage> {
   @override
   void initState() {
     super.initState();
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
     connectionSubscription =
         vm.connectionStatus.listen(onConnectionStatusChanged);
