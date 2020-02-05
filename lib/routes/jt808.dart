@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'picker_dialog.dart';
-import 'view_model.dart';
+import '../widgets/picker_dialog.dart';
+import '../models/view_model.dart';
 
 class Jt808ConfigPage extends StatefulWidget {
   createState() => _Jt808ConfigState();

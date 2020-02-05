@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/subiao.dart';
-import 'package:flutter_app/view_model.dart';
+import 'package:flutter_app/routes/subiao.dart';
+import 'package:flutter_app/models/view_model.dart';
 import 'tianmai_directed.dart';
 
 import 'jt808.dart';

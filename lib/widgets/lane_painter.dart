@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/view_model.dart';
+import 'package:flutter_app/models/view_model.dart';
 
 class OpticalParam {
   double cu = 640;

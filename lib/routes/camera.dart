@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/common/http_service.dart';
+import 'package:flutter_app/models/view_model.dart';
+import 'package:flutter_app/widgets/lane_painter.dart';
+import 'package:flutter_app/widgets/outlet_painter.dart';
 
-import 'lane_painter.dart';
-import 'outlet_painter.dart';
-import 'view_model.dart';
-import 'http_service.dart';
 
 class CameraPage extends StatefulWidget {
   @override
@@ -12,6 +12,8 @@ class CameraPage extends StatefulWidget {
 
 class _CameraPageState extends State<CameraPage> {
   ViewModel vm;
+
+
 
   Image _adasImage = Image.asset('assets/placeholder.jpg');
   Image _dmsImage = Image.asset('assets/placeholder.jpg');
@@ -40,7 +42,7 @@ class _CameraPageState extends State<CameraPage> {
     curvePainter = LanePainter(
         point1: offset1, point2: offset2, point3: offset3, point4: offset4);
     return Scaffold(
-      appBar: AppBar(title: Text('摄像头调校'), actions: <Widget>[
+      appBar: AppBar(title: Text('摄像头标定'), actions: <Widget>[
         // action button
         FlatButton(
           child: Text(

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'view_model.dart';
+import 'package:flutter_app/models/view_model.dart';
 
 class CameraSettingsPage extends StatefulWidget {
   createState() => _CameraSettingsPageState();
@@ -81,7 +80,7 @@ class _CameraSettingsPageState extends State<CameraSettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('摄像头设置'), actions: <Widget>[
+      appBar: AppBar(title: Text('ADAS安装参数'), actions: <Widget>[
         // action button
         FlatButton(
           child: Text(

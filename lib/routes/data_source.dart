@@ -1,52 +1,195 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/picker_dialog.dart';
+import 'package:flutter_app/common/http_service.dart';
+import 'package:flutter_app/widgets/picker_dialog.dart';
+import '../models/view_model.dart';
 
-import 'view_model.dart';
+class FakeSpeed {
+  int speed;
+  static final int maxSpeed = 60;
+  static final int grade = 3;
+
+  FakeSpeed(this.speed);
+
+  bool isOn(){
+    return speed == null || speed <= 0 ? false : true;
+  }
+
+  @override
+  String toString() {
+    return isOn() ? '速度为$speed km/h' : '';
+  }
+}
+
+
 
 class DataSourcePage extends StatefulWidget {
   createState() => DataSourceState();
 }
 
 class DataSourceState extends State<DataSourcePage> {
+
+  final httpTimeoutInterval = HttpService.timeoutInterval;
+
+  List<Map<String, dynamic>> speeds = [
+    {'title': '无', 'value': -1},
+    {'title': '20 km/h', 'value': 20},
+    {'title': '40 km/h', 'value': 40},
+    {'title': '60 km/h', 'value': 60},
+  ];
+
+  var _speed = FakeSpeed(0);
+
+  getCanFile() {
+
+    var manager = ConfigManager.shared;
+    manager.getFile(manager.canFile).then((data) {
+      manager.canFile.setConfig(data);
+      setState(() {
+        var speed = manager.canFile.fakeSpeed ?? 0;
+        _speed.speed = speed;
+      });
+    }).catchError((error) {
+      print(error);
+    });
+  }
+
+  setFakeSpeed(int speed) {
+    var manager = ConfigManager.shared;
+    var origSpeed = manager.canFile.fakeSpeed;
+    if (speed <= 0) {
+      manager.canFile.deleteSpeed();
+    } else {
+      manager.canFile.setFakeSpeed(speed);
+    }
+    setState(() {
+      _speed.speed = speed;
+    });
+    HttpService.shared
+        .writeToFile(manager.canFile.path, jsonEncode(manager.canFile.config))
+        .timeout(httpTimeoutInterval)
+        .then((result) {
+      setState(() {
+        print(result == MResult.OK);
+        if (result == MResult.OK) {
+          reStartAdasService();
+        } else {
+          _speed.speed = origSpeed;
+          if (origSpeed == null) {
+            manager.canFile.deleteSpeed();
+          } else {
+            manager.canFile.setFakeSpeed(origSpeed);
+          }
+        }
+      });
+    }).catchError((error) {
+      print("set fake speed error");
+      print(error);
+      setState(() {
+        _speed.speed = origSpeed;
+      });
+    });
+  }
+
+  reStartAdasService() {
+    Future.wait([
+      ServiceManager.shared.stopService(ServiceType.adas),
+      delayStartService(ServiceType.adas)
+    ]).then((results) {
+      print(results[0]);
+      print(results[1]);
+      print("重启ADAS成功");
+    }).catchError((e) {
+      print(e);
+      print("重启ADAS失败");
+    });
+  }
+
+  Future<bool> delayStartService(ServiceType type) async {
+    await Future.delayed(Duration(seconds: 5));
+    return ServiceManager.shared.startService(type);
+  }
+
+  Widget _buildBody(){
+    ViewModel vm = ViewModel.get();
+
+    List<Widget> widgets = <Widget>[
+      ListTile(
+        title: Text("速度信号源"),
+        trailing: Icon(Icons.navigate_next),
+        onTap: () {
+          Navigator.push(
+              context,
+              new MaterialPageRoute(
+                  builder: (context) =>
+                      Scaffold(body: SpeedDataSourcePage())));
+        },
+      ),
+      ListTile(
+        title: Text("信号源波特率设置"),
+        onTap: () {
+          showDialog<String>(
+              context: context,
+              builder: (BuildContext context) {
+                return Picker(title: '请选择波特率', options: [
+                  {'title': "500k"},
+                  {'title': "250k"}
+                ]);
+              }).then((baudRate) {
+            if (baudRate != null) {
+              vm.addOrUpdateBaudRate(baudRate);
+            }
+          });
+        },
+      ),
+      Container(
+        color: Colors.grey[350],
+        height: 1,
+        margin: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+      ),
+      SwitchListTile(
+          title: Text('设置假速度(测试用)'),
+          subtitle: Text(_speed.toString()),
+          value: _speed.isOn(),
+          onChanged: (value){
+            if (value) {
+              setFakeSpeed(20);
+            } else {
+              setFakeSpeed(0);
+            }
+          }),
+    ];
+
+    if (_speed.isOn()) {
+       widgets.add(Padding(
+         padding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+         child: Slider(
+             value: _speed.speed.toDouble(),
+             max: FakeSpeed.maxSpeed.toDouble(),
+             divisions: FakeSpeed.grade,
+             onChanged: (value) {
+               setFakeSpeed(value.toInt());
+             }),
+       ));
+    }
+
+    return Column(children: widgets);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getCanFile();
+  }
+
   @override
   Widget build(BuildContext context) {
-    ViewModel vm = ViewModel.get();
     return Scaffold(
         appBar: AppBar(
-          title: Text("信号源"),
+          title: Text("车辆状态信号源"),
         ),
-        body: Column(
-          children: <Widget>[
-            ListTile(
-              leading: const Icon(Icons.timer),
-              title: Text("速度信号源选择"),
-              trailing: Icon(Icons.navigate_next),
-              onTap: () {
-                Navigator.push(
-                    context,
-                    new MaterialPageRoute(
-                        builder: (context) =>
-                            Scaffold(body: SpeedDataSourcePage())));
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.shutter_speed),
-              title: Text("信号源波特率设置"),
-              onTap: () {
-                showDialog<String>(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return Picker(title: '请选择波特率', options: [
-                        {'title': "500k"},
-                        {'title': "250k"}
-                      ]);
-                    }).then((baudRate) {
-                  if (baudRate != null) vm.addOrUpdateBaudRate(baudRate);
-                });
-              },
-            ),
-          ],
-        ));
+        body: _buildBody()
+    );
   }
 }
 

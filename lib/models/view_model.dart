@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:flutter_app/configurations.dart';
+import 'package:flutter_app/models/configurations.dart';
 import 'package:rxdart/rxdart.dart';
 
-import 'lane_painter.dart';
+import '../widgets/lane_painter.dart';
 
 class ViewModel {
   var _connectionStatus = new BehaviorSubject<bool>();

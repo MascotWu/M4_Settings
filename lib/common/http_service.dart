@@ -1,9 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
-import 'package:flutter/services.dart';
-import 'package:flutter_app/configurations.dart';
-import 'package:flutter_app/home.dart';
+import 'package:flutter_app/models/configurations.dart';
+import 'package:flutter_app/routes/home.dart';
 import 'package:http/http.dart' as http;
 
 
@@ -17,8 +16,9 @@ class Path {
   static final dmsStatus = "/api/v1/get_service_status?service=dms";
   static final readFile = "/api/v1/read_file?path=";
   static final writeFile = "/api/v1/write_file?path=";
-
-
+  static final getId = "/api/v1/get_device_id";
+  static final getVolume = "/api/v1/get_system_volume";
+  static final setVolume = "/api/v1/set_system_volume";
 }
 
 // "stopped" "running"
@@ -146,6 +146,8 @@ class HttpService {
   static var host = "http://192.168.43.1:16402";
   static final shared = HttpService();
 
+  static final timeoutInterval = Duration(seconds: 5);
+
 
   Future<String> getC4Version() async {
     var response = await http.get(host + Path.c4Version);
@@ -155,8 +157,6 @@ class HttpService {
       return Future.error("Response code should be 200.");
     }
   }
-
-
 
 
   Future<Uint8List> getAdasPicture() async {
@@ -178,8 +178,12 @@ class HttpService {
     }
   }
 
+
   Future<String> writeToFile(String path, data) async {
-    var resp = await http.post(host + Path.writeFile +path,headers: {"Content-Type":"application/octet-stream"},body: data);
+    var resp = await http.post(
+        host + Path.writeFile +path,
+        headers: {"Content-Type":"application/octet-stream"},
+        body: data);
     print("request " + resp.request.toString());
     print("resp.statusCode " + resp.statusCode.toString());
     print("resp.body " + resp.body);
@@ -208,6 +212,39 @@ class HttpService {
       return resp.body;
     } else {
       return Future.error("get device type error");
+    }
+  }
+
+
+  Future<String> getDeviceId() async {
+    var resp = await http.get(host + Path.getId);
+    print("request " + resp.request.url.toString() + "\nresp.body " + resp.body);
+    if (resp.statusCode == 200) {
+      return resp.body;
+    } else {
+      return Future.error("get device id error");
+    }
+  }
+
+  Future<String> getDeviceVolume() async {
+    var resp = await http.get(host + Path.getVolume);
+    print("request " + resp.request.url.toString() + "\nresp.body " + resp.body);
+    if (resp.statusCode == 200) {
+      return resp.body;
+    } else {
+      return Future.error("get device volume error");
+    }
+  }
+
+  Future<String> setDeviceVolume(double volume) async {
+    var resp = await http.post(host + Path.setVolume,
+        //headers: {"Content-Type":"application/x-www-form-urlencoded"},
+        body: {"volume":volume.toString()});
+    print("request " + resp.request.url.toString() + "\nresp.body " + resp.body);
+    if (resp.statusCode == 200) {
+      return resp.body;
+    } else {
+      return Future.error("set device volume error");
     }
   }
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/view_model.dart';
+import 'package:flutter_app/models/view_model.dart';
 
 class AlertSettingsPage extends StatefulWidget {
   createState() => new AlertSettingsState();

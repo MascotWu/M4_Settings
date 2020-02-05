@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'picker_dialog.dart';
-import 'view_model.dart';
+import '../widgets/picker_dialog.dart';
+import '../models/view_model.dart';
 
 class TianMaiDirectConfigPage extends StatefulWidget {
   createState() => _TianMaiDirectedConfigState();
