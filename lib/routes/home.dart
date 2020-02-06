@@ -7,7 +7,6 @@ import 'package:flutter_app/models/view_model.dart';
 import 'package:flutter_app/routes/camera.dart';
 import 'package:flutter_app/routes/camera_settings.dart';
 import 'package:flutter_app/routes/data_source.dart';
-import 'package:flutter_app/routes/left_drawer.dart';
 import 'package:flutter_app/routes/package_manager.dart';
 import 'package:flutter_app/routes/param_settings.dart';
 

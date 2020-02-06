@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/common/common_variable.dart';
+import 'package:flutter_app/routes/adas_settings.dart';
 import '../models/view_model.dart';
 import 'alert_settings.dart';
 import 'protocol.dart';
@@ -17,7 +18,7 @@ class ParamSettings extends StatefulWidget {
 
 class _ParamSettingsState extends State<ParamSettings> {
   String _protocol = '';
-  int _volumeLevel = 3;
+  int _volumeLevel = 0;
   String _volumeState = CommonVariable.getFailedRetry;
 
   getVolume() {
@@ -138,7 +139,7 @@ class _ParamSettingsState extends State<ParamSettings> {
                       context,
                       new MaterialPageRoute(
                           builder: (context) =>
-                              Scaffold(body: AlertSettingsPage())));
+                              Scaffold(body: ADASSettings())));
                 },
               ),
               ListTile(
