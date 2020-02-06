@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/common/common_variable.dart';
 import 'package:flutter_app/common/http_service.dart';
+import 'package:flutter_app/main.dart';
 import 'package:flutter_app/models/view_model.dart';
 import 'package:flutter_app/routes/camera.dart';
 import 'package:flutter_app/routes/camera_settings.dart';
@@ -9,7 +10,6 @@ import 'package:flutter_app/routes/data_source.dart';
 import 'package:flutter_app/routes/left_drawer.dart';
 import 'package:flutter_app/routes/package_manager.dart';
 import 'package:flutter_app/routes/param_settings.dart';
-import 'connection.dart';
 
 final httpTimeoutInterval = HttpService.timeoutInterval;
 
@@ -38,13 +38,9 @@ class _HomePageState extends State<HomePage> {
 
     connectionSubscription ??= vm.connectionStatus.listen((isConnected) {
       if (!isConnected)
-        Navigator.pushReplacement(
+        Navigator.pushReplacementNamed(
             context,
-            new MaterialPageRoute(
-                builder: (context) => Scaffold(
-                  appBar: AppBar(title: Text(CommonVariable.appName),),
-                    drawer: LeftDrawer(),
-                    body: ConnectionPage())));
+            AppRoute.name.connect);
     });
 
     if (connectionSubscription.isPaused) {
@@ -294,12 +290,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
-        ),
-        drawer: LeftDrawer(),
-        body: _buildBody());
+    return _buildBody();
   }
 
   void onConnectionStatusChanged(bool isConnected) {}
@@ -308,7 +299,6 @@ class _HomePageState extends State<HomePage> {
   void dispose() {
     super.dispose();
 
-    vm.fakeSpeed.pause();
     connectionSubscription.pause();
   }
 }

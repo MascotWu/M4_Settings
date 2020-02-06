@@ -1,11 +1,8 @@
 import 'dart:async';
-
 import 'package:android_intent/android_intent.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_app/common/common_variable.dart';
-
-import 'home.dart';
+import 'package:flutter_app/main.dart';
 import '../models/view_model.dart';
 
 class ConnectionPage extends StatefulWidget {
@@ -77,11 +74,9 @@ class _ConnectionPageState extends State<ConnectionPage> {
 
   onConnectionStatusChanged(bool isConnected) {
     if (isConnected) {
-      Navigator.pushReplacement(
+      Navigator.pushReplacementNamed(
           context,
-          new MaterialPageRoute(
-              builder: (context) =>
-                  Scaffold(body: HomePage(title: CommonVariable.appName))));
+          AppRoute.name.home);
     } else {
       Scaffold.of(context).showSnackBar(SnackBar(
           content: Text('连接失败!'),

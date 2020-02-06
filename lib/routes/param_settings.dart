@@ -16,8 +16,8 @@ class ParamSettings extends StatefulWidget {
 }
 
 class _ParamSettingsState extends State<ParamSettings> {
-  int _volumeLevel = 3;
   String _protocol = '';
+  int _volumeLevel = 3;
   String _volumeState = CommonVariable.getFailedRetry;
 
   getVolume() {
@@ -31,7 +31,7 @@ class _ParamSettingsState extends State<ParamSettings> {
       setState(() {
         var v = double.tryParse(value) ?? 0;
         _volumeLevel = Volume.fromValue(v).level;
-        _volumeState = _volumeLevel.toString();
+        _volumeState = "大小：" + _volumeLevel.toString();
       });
     }).catchError((e) {
       setState(() {
@@ -80,7 +80,7 @@ class _ParamSettingsState extends State<ParamSettings> {
         .then((result) {
       print(result);
       setState(() {
-        _volumeState = volume.level.toString();
+        _volumeState = "大小：" + volume.level.toString();
       });
     }).catchError((e) {
       print(e);
