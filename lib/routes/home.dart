@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/common/common_variable.dart';
 import 'package:flutter_app/common/http_service.dart';
 import 'package:flutter_app/main.dart';
+import 'package:flutter_app/models/camera_position_model.dart';
 import 'package:flutter_app/models/view_model.dart';
 import 'package:flutter_app/routes/camera.dart';
 import 'package:flutter_app/routes/camera_settings.dart';
@@ -29,6 +31,10 @@ class _HomePageState extends State<HomePage> {
   String _deviceType = "点击重新获取";
   String _deviceId = "点击重新获取";
 
+  String _cameraPositionState = "";
+  String _cameraSetState = "";
+
+
   StreamSubscription connectionSubscription;
 
   @override
@@ -37,9 +43,7 @@ class _HomePageState extends State<HomePage> {
 
     connectionSubscription ??= vm.connectionStatus.listen((isConnected) {
       if (!isConnected)
-        Navigator.pushReplacementNamed(
-            context,
-            AppRoute.name.connect);
+        Navigator.pushReplacementNamed(context, AppRoute.name.connect);
     });
 
     if (connectionSubscription.isPaused) {
@@ -51,9 +55,27 @@ class _HomePageState extends State<HomePage> {
     getDeviceId();
     getServiceStatus(ServiceType.adas);
     getServiceStatus(ServiceType.dms);
+    getCameraPosition();
   }
 
-  refreshC4Version() async {
+  bool _isNewVersion(String first, String second) {
+    final ver1 = first.split(".");
+    final ver2 = second.split(".");
+    int maxLen = ver1.length;
+    if (maxLen < ver2.length) {
+      maxLen = ver2.length;
+    }
+    for (int i = 0; i < maxLen; i++) {
+      int n1 = i < ver1.length ? int.parse(ver1[i]) : 0;
+      int n2 = i < ver2.length ? int.parse(ver2[i]) : 0;
+      if (n1 > n2) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  refreshC4Version() {
     setState(() {
       _c4Version = CommonVariable.getting;
     });
@@ -61,10 +83,31 @@ class _HomePageState extends State<HomePage> {
         .getC4Version()
         .timeout(httpTimeoutInterval)
         .then((version) {
+      final minRequiredC4Ver = "1.5.24";
+      bool needUpdate = _isNewVersion(minRequiredC4Ver, version);
+      var msg = version;
+      if (needUpdate) {
+        msg += "  (请升级M4版本)";
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text("M4更新提示"),
+                content: Text("M4版本过低，请将设备更新到$minRequiredC4Ver以上"),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text("确定"),
+                    onPressed: () => Navigator.of(context).pop(), // 关闭对话框
+                  ),
+                ],
+              );
+            });
+      }
       setState(() {
-        _c4Version = version;
+        _c4Version = msg;
       });
     }).catchError((e) {
+      print(e);
       setState(() {
         _c4Version = CommonVariable.getFailedRetry;
       });
@@ -148,19 +191,74 @@ class _HomePageState extends State<HomePage> {
     method(type).timeout(httpTimeoutInterval).then((success) {
       setState(() {
         serviceData.isRunning = isStart ? success : !success;
-        serviceData.status = success ? CommonVariable.getSuccess : CommonVariable.getFailed;
+        serviceData.status =
+            success ? CommonVariable.setSuccess : CommonVariable.setFailedRetry;
       });
     }).catchError((e) {
       setState(() {
         serviceData.isRunning = !isStart;
-        serviceData.status = CommonVariable.getFailed;
+        serviceData.status = CommonVariable.setFailedRetry;
+      });
+    });
+  }
+
+  getCameraOriginalPosition() {
+    if (_cameraPositionState == CommonVariable.getting) {
+      return;
+    }
+    setState(() {
+      _cameraPositionState = CommonVariable.getting;
+    });
+    var position = CameraOriginalPosition();
+    HttpService.shared
+        .getValueKey(position.toJson().keys.toList())
+        .timeout(HttpService.timeoutInterval)
+        .then((value) {
+      print(value);
+      CameraOriginalPosition position = value.success
+          ? CameraOriginalPosition.fromJson(json.decode(value.result))
+          : CameraOriginalPosition();
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  Scaffold(body: CameraSettingsPage(position))));
+      setState(() {
+        _cameraPositionState = _cameraSetState;
+      });
+    }).catchError((e) {
+      setState(() {
+        _cameraPositionState = CommonVariable.getFailed;
+      });
+    });
+  }
+
+  getCameraPosition() {
+    if (_cameraSetState == CommonVariable.getting) {
+      return;
+    }
+    HttpService.shared
+        .getCameraPosition()
+        .timeout(HttpService.timeoutInterval)
+        .then((value) {
+      print(value);
+        setState(() {
+          var position = value.success ? CameraPosition.fromJson(jsonDecode(value.result)) : CameraPosition();
+          _cameraSetState = position.carWidth == null ? "未设置" : "已设置";
+          if (_cameraPositionState.isEmpty) {
+            _cameraPositionState = _cameraSetState;
+          }
+        });
+    }).catchError((e) {
+      setState(() {
+        _cameraSetState = CommonVariable.getFailed;
       });
     });
   }
 
   bool _isFoldList = true;
 
-  Widget _buildBody(){
+  Widget _buildBody() {
     var children = <Widget>[
       ListTile(
           title: Text('安装向导'),
@@ -173,7 +271,8 @@ class _HomePageState extends State<HomePage> {
             setState(() {
               _isFoldList = !_isFoldList;
             });
-          })];
+          })
+    ];
     var padding = EdgeInsets.fromLTRB(40, 0, 15, 0);
     if (!_isFoldList) {
       children.addAll(<Widget>[
@@ -185,20 +284,16 @@ class _HomePageState extends State<HomePage> {
             Navigator.push(
                 context,
                 new MaterialPageRoute(
-                    builder: (context) =>
-                        Scaffold(body: DataSourcePage())));
+                    builder: (context) => Scaffold(body: DataSourcePage())));
           },
         ),
         ListTile(
           contentPadding: padding,
           title: Text('ADAS安装参数'),
+          subtitle: Text(_cameraPositionState),
           trailing: Icon(Icons.navigate_next),
           onTap: () {
-            Navigator.push(
-                context,
-                new MaterialPageRoute(
-                    builder: (context) =>
-                        Scaffold(body: CameraSettingsPage())));
+            getCameraOriginalPosition();
           },
         ),
         ListTile(

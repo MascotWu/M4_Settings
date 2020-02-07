@@ -1,25 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/models/view_model.dart';
+import 'package:flutter_app/common/common_variable.dart';
+import 'package:flutter_app/common/http_service.dart';
+import 'package:flutter_app/models/camera_position_model.dart';
 
 class CameraSettingsPage extends StatefulWidget {
+
+  final CameraOriginalPosition cameraPosition;
+  CameraSettingsPage(this.cameraPosition);
   createState() => _CameraSettingsPageState();
 }
 
-class Coordinate {
-  var carWidth;
-  var cameraLeftDist;
-  var cameraRightDist;
-}
-
 class _CameraSettingsPageState extends State<CameraSettingsPage> {
-  ViewModel vm;
 
-  _CameraSettingsPageState() {
-    vm = ViewModel.get();
-  }
+
+  var _originalPosition = CameraOriginalPosition();
+  var _position = CameraPosition();
+
+  var _statusMessage = "";
 
   void _setConfig() {
-    Coordinate coordinate = new Coordinate();
 
     if (double.tryParse(carWidthController.text) == null ||
         double.tryParse(cameraRightDistController.text) == null ||
@@ -27,49 +26,136 @@ class _CameraSettingsPageState extends State<CameraSettingsPage> {
         double.tryParse(cameraHeightController.text) == null ||
         double.tryParse(cameraFrontDistController.text) == null ||
         double.tryParse(frontWheelFrontDistController.text) == null) {
-      Scaffold.of(context).showSnackBar(
-          SnackBar(
-              content: Text('所有数据必须是整数或者小数'),
-              action: SnackBarAction(
-                  label: 'OK', onPressed: () {})));
+      Scaffold.of(context).showSnackBar(SnackBar(
+          content: Text('所有数据必须是整数或者小数'),
+          action: SnackBarAction(label: 'OK', onPressed: () {})));
       return;
     }
 
-    coordinate.carWidth = double.parse(carWidthController.text);
-    coordinate.cameraRightDist = double.parse(cameraRightDistController.text);
-    coordinate.cameraLeftDist = double.parse(cameraLeftDistController.text);
+    var carWidth = double.parse(carWidthController.text);
+    var cameraRightDist = double.parse(cameraRightDistController.text);
+    var cameraLeftDist = double.parse(cameraLeftDistController.text);
     var cameraFrontDist = double.parse(cameraFrontDistController.text);
     var frontWheelFrontDist = double.parse(frontWheelFrontDistController.text);
 
-    var glassWidth = coordinate.cameraLeftDist + coordinate.cameraRightDist;
-    var glassMargin = (coordinate.carWidth - glassWidth) * 0.5;
-    var leftDist = coordinate.cameraLeftDist + glassMargin;
-    var rightDist = coordinate.cameraRightDist + glassMargin;
+    var glassWidth = cameraLeftDist + cameraRightDist;
+    var glassMargin = (carWidth - glassWidth) * 0.5;
+    var leftDist = cameraLeftDist + glassMargin;
+    var rightDist = cameraRightDist + glassMargin;
 
-    vm.addOrUpdate(vm.laneConfigFile, {
-      "camera_height": cameraHeightController.text,
-      "left_vehicle_edge_dist": leftDist.toString(),
-      "right_vehicle_edge_dist": rightDist.toString(),
-      "front_vehicle_edge_dist": cameraFrontDist,
-      "front_wheel_camera_dist": cameraFrontDist - frontWheelFrontDist
-    });
+    _originalPosition.carWidth = carWidth;
+    _originalPosition.cameraFrontDist = cameraFrontDist;
+    _originalPosition.frontWheelFrontDist = frontWheelFrontDist;
+    _originalPosition.cameraRightGlassDist = cameraRightDist;
+    _originalPosition.cameraLeftGlassDist = cameraLeftDist;
+    _originalPosition.cameraRightDist = rightDist;
+    _originalPosition.cameraLeftDist = leftDist;
+    _originalPosition.cameraHeight = double.parse(cameraHeightController.text);
 
-    vm.addOrUpdate(vm.carConfigFile, {
-      "camera_height": cameraHeightController.text,
-      "left_dist_to_camera": leftDist.toString(),
-      "right_dist_to_camera": rightDist.toString(),
-      "front_dist_to_camera": cameraFrontDistController.text
-    });
+    _position = CameraPosition.fromJson(_originalPosition.toJson());
 
-    Navigator.pop(context);
+    print(_originalPosition.toJson());
+    print(_position.toJson());
+
+    setCameraPosition(_position, _originalPosition);
   }
 
-  final carWidthController = TextEditingController(text: '2.2');
-  final cameraHeightController = TextEditingController(text: '1.5');
-  final cameraRightDistController = TextEditingController(text: '0.8');
-  final cameraLeftDistController = TextEditingController(text: '0.8');
-  final cameraFrontDistController = TextEditingController(text: '0.1');
-  final frontWheelFrontDistController = TextEditingController(text: '1.5');
+  setCameraOriginalPosition(CameraOriginalPosition position) {
+    HttpService.shared
+        .setValueKey(position.toJson())
+        .timeout(HttpService.timeoutInterval)
+        .then((value) {
+      setState(() {
+        _statusMessage = CommonVariable.setSuccess;
+      });
+    }).catchError((e) {
+      print(e);
+      setState(() {
+        _statusMessage = CommonVariable.setFailedRetry;
+      });
+    });
+  }
+
+  setCameraPosition(CameraPosition position, CameraOriginalPosition original) {
+    setState(() {
+      _statusMessage = CommonVariable.settingUp;
+    });
+
+    Future.wait([
+      HttpService.shared
+          .setCameraPosition(position.toJson())
+          .timeout(HttpService.timeoutInterval),
+      HttpService.shared
+          .setValueKey(original.toJson())
+          .timeout(HttpService.timeoutInterval)
+    ]).then((result) {
+      result.forEach((String item) {
+        if (item != MResult.OK) {
+          setState(() {
+            _statusMessage = CommonVariable.setFailedRetry;
+          });
+          return;
+        }
+      });
+      setState(() {
+        _statusMessage = CommonVariable.setSuccess;
+      });
+
+      Future.delayed(Duration(seconds: 3)).then((value) {
+        Navigator.pop(context);
+      });
+    }).catchError((e) {
+      setState(() {
+        _statusMessage = CommonVariable.setFailedRetry;
+      });
+    });
+  }
+
+  final carWidthController = TextEditingController();
+  final cameraHeightController = TextEditingController();
+  final cameraRightDistController = TextEditingController();
+  final cameraLeftDistController = TextEditingController();
+  final cameraFrontDistController = TextEditingController();
+  final frontWheelFrontDistController = TextEditingController();
+
+//  final carWidthController = TextEditingController(text: '2.2');
+//  final cameraHeightController = TextEditingController(text: '1.5');
+//  final cameraRightDistController = TextEditingController(text: '0.8');
+//  final cameraLeftDistController = TextEditingController(text: '0.8');
+//  final cameraFrontDistController = TextEditingController(text: '0.1');
+//  final frontWheelFrontDistController = TextEditingController(text: '1.5');
+
+  @override
+  void initState() {
+    super.initState();
+    var position = widget.cameraPosition;
+    if (position.carWidth == null) {
+      _statusMessage = "暂未设置";
+    }
+    carWidthController.text = position.carWidth != null
+        ? position.carWidth.toString()
+        : null;
+    cameraHeightController.text = position.cameraHeight != null
+        ? position.cameraHeight.toString()
+        : null;
+    cameraRightDistController.text =
+    position.cameraRightGlassDist != null
+        ? position.cameraRightGlassDist.toString()
+        : null;
+    cameraLeftDistController.text =
+    position.cameraLeftGlassDist != null
+        ? position.cameraLeftGlassDist.toString()
+        : null;
+    cameraFrontDistController.text =
+    position.cameraFrontDist != null
+        ? position.cameraFrontDist.toString()
+        : null;
+    frontWheelFrontDistController.text =
+    position.frontWheelFrontDist != null
+        ? position.frontWheelFrontDist.toString()
+        : null;
+
+  }
 
   @override
   void dispose() {
@@ -90,91 +176,97 @@ class _CameraSettingsPageState extends State<CameraSettingsPage> {
           onPressed: _setConfig,
         ),
       ]),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.all(14.0),
-              alignment: Alignment.center,
-              child: TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: '车宽',
-                ),
-                controller: carWidthController,
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(14.0),
-              alignment: Alignment.center,
-              child: TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: '摄像头高度',
-                ),
-                controller: cameraHeightController,
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(14.0),
-              alignment: Alignment.center,
-              child: TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: '摄像头离玻璃右边缘 ①',
-                ),
-                controller: cameraRightDistController,
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(14.0),
-              alignment: Alignment.center,
-              child: TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: '摄像头离玻璃左边缘 ②',
-                ),
-                controller: cameraLeftDistController,
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(14.0),
-              alignment: Alignment.center,
-              child: TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: '摄像头离车头 ③',
-                ),
-                controller: cameraFrontDistController,
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(14.0),
-              alignment: Alignment.center,
-              child: TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: '车前轮轴到车头 ④',
-                ),
-                controller: frontWheelFrontDistController,
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(14.0),
-              alignment: Alignment.center,
-              child: Image.asset('assets/c-truck-pos-front.png'),
-            ),
-            Container(
-              padding: EdgeInsets.all(14.0),
-              alignment: Alignment.center,
-              child: Image.asset('assets/c-truck-pos-side.png'),
-            ),
-          ],
+      body: Column(children: <Widget>[
+        Center(
+          child: Text(_statusMessage),
         ),
-      ),
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.all(14.0),
+                  alignment: Alignment.center,
+                  child: TextField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: '车宽',
+                    ),
+                    controller: carWidthController,
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.all(14.0),
+                  alignment: Alignment.center,
+                  child: TextField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: '摄像头离玻璃右边缘 ①',
+                    ),
+                    controller: cameraRightDistController,
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.all(14.0),
+                  alignment: Alignment.center,
+                  child: TextField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: '摄像头离玻璃左边缘 ②',
+                    ),
+                    controller: cameraLeftDistController,
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.all(14.0),
+                  alignment: Alignment.center,
+                  child: Image.asset('assets/c-truck-pos-front.png'),
+                ),
+                Container(
+                  padding: EdgeInsets.all(14.0),
+                  alignment: Alignment.center,
+                  child: TextField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: '摄像头高度',
+                    ),
+                    controller: cameraHeightController,
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.all(14.0),
+                  alignment: Alignment.center,
+                  child: TextField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: '摄像头离车头 ③',
+                    ),
+                    controller: cameraFrontDistController,
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.all(14.0),
+                  alignment: Alignment.center,
+                  child: TextField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: '车前轮轴到车头 ④',
+                    ),
+                    controller: frontWheelFrontDistController,
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.all(14.0),
+                  alignment: Alignment.center,
+                  child: Image.asset('assets/c-truck-pos-side.png'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ]),
       resizeToAvoidBottomPadding: false,
     );
   }
 
-  double onError(String source) {}
 }
